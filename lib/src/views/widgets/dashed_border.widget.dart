@@ -25,7 +25,7 @@ class DashedDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
-      padding: const EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: AppPadding.SMALL,
       ),
       decoration:  BoxDecoration(
