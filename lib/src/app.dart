@@ -40,6 +40,10 @@ class MyApp extends StatelessWidget {
           onGenerateTitle: (BuildContext context) =>
               AppLocalizations.of(context)!.appTitle,
           theme: ThemeData(
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppColors.CREAM,
+              centerTitle: true,
+            ),
             scaffoldBackgroundColor: AppColors.CREAM,
           ),
           darkTheme: ThemeData.dark(),
