@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'controllers/home/home.controller.dart';
 import 'controllers/settings/settings.controller.dart';
+import 'helpers/constants/colors.constants.dart';
 import 'services/home/tasks.service.dart';
 import 'views/calendar/calendar.view.dart';
 import 'views/home/home.view.dart';
@@ -38,7 +39,9 @@ class MyApp extends StatelessWidget {
           ],
           onGenerateTitle: (BuildContext context) =>
               AppLocalizations.of(context)!.appTitle,
-          theme: ThemeData(),
+          theme: ThemeData(
+            scaffoldBackgroundColor: AppColors.CREAM,
+          ),
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
           onGenerateRoute: (RouteSettings routeSettings) {
