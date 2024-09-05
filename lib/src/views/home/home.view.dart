@@ -39,12 +39,12 @@ class _HomeViewState extends State<HomeView> {
           body: Stack(
             children: [
               _loadingWidget,
-              widget.homeController.tasks.isEmpty
-                  ? child!
-                  : Column(
-                      children: [
-                        Expanded(
-                          child: ListView.builder(
+              Column(
+                children: [
+                  Expanded(
+                    child: widget.homeController.tasks.isEmpty
+                        ? child!
+                        : ListView.builder(
                             itemCount: widget.homeController.tasks.length,
                             itemExtent: 120.0,
                             padding: const EdgeInsets.all(8.0),
@@ -65,10 +65,10 @@ class _HomeViewState extends State<HomeView> {
                               );
                             },
                           ),
-                        ),
-                        const CreateNewTask(),
-                      ],
-                    ),
+                  ),
+                  const CreateNewTask(),
+                ],
+              ),
             ],
           ),
         );
