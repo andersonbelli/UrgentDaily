@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: const [
-            Locale('en', ''), // English, no country code
+            Locale('en', ''),
+            Locale('pt', ''),
           ],
           onGenerateTitle: (BuildContext context) =>
               AppLocalizations.of(context)!.appTitle,
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
               centerTitle: true,
             ),
             scaffoldBackgroundColor: AppColors.CREAM,
+            fontFamily: 'Open Sans',
           ),
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,

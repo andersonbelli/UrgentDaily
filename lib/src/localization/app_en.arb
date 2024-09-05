@@ -1,6 +1,18 @@
 {
   "appTitle": "urgent_daily",
-  "@appTitle": {
-    "description": "Urgent Daily - Organize your day!"
-  }
+  "hello": "Hello {userName}",
+  "@hello": {
+    "description": "A message with a single parameter",
+    "placeholders": {
+      "userName": {
+        "type": "String",
+        "example": "Bob"
+      }
+    }
+  },
+  "@_GENERAL": {},
+  "createNew": "CREATE NEW",
+  "@_NO_TASKS": {},
+  "noTasksYet": "No tasks yet :(",
+  "startAddingTasksNow": "Start by adding tasks now!"
 }
