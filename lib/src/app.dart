@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
               AppLocalizations.of(context)!.appTitle,
           theme: ThemeData(
             scaffoldBackgroundColor: AppColors.CREAM,
+            fontFamily: 'Open Sans',
           ),
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
