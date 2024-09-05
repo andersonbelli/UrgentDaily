@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../controllers/home/home.controller.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
+import 'widgets/create_new_task.widget.dart';
 import 'widgets/home_calendar.widget.dart';
+import 'widgets/no_tasks_yet.widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({
@@ -39,21 +41,33 @@ class _HomeViewState extends State<HomeView> {
               _loadingWidget,
               widget.homeController.tasks.isEmpty
                   ? child!
-                  : ListView.builder(
-                      itemCount: widget.homeController.tasks.length,
-                      itemExtent: 120.0,
-                      padding: const EdgeInsets.all(8.0),
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(widget.homeController.tasks[index].title),
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) => HomeCalendarWidget(selectedDate: widget.homeController.tasks[index].taskDate),
-                            );
-                          },
-                        );
-                      },
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: widget.homeController.tasks.length,
+                            itemExtent: 120.0,
+                            padding: const EdgeInsets.all(8.0),
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(
+                                  widget.homeController.tasks[index].title,
+                                ),
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) => HomeCalendarWidget(
+                                      selectedDate: widget
+                                          .homeController.tasks[index].taskDate,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                        const CreateNewTask(),
+                      ],
                     ),
             ],
           ),
@@ -66,25 +80,4 @@ class _HomeViewState extends State<HomeView> {
   Widget get _loadingWidget => widget.homeController.isLoading
       ? const CircularProgressIndicator()
       : const SizedBox.shrink();
-}
-
-class NoTasksYet extends StatelessWidget {
-  const NoTasksYet({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        Placeholder(
-          color: Colors.red,
-        ),
-        Text(
-          'no tasks yet :(',
-          style: TextStyle(
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-      ],
-    );
-  }
 }
