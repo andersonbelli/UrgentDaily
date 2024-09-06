@@ -263,7 +263,7 @@ class DaysOfWeekRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         DaysOfWeekItem(
           dayOfWeek: 'Sun',
@@ -333,23 +333,26 @@ class DaysOfWeekItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FilterChip(
-      shape: const CircleBorder(),
-      showCheckmark: false,
-      color: selected
-          ? WidgetStateProperty.all(AppColors.DARK)
-          : WidgetStateProperty.all(Colors.transparent),
-      label: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          dayOfWeek,
-          style: TextStyle(
-            color: selected ? AppColors.GREEN : AppColors.DARK,
+    return Flexible(
+      child: FilterChip(
+        shape: const CircleBorder(),
+        labelPadding: const EdgeInsets.all(8.0),
+        showCheckmark: false,
+        color: selected
+            ? WidgetStateProperty.all(AppColors.DARK)
+            : WidgetStateProperty.all(Colors.transparent),
+        label: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: Text(
+            dayOfWeek,
+            style: TextStyle(
+              color: selected ? AppColors.GREEN : AppColors.DARK,
+            ),
           ),
         ),
+        selected: selected,
+        onSelected: daySelected,
       ),
-      selected: selected,
-      onSelected: daySelected,
     );
   }
 }
