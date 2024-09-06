@@ -34,6 +34,7 @@ class CalendarPickerWidget extends StatelessWidget {
             ),
             Text(
               selectedDate.formatDate(),
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 18),
               textAlign: TextAlign.start,
             ),
              Divider(
