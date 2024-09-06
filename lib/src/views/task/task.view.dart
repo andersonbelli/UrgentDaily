@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../controllers/task/task.controller.dart';
 import '../../helpers/constants/colors.constants.dart';
@@ -32,36 +33,37 @@ class TaskView extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: double.infinity,
                     child: Text(
-                      'New task',
+                      AppLocalizations.of(context)!.newTask,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: AppTextSize.LARGE,
                       ),
                     ),
                   ),
                   TaskFieldWithTitle(
-                    title: 'title',
+                    title: AppLocalizations.of(context)!.title,
                     child: TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: 'Task 1 - Sep 5',
-                        hintStyle: TextStyle(
+                      decoration: InputDecoration(
+                        hintText:
+                            AppLocalizations.of(context)!.whatAreYouPlanning,
+                        hintStyle: const TextStyle(
                           color: AppColors.GRAY,
                         ),
                       ),
                       controller: taskController.title,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Title is required';
+                          return AppLocalizations.of(context)!.titleIsMandatory;
                         }
                         return null;
                       },
                     ),
                   ),
                   TaskFieldWithTitle(
-                    title: 'date',
+                    title: AppLocalizations.of(context)!.date,
                     child: SizedBox(
                       width: double.infinity,
                       child: CalendarPickerWidget(
@@ -83,9 +85,9 @@ class TaskView extends StatelessWidget {
                         onTap: () {
                           taskController.toggleRecursive();
                         },
-                        child: const Text(
-                          'recursive task?',
-                          style: TextStyle(
+                        child: Text(
+                          AppLocalizations.of(context)!.recursiveTask,
+                          style: const TextStyle(
                             fontSize: AppTextSize.MEDIUM,
                             color: AppColors.GRAY,
                             fontWeight: FontWeight.w100,
@@ -107,9 +109,9 @@ class TaskView extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'priority',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.priority,
+                        style: const TextStyle(
                           fontSize: AppTextSize.MEDIUM,
                           color: AppColors.GRAY,
                           fontWeight: FontWeight.w100,
@@ -117,25 +119,25 @@ class TaskView extends StatelessWidget {
                         ),
                       ),
                       RadioPriority(
-                        title: 'urgent',
+                        title: AppLocalizations.of(context)!.urgent,
                         groupPriority: taskController.taskPriority,
                         priority: TaskPriority.URGENT,
                         selectedPriority: taskController.selectTaskPriority,
                       ),
                       RadioPriority(
-                        title: 'important',
+                        title: AppLocalizations.of(context)!.important,
                         groupPriority: taskController.taskPriority,
                         priority: TaskPriority.IMPORTANT,
                         selectedPriority: taskController.selectTaskPriority,
                       ),
                       RadioPriority(
-                        title: 'important, not urgent',
+                        title: AppLocalizations.of(context)!.importantNotUrgent,
                         groupPriority: taskController.taskPriority,
                         priority: TaskPriority.IMPORTANT_NOT_URGENT,
                         selectedPriority: taskController.selectTaskPriority,
                       ),
                       RadioPriority(
-                        title: 'not urgent',
+                        title: AppLocalizations.of(context)!.notImportant,
                         groupPriority: taskController.taskPriority,
                         priority: TaskPriority.NOT_IMPORTANT,
                         selectedPriority: taskController.selectTaskPriority,
@@ -147,7 +149,10 @@ class TaskView extends StatelessWidget {
             ),
           ),
         ),
-        GreenButton(text: 'CREATE TASK', onTap: () => print('Task created')),
+        GreenButton(
+          text: AppLocalizations.of(context)!.createTask,
+          onTap: () => print('Task created'),
+        ),
       ],
     );
   }
@@ -266,49 +271,49 @@ class DaysOfWeekRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         DaysOfWeekItem(
-          dayOfWeek: 'Sun',
+          dayOfWeek: AppLocalizations.of(context)!.sun,
           daySelected: (value) {
             onSelectedDaysOfWeek(RecursiveDay.SUN, value);
           },
           selected: selectedDays[RecursiveDay.SUN] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: 'Mon',
+          dayOfWeek: AppLocalizations.of(context)!.mon,
           daySelected: (value) {
             onSelectedDaysOfWeek(RecursiveDay.MON, value);
           },
           selected: selectedDays[RecursiveDay.MON] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: 'Tue',
+          dayOfWeek: AppLocalizations.of(context)!.tue,
           daySelected: (value) {
             onSelectedDaysOfWeek(RecursiveDay.TUE, value);
           },
           selected: selectedDays[RecursiveDay.TUE] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: 'Wed',
+          dayOfWeek: AppLocalizations.of(context)!.wed,
           daySelected: (value) {
             onSelectedDaysOfWeek(RecursiveDay.WED, value);
           },
           selected: selectedDays[RecursiveDay.WED] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: 'Thu',
+          dayOfWeek: AppLocalizations.of(context)!.thu,
           daySelected: (value) {
             onSelectedDaysOfWeek(RecursiveDay.THU, value);
           },
           selected: selectedDays[RecursiveDay.THU] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: 'Fri',
+          dayOfWeek: AppLocalizations.of(context)!.fri,
           daySelected: (value) {
             onSelectedDaysOfWeek(RecursiveDay.FRI, value);
           },
           selected: selectedDays[RecursiveDay.FRI] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: 'Sat',
+          dayOfWeek: AppLocalizations.of(context)!.sat,
           daySelected: (value) {
             onSelectedDaysOfWeek(RecursiveDay.SAT, value);
           },
