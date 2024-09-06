@@ -13,6 +13,7 @@ class DashedDivider extends StatelessWidget {
     this.dashLength = 10,
     this.borderWidth = 1,
     this.borderColor = AppColors.DARK_LIGHT,
+    this.child = const SizedBox.shrink(),
   });
 
   final double height;
@@ -20,15 +21,16 @@ class DashedDivider extends StatelessWidget {
   final double dashLength;
   final Color borderColor;
   final double borderWidth;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height,
+      height: child == const SizedBox.shrink() ? height : null,
       margin: const EdgeInsets.symmetric(
         horizontal: AppPadding.SMALL,
       ),
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
         border: DashedBorder.fromBorderSide(
           dashLength: dashLength,
           side: BorderSide(
@@ -37,6 +39,7 @@ class DashedDivider extends StatelessWidget {
           ),
         ),
       ),
+      child: child,
     );
   }
 }

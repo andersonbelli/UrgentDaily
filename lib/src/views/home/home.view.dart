@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../controllers/home/home.controller.dart';
+import '../../controllers/task/task.controller.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
+import '../task/widgets/calendar_picker.widget.dart';
 import 'widgets/create_new_task.widget.dart';
-import 'widgets/home_calendar.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
 
 class HomeView extends StatefulWidget {
@@ -56,7 +57,7 @@ class _HomeViewState extends State<HomeView> {
                                 onTap: () {
                                   showModalBottomSheet(
                                     context: context,
-                                    builder: (context) => HomeCalendarWidget(
+                                    builder: (context) => CalendarPickerWidget(
                                       selectedDate: widget
                                           .homeController.tasks[index].taskDate,
                                     ),
@@ -66,7 +67,9 @@ class _HomeViewState extends State<HomeView> {
                             },
                           ),
                   ),
-                  const CreateNewTask(),
+                  CreateNewTask(
+                    taskController: TaskController(), /// TODO: Dependency Injection (DI) here.
+                  ),
                 ],
               ),
             ],
