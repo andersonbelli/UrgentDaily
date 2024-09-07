@@ -12,7 +12,7 @@ import '../widgets/dashed_border.widget.dart';
 import '../widgets/green_button.widget.dart';
 import 'widgets/calendar_picker.widget.dart';
 
-class TaskView extends StatelessWidget {
+class TaskView extends StatefulWidget {
   const TaskView({
     super.key,
     required this.taskController,
@@ -21,140 +21,168 @@ class TaskView extends StatelessWidget {
   final TaskController taskController;
 
   @override
+  State<TaskView> createState() => _TaskViewState();
+}
+
+class _TaskViewState extends State<TaskView> {
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppPadding.SMALL,
-              horizontal: AppPadding.MEDIUM,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      AppLocalizations.of(context)!.newTask,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: AppTextSize.LARGE,
-                      ),
-                    ),
-                  ),
-                  TaskFieldWithTitle(
-                    title: AppLocalizations.of(context)!.title,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText:
-                            AppLocalizations.of(context)!.whatAreYouPlanning,
-                        hintStyle: const TextStyle(
-                          color: AppColors.GRAY,
-                        ),
-                      ),
-                      controller: taskController.title,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return AppLocalizations.of(context)!.titleIsMandatory;
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  TaskFieldWithTitle(
-                    title: AppLocalizations.of(context)!.date,
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: CalendarPickerWidget(
-                        selectedDate: DateTime.now(),
-                      ),
-                    ),
-                  ),
-                  Row(
+    return ListenableBuilder(
+      listenable: widget.taskController,
+      builder: (context, child) {
+        return Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: AppPadding.SMALL,
+                  horizontal: AppPadding.MEDIUM,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Checkbox(
-                        value: taskController.isRecursive,
-                        onChanged: (value) {
-                          taskController.toggleRecursive(recursive: value);
-                        },
-                        checkColor: AppColors.DARK,
-                        activeColor: AppColors.GREEN,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          taskController.toggleRecursive();
-                        },
+                      SizedBox(
+                        width: double.infinity,
                         child: Text(
-                          AppLocalizations.of(context)!.recursiveTask,
+                          AppLocalizations.of(context)!.newTask,
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
-                            fontSize: AppTextSize.MEDIUM,
-                            color: AppColors.GRAY,
-                            fontWeight: FontWeight.w100,
-                            fontStyle: FontStyle.italic,
+                            fontSize: AppTextSize.LARGE,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Visibility(
-                    visible: taskController.isRecursive,
-                    child: DaysOfWeekRow(
-                      onSelectedDaysOfWeek: taskController.selectRecursiveDay,
-                      selectedDays: taskController.selectedDaysOfWeek,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.priority,
-                        style: const TextStyle(
-                          fontSize: AppTextSize.MEDIUM,
-                          color: AppColors.GRAY,
-                          fontWeight: FontWeight.w100,
-                          fontStyle: FontStyle.italic,
+                      TaskFieldWithTitle(
+                        title: AppLocalizations.of(context)!.title,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!
+                                .whatAreYouPlanning,
+                            hintStyle: const TextStyle(
+                              color: AppColors.GRAY,
+                            ),
+                          ),
+                          controller: widget.taskController.title,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return AppLocalizations.of(context)!
+                                  .titleIsMandatory;
+                            }
+                            return null;
+                          },
                         ),
                       ),
-                      RadioPriority(
-                        title: AppLocalizations.of(context)!.urgent,
-                        groupPriority: taskController.taskPriority,
-                        priority: TaskPriority.URGENT,
-                        selectedPriority: taskController.selectTaskPriority,
+                      TaskFieldWithTitle(
+                        title: AppLocalizations.of(context)!.date,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: CalendarPickerWidget(
+                              taskController: widget.taskController),
+                        ),
                       ),
-                      RadioPriority(
-                        title: AppLocalizations.of(context)!.important,
-                        groupPriority: taskController.taskPriority,
-                        priority: TaskPriority.IMPORTANT,
-                        selectedPriority: taskController.selectTaskPriority,
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: widget.taskController.isRecursive,
+                            onChanged: (value) {
+                              widget.taskController
+                                  .toggleRecursive(recursive: value);
+                            },
+                            checkColor: AppColors.DARK,
+                            activeColor: AppColors.GREEN,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              widget.taskController.toggleRecursive();
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!.recursiveTask,
+                              style: const TextStyle(
+                                fontSize: AppTextSize.MEDIUM,
+                                color: AppColors.GRAY,
+                                fontWeight: FontWeight.w100,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      RadioPriority(
-                        title: AppLocalizations.of(context)!.importantNotUrgent,
-                        groupPriority: taskController.taskPriority,
-                        priority: TaskPriority.IMPORTANT_NOT_URGENT,
-                        selectedPriority: taskController.selectTaskPriority,
+                      const SizedBox(height: 5),
+                      Visibility(
+                        visible: widget.taskController.isRecursive,
+                        child: DaysOfWeekRow(
+                          onSelectedDaysOfWeek:
+                              widget.taskController.selectRecursiveDay,
+                          selectedDays:
+                              widget.taskController.selectedDaysOfWeek,
+                        ),
                       ),
-                      RadioPriority(
-                        title: AppLocalizations.of(context)!.notImportant,
-                        groupPriority: taskController.taskPriority,
-                        priority: TaskPriority.NOT_IMPORTANT,
-                        selectedPriority: taskController.selectTaskPriority,
+                      const SizedBox(height: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.priority,
+                            style: const TextStyle(
+                              fontSize: AppTextSize.MEDIUM,
+                              color: AppColors.GRAY,
+                              fontWeight: FontWeight.w100,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                          RadioPriority(
+                            title: AppLocalizations.of(context)!.urgent,
+                            groupPriority: widget.taskController.taskPriority,
+                            priority: TaskPriority.URGENT,
+                            selectedPriority:
+                                widget.taskController.selectTaskPriority,
+                          ),
+                          RadioPriority(
+                            title: AppLocalizations.of(context)!.important,
+                            groupPriority: widget.taskController.taskPriority,
+                            priority: TaskPriority.IMPORTANT,
+                            selectedPriority:
+                                widget.taskController.selectTaskPriority,
+                          ),
+                          RadioPriority(
+                            title: AppLocalizations.of(context)!
+                                .importantNotUrgent,
+                            groupPriority: widget.taskController.taskPriority,
+                            priority: TaskPriority.IMPORTANT_NOT_URGENT,
+                            selectedPriority:
+                                widget.taskController.selectTaskPriority,
+                          ),
+                          RadioPriority(
+                            title: AppLocalizations.of(context)!.notImportant,
+                            groupPriority: widget.taskController.taskPriority,
+                            priority: TaskPriority.NOT_IMPORTANT,
+                            selectedPriority:
+                                widget.taskController.selectTaskPriority,
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        GreenButton(
-          text: AppLocalizations.of(context)!.createTask,
-          onTap: () => print('Task created'),
-        ),
-      ],
+            child!,
+          ],
+        );
+      },
+      child: GreenButton(
+        text: AppLocalizations.of(context)!.createTask,
+        onTap: () {
+          widget.taskController.createTask();
+          Navigator.pop(context);
+        },
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    widget.taskController.clearTaskData();
+    super.dispose();
   }
 }
 

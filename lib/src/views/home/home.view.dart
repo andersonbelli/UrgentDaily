@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../controllers/home/home.controller.dart';
 import '../../controllers/task/task.controller.dart';
+import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
-import '../task/widgets/calendar_picker.widget.dart';
+import '../calendar/calendar.view.dart';
+import '../task/task.view.dart';
 import 'widgets/create_new_task.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
 
@@ -22,10 +24,12 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  late TaskController taskController; // TODO: Dependency Injection (DI) here.
+
   @override
   void initState() {
     super.initState();
-    widget.homeController.loadUserTasks();
+    taskController = TaskController(widget.homeController);
   }
 
   @override
@@ -35,11 +39,16 @@ class _HomeViewState extends State<HomeView> {
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(widget.homeController.selectedDate.formatDate()),
+            title: GestureDetector(
+              onTap: () => Navigator.restorablePushNamed(
+                context,
+                CalendarView.routeName,
+              ),
+              child: Text(widget.homeController.selectedDate.formatDate()),
+            ),
           ),
           body: Stack(
             children: [
-              _loadingWidget,
               Column(
                 children: [
                   Expanded(
@@ -50,17 +59,32 @@ class _HomeViewState extends State<HomeView> {
                             itemExtent: 120.0,
                             padding: const EdgeInsets.all(8.0),
                             itemBuilder: (context, index) {
+                              final task = widget.homeController.tasks[index];
+
                               return ListTile(
                                 title: Text(
-                                  widget.homeController.tasks[index].title,
+                                  task.title,
+                                ),
+                                subtitle: Text(
+                                  '${task.id} - ${task.priority.name} - ${task.date?.formatDate()}',
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 onTap: () {
                                   showModalBottomSheet(
                                     context: context,
-                                    builder: (context) => CalendarPickerWidget(
-                                      selectedDate: widget
-                                          .homeController.tasks[index].taskDate,
-                                    ),
+                                    isScrollControlled: true,
+                                    builder: (context) {
+                                      taskController.editTaskData(
+                                        task,
+                                      );
+
+                                      return FractionallySizedBox(
+                                        heightFactor: 0.9,
+                                        child: TaskView(
+                                          taskController: taskController,
+                                        ),
+                                      );
+                                    },
                                   );
                                 },
                               );
@@ -68,10 +92,11 @@ class _HomeViewState extends State<HomeView> {
                           ),
                   ),
                   CreateNewTask(
-                    taskController: TaskController(), /// TODO: Dependency Injection (DI) here.
+                    taskController: taskController,
                   ),
                 ],
               ),
+              _loadingWidget,
             ],
           ),
         );
@@ -81,6 +106,15 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget get _loadingWidget => widget.homeController.isLoading
-      ? const CircularProgressIndicator()
-      : const SizedBox.shrink();
+        ? Container(
+            color: AppColors.DARK.withOpacity(0.8),
+            width: double.infinity,
+            height: double.infinity,
+            child: const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(AppColors.GREEN),
+              ),
+            ),
+          )
+        : const SizedBox.shrink();
 }
