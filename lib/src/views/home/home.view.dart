@@ -6,7 +6,6 @@ import '../../controllers/task/task.controller.dart';
 import '../../helpers/config/di.dart';
 import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/constants/padding.constants.dart';
-import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../../models/task.model.dart';
 import '../calendar/calendar.view.dart';
@@ -60,65 +59,61 @@ class HomeView extends StatelessWidget {
                   ? child!
                   : Builder(
                       builder: (context) {
-                        final List<Task> urgentTasks =
-                            getTasksFromSection(TaskPriority.URGENT);
-                        final List<Task> importantTasks =
-                            getTasksFromSection(TaskPriority.IMPORTANT);
-                        final List<Task> importantNotUrgentTasks =
-                            getTasksFromSection(
-                          TaskPriority.IMPORTANT_NOT_URGENT,
-                        );
-                        final List<Task> notImportantTasks =
-                            getTasksFromSection(
-                          TaskPriority.NOT_IMPORTANT,
-                        );
-
                         final List<Widget> listOfSections = [];
 
-                        if (urgentTasks.isNotEmpty) {
+                        if (homeController.urgentTasks.isNotEmpty) {
                           listOfSections.add(
                             TaskSection(
                               title: 'Urgent',
                               color: AppColors.PINK.withOpacity(0.5),
-                              tasks: urgentTasks,
+                              tasks: homeController.urgentTasks,
                             ),
                           );
                         }
 
-                        if (importantTasks.isNotEmpty) {
+                        if (homeController.importantTasks.isNotEmpty) {
                           listOfSections.add(
                             TaskSection(
                               title: 'Important',
                               color: AppColors.PURPLE.withOpacity(0.5),
-                              tasks: importantTasks,
+                              tasks: homeController.importantTasks,
                             ),
                           );
                         }
 
-                        if (importantNotUrgentTasks.isNotEmpty) {
+                        if (homeController.importantNotUrgentTasks.isNotEmpty) {
                           listOfSections.add(
                             TaskSection(
                               title: 'Important, not urgent',
                               color: AppColors.BLUE_LIGHT.withOpacity(0.5),
-                              tasks: importantNotUrgentTasks,
+                              tasks: homeController.importantNotUrgentTasks,
                             ),
                           );
                         }
 
-                        if (notImportantTasks.isNotEmpty) {
+                        if (homeController.notImportantTasks.isNotEmpty) {
                           listOfSections.add(
                             TaskSection(
                               title: 'Not important',
                               color: AppColors.GRAY.withOpacity(0.3),
-                              tasks: notImportantTasks,
+                              tasks: homeController.notImportantTasks,
                             ),
                           );
                         }
 
                         listOfSections.add(CreateNewTask());
 
-                        return ListView(
-                          children: listOfSections,
+                        final outerListChildren = <SliverList>[
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) => listOfSections[index],
+                              childCount: listOfSections.length,
+                            ),
+                          ),
+                        ];
+
+                        return CustomScrollView(
+                          slivers: outerListChildren,
                         );
                       },
                     ),
@@ -143,12 +138,6 @@ class HomeView extends StatelessWidget {
           ),
         )
       : const SizedBox.shrink();
-
-  List<Task> getTasksFromSection(TaskPriority priority) => List.from(
-        homeController.tasks.where(
-          (task) => task.priority == priority,
-        ),
-      );
 }
 
 class TaskItem extends StatelessWidget {

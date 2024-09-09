@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../helpers/config/di.dart';
+import '../../helpers/enums/priority.enum.dart';
 import '../../models/task.model.dart';
 import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
@@ -30,6 +31,12 @@ class HomeController extends BaseController {
   final List<Task> _tasks = [];
 
   List<Task> get tasks => _tasks;
+
+  /// Priority lists
+  final List<Task> urgentTasks = [],
+      importantTasks = [],
+      importantNotUrgentTasks = [],
+      notImportantTasks = [];
 
   void addTask(Task taskToAdd) async {
     toggleLoading();
@@ -62,16 +69,6 @@ class HomeController extends BaseController {
     toggleLoading();
   }
 
-  void loadUserTasks() async {
-    toggleLoading();
-
-    final userTasks = await _tasksService.loadTasks(selectedDate);
-    _tasks.addAll(userTasks.tasks);
-
-    notifyListeners();
-    toggleLoading();
-  }
-
   void toggleCompletedTask(Task task, bool? isCompleted) {
     if (isCompleted != null) {
       _tasks[_getTaskIndex(task)] = task.copyWith(isCompleted: isCompleted);
@@ -80,4 +77,37 @@ class HomeController extends BaseController {
   }
 
   int _getTaskIndex(Task task) => _tasks.indexWhere((t) => t.id == task.id);
+
+  void loadUserTasks() async {
+    toggleLoading();
+
+    final userTasks = await _tasksService.loadTasks(selectedDate);
+    _tasks.addAll(userTasks.tasks);
+
+    _separateTasksByPriority();
+
+    notifyListeners();
+    toggleLoading();
+  }
+
+  void _separateTasksByPriority() {
+    urgentTasks.addAll(_getTasksFromSection(TaskPriority.URGENT));
+    importantTasks.addAll(_getTasksFromSection(TaskPriority.IMPORTANT));
+    importantNotUrgentTasks.addAll(
+      _getTasksFromSection(
+        TaskPriority.IMPORTANT_NOT_URGENT,
+      ),
+    );
+    notImportantTasks.addAll(
+      _getTasksFromSection(
+        TaskPriority.NOT_IMPORTANT,
+      ),
+    );
+  }
+
+  List<Task> _getTasksFromSection(TaskPriority priority) => List.from(
+        tasks.where(
+          (task) => task.priority == priority,
+        ),
+      );
 }
