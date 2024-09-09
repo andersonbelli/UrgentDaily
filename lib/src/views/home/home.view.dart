@@ -4,10 +4,12 @@ import '../../controllers/home/home.controller.dart';
 import '../../controllers/task/task.controller.dart';
 import '../../helpers/config/di.dart';
 import '../../helpers/constants/colors.constants.dart';
+import '../../helpers/constants/padding.constants.dart';
+import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
+import '../../models/task.model.dart';
 import '../calendar/calendar.view.dart';
 import '../task/task.view.dart';
-import 'widgets/create_new_task.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
 
 class HomeView extends StatelessWidget {
@@ -42,43 +44,77 @@ class HomeView extends StatelessWidget {
                   Expanded(
                     child: homeController.tasks.isEmpty
                         ? child!
-                        : ListView.builder(
-                            itemCount: homeController.tasks.length,
-                            itemExtent: 120.0,
-                            padding: const EdgeInsets.all(8.0),
-                            itemBuilder: (context, index) {
-                              final task = homeController.tasks[index];
+                        : Builder(
+                            builder: (context) {
+                              final List<Task> urgentTasks =
+                                  getTasksFromSection(TaskPriority.URGENT);
+                              final List<Task> importantTasks =
+                                  getTasksFromSection(TaskPriority.IMPORTANT);
+                              final List<Task> importantNotUrgentTasks =
+                                  getTasksFromSection(
+                                TaskPriority.IMPORTANT_NOT_URGENT,
+                              );
+                              final List<Task> notImportantTasks =
+                                  getTasksFromSection(
+                                TaskPriority.NOT_IMPORTANT,
+                              );
 
-                              return ListTile(
-                                title: Text(
-                                  task.title,
-                                ),
-                                subtitle: Text(
-                                  '${task.title} - ${task.priority.name} - ${task.date?.formatDate()}',
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (context) {
-                                      taskController.editTaskData(
-                                        task,
-                                      );
+                              final List<Widget> listOfSections = [];
 
-                                      return FractionallySizedBox(
-                                        heightFactor: 0.9,
-                                        child: TaskView(),
-                                      );
-                                    },
-                                  );
-                                },
+                              if (urgentTasks.isNotEmpty) {
+                                listOfSections.add(
+                                  Flexible(
+                                    child: TaskSection(
+                                      title: 'Urgent',
+                                      color: AppColors.PINK.withOpacity(0.5),
+                                      tasks: urgentTasks,
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              if (importantTasks.isNotEmpty) {
+                                listOfSections.add(
+                                  Flexible(
+                                    child: TaskSection(
+                                      title: 'Important',
+                                      color: AppColors.PURPLE.withOpacity(0.5),
+                                      tasks: importantTasks,
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              if (importantNotUrgentTasks.isNotEmpty) {
+                                listOfSections.add(
+                                  Flexible(
+                                    child: TaskSection(
+                                      title: 'Important, not urgent',
+                                      color:
+                                          AppColors.BLUE_LIGHT.withOpacity(0.5),
+                                      tasks: importantNotUrgentTasks,
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              if (notImportantTasks.isNotEmpty) {
+                                listOfSections.add(
+                                  Flexible(
+                                    child: TaskSection(
+                                      title: 'Not important',
+                                      color: AppColors.GRAY_LIGHT,
+                                      tasks: notImportantTasks,
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              return Column(
+                                children: listOfSections,
                               );
                             },
                           ),
-                  ),
-                  CreateNewTask(
-                    taskController: taskController,
                   ),
                 ],
               ),
@@ -103,4 +139,134 @@ class HomeView extends StatelessWidget {
           ),
         )
       : const SizedBox.shrink();
+
+  List<Task> getTasksFromSection(TaskPriority priority) => List.from(
+        homeController.tasks.where(
+          (task) => task.priority == priority,
+        ),
+      );
+}
+
+class TaskItem extends StatelessWidget {
+  const TaskItem({
+    super.key,
+    required this.task,
+    required this.homeController,
+    required this.taskController,
+  });
+
+  final Task task;
+  final HomeController homeController;
+  final TaskController taskController;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        task.title,
+        style: TextStyle(
+          decoration: task.isCompleted
+              ? TextDecoration.lineThrough
+              : TextDecoration.none,
+        ),
+      ),
+      onTap: () => homeController.toggleCompletedTask(
+        task,
+        !task.isCompleted,
+      ),
+      leading: IconButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              taskController.editTaskData(
+                task,
+              );
+
+              return FractionallySizedBox(
+                heightFactor: 0.9,
+                child: TaskView(),
+              );
+            },
+          );
+        },
+        icon: const Icon(
+          Icons.edit,
+        ),
+      ),
+      trailing: Checkbox(
+        value: task.isCompleted,
+        onChanged: (isTaskCompleted) => homeController.toggleCompletedTask(
+          task,
+          isTaskCompleted,
+        ),
+        checkColor: AppColors.DARK,
+        activeColor: AppColors.GREEN,
+      ),
+    );
+  }
+}
+
+class TaskSection extends StatelessWidget {
+  const TaskSection({
+    super.key,
+    required this.title,
+    required this.color,
+    required this.tasks,
+  });
+
+  final String title;
+  final Color color;
+  final List<Task> tasks;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppPadding.MEDIUM,
+        vertical: AppPadding.SMALL,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppPadding.MEDIUM),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: AppPadding.SMALL,
+              horizontal: AppPadding.LARGE,
+            ),
+            decoration: const BoxDecoration(
+              color: Colors.amber,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(4),
+                bottomRight: Radius.circular(4),
+              ),
+            ),
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: AppColors.DARK,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+          Flexible(
+            child: ListView.builder(
+              itemCount: tasks.length,
+              itemBuilder: (context, index) => TaskItem(
+                task: tasks[index],
+                homeController: getIt<HomeController>(),
+                taskController: getIt<TaskController>(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
