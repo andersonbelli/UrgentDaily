@@ -7,8 +7,7 @@ import 'src/helpers/config/di.dart';
 void main() async {
   configureDependencies();
 
-  final settingsController = getIt.get<SettingsController>();
-  await settingsController.loadSettings();
+  await getIt.get<SettingsController>().loadSettings();
 
-  runApp(MyApp(settingsController: settingsController));
+  runApp(MyApp());
 }

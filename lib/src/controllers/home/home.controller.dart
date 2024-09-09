@@ -1,23 +1,17 @@
 import 'package:injectable/injectable.dart';
 
+import '../../helpers/config/di.dart';
 import '../../models/task.model.dart';
 import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
 
 @Singleton()
 class HomeController extends BaseController {
-  static HomeController? _instance;
-
-  HomeController._(this._tasksService) {
+  HomeController() {
     loadUserTasks();
   }
 
-  factory HomeController(TasksService tasksService) {
-    _instance ??= HomeController._(tasksService);
-    return _instance!;
-  }
-
-  final TasksService _tasksService;
+  final TasksService _tasksService = getIt<TasksService>();
 
   /// Current Date state
   late DateTime _selectedDate = DateTime.now();

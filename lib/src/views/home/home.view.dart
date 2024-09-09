@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../controllers/home/home.controller.dart';
 import '../../controllers/task/task.controller.dart';
+import '../../helpers/config/di.dart';
 import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../calendar/calendar.view.dart';
@@ -9,33 +10,20 @@ import '../task/task.view.dart';
 import 'widgets/create_new_task.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({
+class HomeView extends StatelessWidget {
+  HomeView({
     super.key,
-    required this.homeController,
   });
 
-  final HomeController homeController;
+  final HomeController homeController = getIt.get<HomeController>();
+  final TaskController taskController = getIt.get<TaskController>();
 
   static const routeName = '/';
 
   @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  late TaskController taskController; // TODO: Dependency Injection (DI) here.
-
-  @override
-  void initState() {
-    super.initState();
-    taskController = TaskController(widget.homeController);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: widget.homeController,
+      listenable: homeController,
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
@@ -44,7 +32,7 @@ class _HomeViewState extends State<HomeView> {
                 context,
                 CalendarView.routeName,
               ),
-              child: Text(widget.homeController.selectedDate.formatDate()),
+              child: Text(homeController.selectedDate.formatDate()),
             ),
           ),
           body: Stack(
@@ -52,14 +40,14 @@ class _HomeViewState extends State<HomeView> {
               Column(
                 children: [
                   Expanded(
-                    child: widget.homeController.tasks.isEmpty
+                    child: homeController.tasks.isEmpty
                         ? child!
                         : ListView.builder(
-                            itemCount: widget.homeController.tasks.length,
+                            itemCount: homeController.tasks.length,
                             itemExtent: 120.0,
                             padding: const EdgeInsets.all(8.0),
                             itemBuilder: (context, index) {
-                              final task = widget.homeController.tasks[index];
+                              final task = homeController.tasks[index];
 
                               return ListTile(
                                 title: Text(
@@ -80,9 +68,7 @@ class _HomeViewState extends State<HomeView> {
 
                                       return FractionallySizedBox(
                                         heightFactor: 0.9,
-                                        child: TaskView(
-                                          taskController: taskController,
-                                        ),
+                                        child: TaskView(),
                                       );
                                     },
                                   );
@@ -105,16 +91,16 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget get _loadingWidget => widget.homeController.isLoading
-        ? Container(
-            color: AppColors.DARK.withOpacity(0.8),
-            width: double.infinity,
-            height: double.infinity,
-            child: const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(AppColors.GREEN),
-              ),
+  Widget get _loadingWidget => homeController.isLoading
+      ? Container(
+          color: AppColors.DARK.withOpacity(0.8),
+          width: double.infinity,
+          height: double.infinity,
+          child: const Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(AppColors.GREEN),
             ),
-          )
-        : const SizedBox.shrink();
+          ),
+        )
+      : const SizedBox.shrink();
 }

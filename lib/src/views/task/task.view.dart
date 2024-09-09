@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../controllers/task/task.controller.dart';
+import '../../helpers/config/di.dart';
 import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/constants/padding.constants.dart';
 import '../../helpers/constants/text_sizes.constants.dart';
@@ -13,12 +14,11 @@ import '../widgets/green_button.widget.dart';
 import 'widgets/calendar_picker.widget.dart';
 
 class TaskView extends StatefulWidget {
-  const TaskView({
+  TaskView({
     super.key,
-    required this.taskController,
   });
 
-  final TaskController taskController;
+  final TaskController taskController = getIt<TaskController>();
 
   @override
   State<TaskView> createState() => _TaskViewState();

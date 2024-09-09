@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../helpers/config/di.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/recursive_days.enum.dart';
 import '../../models/task.model.dart';
@@ -13,11 +14,9 @@ enum ErrorFieldsEnum {
   DAYS_OF_WEEK,
 }
 
-@Injectable()
+@Singleton()
 class TaskController extends BaseController {
-  TaskController(this.homeController);
-
-  final HomeController homeController;
+  final HomeController homeController = getIt<HomeController>();
 
   /// Task properties
   String? taskId;
@@ -118,6 +117,8 @@ class TaskController extends BaseController {
 
     final Map<RecursiveDay, bool> newSelectedDays = Map.from({});
     selectedDaysOfWeek = newSelectedDays;
+
+    validationErrorMessages.clear();
 
     notifyListeners();
   }
