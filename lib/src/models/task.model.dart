@@ -21,6 +21,8 @@ class Task {
   final Map<RecursiveDay, bool> recursiveDays;
 
   Task({
+    this.id,
+
     /// Mandatory fields
     required this.title,
     required this.priority,
@@ -36,10 +38,12 @@ class Task {
     this.isRecursive = false,
     this.recursiveDays = const {},
   }) {
-    id = '${title.trim().replaceAll(' ', '')}$priority${date?.formatDate()}${DateTime.now()}';
+    id ??=
+        '${title.trim().replaceAll(' ', '')}$priority${date?.formatDate()}${DateTime.now()}';
   }
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'title': title,
         'taskPriority': priority,
         'date': date,
@@ -50,6 +54,7 @@ class Task {
       };
 
   factory Task.fromJson(Map<String, dynamic> map) => Task(
+        id: map['id'] as String,
         title: map['title'] as String,
         priority: map['taskPriority'] as TaskPriority,
         date: map['date'] as DateTime,
