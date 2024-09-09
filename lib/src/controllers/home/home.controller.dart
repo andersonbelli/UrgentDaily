@@ -54,6 +54,18 @@ class HomeController extends BaseController {
     toggleLoading();
   }
 
+  void editTask(Task editedTask) async {
+    toggleLoading();
+
+    await _tasksService.editTask(editedTask);
+
+    final currentTaskPosition = _tasks.indexWhere((t) => t.id == editedTask.id);
+    _tasks[currentTaskPosition] = editedTask;
+
+    notifyListeners();
+    toggleLoading();
+  }
+
   void loadUserTasks() async {
     toggleLoading();
 
