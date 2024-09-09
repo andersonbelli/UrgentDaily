@@ -38,6 +38,7 @@
   "importantNotUrgent": "important, not urgent",
   "notImportant": "not important",
   "createTask": "CREATE TASK",
+  "editTask": "EDIT TASK",
 
   "@_NEW_TASK_CREATION_VALIDATION_MESSAGES": {},
   "recursiveTaskSelectOneDay": "[Recursive task] - Select at least 1 day!"

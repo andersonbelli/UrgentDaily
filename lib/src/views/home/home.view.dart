@@ -66,7 +66,7 @@ class _HomeViewState extends State<HomeView> {
                                   task.title,
                                 ),
                                 subtitle: Text(
-                                  '${task.id} - ${task.priority.name} - ${task.date?.formatDate()}',
+                                  '${task.title} - ${task.priority.name} - ${task.date?.formatDate()}',
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 onTap: () {
