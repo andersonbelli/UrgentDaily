@@ -224,23 +224,37 @@ class TaskSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.GRAY.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Container(
-            margin: const EdgeInsets.only(
-              bottom: AppPadding.SMALL,
-            ),
             padding: const EdgeInsets.symmetric(
               vertical: AppPadding.SMALL,
               horizontal: AppPadding.LARGE,
             ),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.amber,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(4),
                 bottomRight: Radius.circular(4),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.DARK.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
             child: Text(
               title,
@@ -251,13 +265,18 @@ class TaskSection extends StatelessWidget {
               ),
             ),
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: tasks.length,
-            itemBuilder: (context, index) => TaskItem(
-              task: tasks[index],
-              homeController: getIt<HomeController>(),
-              taskController: getIt<TaskController>(),
+          Container(
+            margin: const EdgeInsets.symmetric(
+              vertical: AppPadding.MEDIUM,
+            ),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: tasks.length,
+              itemBuilder: (context, index) => TaskItem(
+                task: tasks[index],
+                homeController: getIt<HomeController>(),
+                taskController: getIt<TaskController>(),
+              ),
             ),
           ),
         ],
