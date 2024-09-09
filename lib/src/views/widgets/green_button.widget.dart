@@ -20,7 +20,9 @@ class GreenButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppPadding.MEDIUM, vertical: AppPadding.SMALL),
+        horizontal: AppPadding.MEDIUM,
+        vertical: AppPadding.SMALL,
+      ),
       width: double.infinity,
       child: ElevatedButton(
         onPressed: isDisabled ? null : onTap,
@@ -28,7 +30,7 @@ class GreenButton extends StatelessWidget {
           backgroundColor: AppColors.GREEN,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: AppColors.DARK),
+            side: BorderSide(color: Theme.of(context).primaryColor),
           ),
         ),
         child: Padding(
