@@ -64,7 +64,7 @@ class HomeView extends StatelessWidget {
                         if (homeController.urgentTasks.isNotEmpty) {
                           listOfSections.add(
                             TaskSection(
-                              title: 'Urgent',
+                              title: AppLocalizations.of(context)!.urgent,
                               color: AppColors.PINK.withOpacity(0.5),
                               tasks: homeController.urgentTasks,
                             ),
@@ -74,7 +74,7 @@ class HomeView extends StatelessWidget {
                         if (homeController.importantTasks.isNotEmpty) {
                           listOfSections.add(
                             TaskSection(
-                              title: 'Important',
+                              title: AppLocalizations.of(context)!.important,
                               color: AppColors.PURPLE.withOpacity(0.5),
                               tasks: homeController.importantTasks,
                             ),
@@ -84,7 +84,8 @@ class HomeView extends StatelessWidget {
                         if (homeController.importantNotUrgentTasks.isNotEmpty) {
                           listOfSections.add(
                             TaskSection(
-                              title: 'Important, not urgent',
+                              title: AppLocalizations.of(context)!
+                                  .importantNotUrgent,
                               color: AppColors.BLUE_LIGHT.withOpacity(0.5),
                               tasks: homeController.importantNotUrgentTasks,
                             ),
@@ -94,7 +95,7 @@ class HomeView extends StatelessWidget {
                         if (homeController.notImportantTasks.isNotEmpty) {
                           listOfSections.add(
                             TaskSection(
-                              title: 'Not important',
+                              title: AppLocalizations.of(context)!.notImportant,
                               color: AppColors.GRAY.withOpacity(0.3),
                               tasks: homeController.notImportantTasks,
                             ),

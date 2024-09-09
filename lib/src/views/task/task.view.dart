@@ -164,26 +164,33 @@ class _TaskViewState extends State<TaskView> {
                             ),
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.urgent,
+                            title: AppLocalizations.of(context)!
+                                .urgent
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.URGENT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.important,
+                            title: AppLocalizations.of(context)!
+                                .important
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
                             title: AppLocalizations.of(context)!
-                                .importantNotUrgent,
+                                .importantNotUrgent
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT_NOT_URGENT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.notImportant,
+                            title: AppLocalizations.of(context)!
+                                .notImportant
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.NOT_IMPORTANT,
                             selectedPriority: controller.selectTaskPriority,
