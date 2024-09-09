@@ -63,6 +63,27 @@ class Task {
         isRecursive: map['recursive'] as bool,
         recursiveDays: map['recursiveDays'] as Map<RecursiveDay, bool>,
       );
+
+  Task copyWith({
+    String? id,
+    String? title,
+    TaskPriority? priority,
+    DateTime? date,
+    bool? isCompleted,
+    String? description,
+    bool? isRecursive,
+    Map<RecursiveDay, bool>? recursiveDays,
+  }) =>
+      Task(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        priority: priority ?? this.priority,
+        date: date ?? this.date,
+        isCompleted: isCompleted ?? this.isCompleted,
+        description: description ?? this.description,
+        isRecursive: isRecursive ?? this.isRecursive,
+        recursiveDays: recursiveDays ?? this.recursiveDays,
+      );
 }
 
 /// Mock Tasks data

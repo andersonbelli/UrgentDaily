@@ -64,8 +64,9 @@ class _TaskViewState extends State<TaskView> {
                       TaskFieldWithTitle(
                         title: AppLocalizations.of(context)!.title,
                         child: TextField(
-                          cursorColor: Theme.of(context).indicatorColor,
-                          cursorErrorColor: Theme.of(context).indicatorColor,
+                          cursorColor: Theme.of(context).colorScheme.outline,
+                          cursorErrorColor:
+                              Theme.of(context).colorScheme.outline,
                           maxLength: 120,
                           decoration: InputDecoration(
                             counterText: '',
@@ -163,26 +164,33 @@ class _TaskViewState extends State<TaskView> {
                             ),
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.urgent,
+                            title: AppLocalizations.of(context)!
+                                .urgent
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.URGENT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.important,
+                            title: AppLocalizations.of(context)!
+                                .important
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
                             title: AppLocalizations.of(context)!
-                                .importantNotUrgent,
+                                .importantNotUrgent
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT_NOT_URGENT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.notImportant,
+                            title: AppLocalizations.of(context)!
+                                .notImportant
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.NOT_IMPORTANT,
                             selectedPriority: controller.selectTaskPriority,
@@ -199,17 +207,17 @@ class _TaskViewState extends State<TaskView> {
               child: Flexible(
                 child: Container(
                   padding: const EdgeInsets.all(AppPadding.MEDIUM),
-                  color: Theme.of(context).cardColor,
+                  color: Theme.of(context).focusColor,
                   child: ListView.builder(
                     itemCount: controller.validationErrorMessages.length,
                     clipBehavior: Clip.antiAlias,
                     itemBuilder: (context, index) {
                       return Text(
                         '* ${controller.validationErrorMessages.values.elementAt(index)}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.copyWith(color: Colors.red),
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                       );
                     },
                   ),
@@ -301,7 +309,9 @@ class RadioPriority extends StatelessWidget {
       child: Row(
         children: [
           CupertinoRadio(
-            activeColor: AppColors.DARK,
+            activeColor: AppColors.GREEN,
+            fillColor: AppColors.GREEN,
+            inactiveColor: Theme.of(context).focusColor,
             value: priority,
             groupValue: groupPriority,
             onChanged: (value) => selectedPriority(value),
@@ -429,7 +439,7 @@ class DaysOfWeekItem extends StatelessWidget {
         shape: CircleBorder(
           side: BorderSide(
             color:
-                selected ? AppColors.GREEN : Theme.of(context).indicatorColor,
+                selected ? AppColors.GREEN : Theme.of(context).highlightColor,
           ),
         ),
         labelPadding: const EdgeInsets.all(8.0),
@@ -442,8 +452,9 @@ class DaysOfWeekItem extends StatelessWidget {
           child: Text(
             dayOfWeek,
             style: TextStyle(
-              color:
-                  selected ? AppColors.GREEN : Theme.of(context).indicatorColor,
+              color: selected
+                  ? AppColors.GREEN
+                  : Theme.of(context).colorScheme.inverseSurface,
             ),
           ),
         ),

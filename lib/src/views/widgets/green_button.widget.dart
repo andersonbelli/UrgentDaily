@@ -19,8 +19,13 @@ class GreenButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(
+        bottom: AppPadding.MEDIUM,
+      ),
       padding: const EdgeInsets.symmetric(
-          horizontal: AppPadding.MEDIUM, vertical: AppPadding.SMALL),
+        horizontal: AppPadding.MEDIUM,
+        vertical: AppPadding.SMALL,
+      ),
       width: double.infinity,
       child: ElevatedButton(
         onPressed: isDisabled ? null : onTap,
@@ -32,7 +37,7 @@ class GreenButton extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: AppPadding.SMALL),
           child: Text(
             text,
             style: const TextStyle(
