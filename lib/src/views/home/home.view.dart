@@ -41,16 +41,16 @@ class HomeView extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             onPressed: () => CreateNewTask.showNewTaskModal(context),
             backgroundColor: AppColors.GREEN,
-            tooltip: AppLocalizations.of(context)!.createNew,
-            shape: CircleBorder(
+            tooltip: AppLocalizations.of(context)!.newTask,
+            shape: const CircleBorder(
               side: BorderSide(
-                color: Theme.of(context).primaryColor,
+                color: AppColors.DARK,
                 width: 2,
               ),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.add,
-              color: Theme.of(context).primaryColor,
+              color: AppColors.DARK,
             ),
           ),
           body: Stack(

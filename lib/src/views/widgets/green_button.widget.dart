@@ -33,7 +33,7 @@ class GreenButton extends StatelessWidget {
           backgroundColor: AppColors.GREEN,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: Theme.of(context).primaryColor),
+            side: const BorderSide(color: AppColors.DARK),
           ),
         ),
         child: Padding(
