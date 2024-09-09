@@ -1,7 +1,10 @@
+import 'package:injectable/injectable.dart';
+
 import '../../models/task.model.dart';
 import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
 
+@Singleton()
 class HomeController extends BaseController {
   static HomeController? _instance;
 

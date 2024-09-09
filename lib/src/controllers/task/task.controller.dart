@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/recursive_days.enum.dart';
@@ -12,6 +13,7 @@ enum ErrorFieldsEnum {
   DAYS_OF_WEEK,
 }
 
+@Injectable()
 class TaskController extends BaseController {
   TaskController(this.homeController);
 
