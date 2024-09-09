@@ -46,11 +46,18 @@ class _TaskViewState extends State<TaskView> {
                     children: [
                       SizedBox(
                         width: double.infinity,
-                        child: Text(
-                          AppLocalizations.of(context)!.newTask,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: AppTextSize.LARGE,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            controller.taskId == null
+                                ? AppLocalizations.of(context)!.newTask
+                                : controller.originalTitle,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: AppTextSize.LARGE,
+                              color: AppColors.GREEN,
+                            ),
                           ),
                         ),
                       ),
@@ -59,7 +66,9 @@ class _TaskViewState extends State<TaskView> {
                         child: TextField(
                           cursorColor: Theme.of(context).indicatorColor,
                           cursorErrorColor: Theme.of(context).indicatorColor,
+                          maxLength: 120,
                           decoration: InputDecoration(
+                            counterText: '',
                             hintText: AppLocalizations.of(context)!
                                 .whatAreYouPlanning,
                             hintStyle: const TextStyle(
@@ -68,8 +77,9 @@ class _TaskViewState extends State<TaskView> {
                             errorBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: controller.validationErrorMessages
-                                    .containsKey(ErrorFieldsEnum.TITLE)
-                                    ? Theme.of(context).colorScheme.error : AppColors.DARK_LIGHT.withOpacity(0.6),
+                                        .containsKey(ErrorFieldsEnum.TITLE)
+                                    ? Theme.of(context).colorScheme.error
+                                    : AppColors.DARK_LIGHT.withOpacity(0.6),
                                 width: 1.5,
                               ),
                             ),
@@ -78,8 +88,8 @@ class _TaskViewState extends State<TaskView> {
                             ),
                             errorText: controller.validationErrorMessages
                                     .containsKey(ErrorFieldsEnum.TITLE)
-                                ? controller
-                                    .validationErrorMessages[ErrorFieldsEnum.TITLE]
+                                ? controller.validationErrorMessages[
+                                    ErrorFieldsEnum.TITLE]
                                 : '',
                           ),
                           controller: controller.title,
@@ -88,7 +98,8 @@ class _TaskViewState extends State<TaskView> {
                             if (value.trim().isNotEmpty &&
                                 controller.validationErrorMessages
                                     .containsKey(ErrorFieldsEnum.TITLE)) {
-                              controller.removeValidationError(ErrorFieldsEnum.TITLE);
+                              controller
+                                  .removeValidationError(ErrorFieldsEnum.TITLE);
                             } else {
                               controller.validateFields(context);
                             }
@@ -210,13 +221,15 @@ class _TaskViewState extends State<TaskView> {
         );
       },
       child: GreenButton(
-        text: AppLocalizations.of(context)!.createTask,
+        text: widget.taskController.taskId == null
+            ? AppLocalizations.of(context)!.createTask
+            : AppLocalizations.of(context)!.editTask,
         isDisabled: controller.validationErrorMessages.isNotEmpty,
         onTap: () {
-          controller.validateFields(context);
+          widget.taskController.validateFields(context);
 
-          if (controller.validationErrorMessages.isEmpty) {
-            controller.createTask();
+          if (widget.taskController.validationErrorMessages.isEmpty) {
+            widget.taskController.taskAction();
             Navigator.pop(context);
           }
         },

@@ -17,6 +17,8 @@ class TaskController extends BaseController {
 
   final HomeController homeController;
 
+  /// Task properties
+  String? taskId;
   DateTime selectedDate = DateTime.now();
   final TextEditingController title = TextEditingController();
 
@@ -25,11 +27,17 @@ class TaskController extends BaseController {
   bool isRecursive = false;
   Map<RecursiveDay, bool> selectedDaysOfWeek = {};
 
+  /// Task Edit property
+  String originalTitle = '';
+
+  /// Filed validation
   Map<ErrorFieldsEnum, String> validationErrorMessages = {};
 
   /// Task state
   void editTaskData(Task task) {
+    taskId = task.id;
     title.text = task.title;
+    originalTitle = task.title;
     selectedDate = task.date ?? DateTime.now();
     isRecursive = task.isRecursive;
     selectedDaysOfWeek = task.recursiveDays;
@@ -72,20 +80,35 @@ class TaskController extends BaseController {
     notifyListeners();
   }
 
-  void createTask() {
-    homeController.addTask(
-      Task(
-        title: title.text,
-        date: selectedDate,
-        isRecursive: isRecursive,
-        recursiveDays: selectedDaysOfWeek,
-        priority: taskPriority,
-      ),
-    );
+  void taskAction() {
+    taskId != null ? _editTask() : _createTask();
+
     notifyListeners();
   }
 
+  void _createTask() => homeController.addTask(
+        Task(
+          title: title.text,
+          date: selectedDate,
+          isRecursive: isRecursive,
+          recursiveDays: selectedDaysOfWeek,
+          priority: taskPriority,
+        ),
+      );
+
+  void _editTask() => homeController.editTask(
+        Task(
+          id: taskId,
+          title: title.text,
+          date: selectedDate,
+          isRecursive: isRecursive,
+          recursiveDays: selectedDaysOfWeek,
+          priority: taskPriority,
+        ),
+      );
+
   void clearTaskData() {
+    taskId = null;
     title.clear();
     selectedDate = DateTime.now();
     isRecursive = false;
