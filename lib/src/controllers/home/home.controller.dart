@@ -56,8 +56,7 @@ class HomeController extends BaseController {
 
     await _tasksService.editTask(editedTask);
 
-    final currentTaskPosition = _tasks.indexWhere((t) => t.id == editedTask.id);
-    _tasks[currentTaskPosition] = editedTask;
+    _tasks[_getTaskIndex(editedTask)] = editedTask;
 
     notifyListeners();
     toggleLoading();
@@ -72,4 +71,12 @@ class HomeController extends BaseController {
     notifyListeners();
     toggleLoading();
   }
+
+  void toggleCompletedTask(Task task, bool? isCompleted) {
+    if (isCompleted != null) {
+      _tasks[_getTaskIndex(task)] = task.copyWith(isCompleted: isCompleted);
+    }
+  }
+
+  int _getTaskIndex(Task task) => _tasks.indexWhere((t) => t.id == task.id);
 }
