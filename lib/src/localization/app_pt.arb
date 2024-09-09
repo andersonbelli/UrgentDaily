@@ -1,14 +1,16 @@
 {
   "@_GENERAL": {},
   "createNew": "CRIAR NOVA TAREFA",
+
   "@_NO_TASKS": {},
   "noTasksYet": "Sem tarefas :(",
   "startAddingTasksNow": "Comece adicionando tarefas agora!",
+
   "@_NEW_TASK_CREATION": {},
   "newTask": "Nova tarefa",
   "title": "título",
   "whatAreYouPlanning": "O que você está planejando?",
-  "titleIsMandatory": "título é obrigatório",
+  "titleIsMandatory": "Título é obrigatório!",
   "date": "data",
   "recursiveTask": "tarefa recursiva?",
   "sun": "Dom",
@@ -23,5 +25,8 @@
   "important": "importante",
   "importantNotUrgent": "importante, mas não urgente",
   "notImportant": "não importante",
-  "createTask": "CRIAR TAREFA"
+  "createTask": "CRIAR TAREFA",
+
+  "@_NEW_TASK_CREATION_VALIDATION_MESSAGES": {},
+  "recursiveTaskSelectOneDay": "[Tarefa recursiva] - Selecione ao menos 1 dia!"
 }

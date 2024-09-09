@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/recursive_days.enum.dart';
 import '../../models/task.model.dart';
 import '../base_controller.dart';
 import '../home/home.controller.dart';
+
+enum ErrorFieldsEnum {
+  TITLE,
+  DAYS_OF_WEEK,
+}
 
 class TaskController extends BaseController {
   TaskController(this.homeController);
@@ -18,6 +24,8 @@ class TaskController extends BaseController {
 
   bool isRecursive = false;
   Map<RecursiveDay, bool> selectedDaysOfWeek = {};
+
+  Map<ErrorFieldsEnum, String> validationErrorMessages = {};
 
   /// Task state
   void editTaskData(Task task) {
@@ -36,6 +44,8 @@ class TaskController extends BaseController {
       isRecursive = recursive;
     }
 
+    removeValidationError(ErrorFieldsEnum.DAYS_OF_WEEK);
+
     notifyListeners();
   }
 
@@ -49,6 +59,9 @@ class TaskController extends BaseController {
         Map.from(selectedDaysOfWeek);
     newSelectedDays[day] = selected;
     selectedDaysOfWeek = newSelectedDays;
+
+    removeValidationError(ErrorFieldsEnum.DAYS_OF_WEEK);
+
     notifyListeners();
   }
 
@@ -83,4 +96,29 @@ class TaskController extends BaseController {
 
     notifyListeners();
   }
+
+  /// Field validation
+  void validateFields(BuildContext context) {
+    if (title.text.isEmpty) {
+      validationErrorMessages[ErrorFieldsEnum.TITLE] =
+          '${AppLocalizations.of(context)?.titleIsMandatory}';
+    }
+
+    if (isRecursive == true) {
+      if (isRecursiveDaysValid() == false) {
+        validationErrorMessages[ErrorFieldsEnum.DAYS_OF_WEEK] =
+            '${AppLocalizations.of(context)?.recursiveTaskSelectOneDay}';
+      }
+    }
+
+    notifyListeners();
+  }
+
+  void removeValidationError(ErrorFieldsEnum field) {
+    validationErrorMessages.remove(field);
+    notifyListeners();
+  }
+
+  bool isRecursiveDaysValid() =>
+      selectedDaysOfWeek.containsValue(true) ? true : false;
 }

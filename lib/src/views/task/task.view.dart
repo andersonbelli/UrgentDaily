@@ -27,12 +27,15 @@ class TaskView extends StatefulWidget {
 class _TaskViewState extends State<TaskView> {
   @override
   Widget build(BuildContext context) {
+    final controller = widget.taskController;
+
     return ListenableBuilder(
       listenable: widget.taskController,
       builder: (context, child) {
         return Column(
           children: [
             Expanded(
+              flex: 6,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: AppPadding.SMALL,
@@ -53,21 +56,42 @@ class _TaskViewState extends State<TaskView> {
                       ),
                       TaskFieldWithTitle(
                         title: AppLocalizations.of(context)!.title,
-                        child: TextFormField(
+                        child: TextField(
+                          cursorColor: Theme.of(context).indicatorColor,
+                          cursorErrorColor: Theme.of(context).indicatorColor,
                           decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)!
                                 .whatAreYouPlanning,
                             hintStyle: const TextStyle(
                               color: AppColors.GRAY,
                             ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller.validationErrorMessages
+                                    .containsKey(ErrorFieldsEnum.TITLE)
+                                    ? Theme.of(context).colorScheme.error : AppColors.DARK_LIGHT.withOpacity(0.6),
+                                width: 1.5,
+                              ),
+                            ),
+                            focusedErrorBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.GRAY),
+                            ),
+                            errorText: controller.validationErrorMessages
+                                    .containsKey(ErrorFieldsEnum.TITLE)
+                                ? controller
+                                    .validationErrorMessages[ErrorFieldsEnum.TITLE]
+                                : '',
                           ),
-                          controller: widget.taskController.title,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return AppLocalizations.of(context)!
-                                  .titleIsMandatory;
+                          controller: controller.title,
+                          onChanged: (value) {
+                            controller.title.clearComposing();
+                            if (value.trim().isNotEmpty &&
+                                controller.validationErrorMessages
+                                    .containsKey(ErrorFieldsEnum.TITLE)) {
+                              controller.removeValidationError(ErrorFieldsEnum.TITLE);
+                            } else {
+                              controller.validateFields(context);
                             }
-                            return null;
                           },
                         ),
                       ),
@@ -76,23 +100,23 @@ class _TaskViewState extends State<TaskView> {
                         child: SizedBox(
                           width: double.infinity,
                           child: CalendarPickerWidget(
-                              taskController: widget.taskController),
+                            taskController: controller,
+                          ),
                         ),
                       ),
                       Row(
                         children: [
                           Checkbox(
-                            value: widget.taskController.isRecursive,
+                            value: controller.isRecursive,
                             onChanged: (value) {
-                              widget.taskController
-                                  .toggleRecursive(recursive: value);
+                              controller.toggleRecursive(recursive: value);
                             },
                             checkColor: AppColors.DARK,
                             activeColor: AppColors.GREEN,
                           ),
                           GestureDetector(
                             onTap: () {
-                              widget.taskController.toggleRecursive();
+                              controller.toggleRecursive();
                             },
                             child: Text(
                               AppLocalizations.of(context)!.recursiveTask,
@@ -108,12 +132,10 @@ class _TaskViewState extends State<TaskView> {
                       ),
                       const SizedBox(height: 5),
                       Visibility(
-                        visible: widget.taskController.isRecursive,
+                        visible: controller.isRecursive,
                         child: DaysOfWeekRow(
-                          onSelectedDaysOfWeek:
-                              widget.taskController.selectRecursiveDay,
-                          selectedDays:
-                              widget.taskController.selectedDaysOfWeek,
+                          onSelectedDaysOfWeek: controller.selectRecursiveDay,
+                          selectedDays: controller.selectedDaysOfWeek,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -131,36 +153,54 @@ class _TaskViewState extends State<TaskView> {
                           ),
                           RadioPriority(
                             title: AppLocalizations.of(context)!.urgent,
-                            groupPriority: widget.taskController.taskPriority,
+                            groupPriority: controller.taskPriority,
                             priority: TaskPriority.URGENT,
-                            selectedPriority:
-                                widget.taskController.selectTaskPriority,
+                            selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
                             title: AppLocalizations.of(context)!.important,
-                            groupPriority: widget.taskController.taskPriority,
+                            groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT,
-                            selectedPriority:
-                                widget.taskController.selectTaskPriority,
+                            selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
                             title: AppLocalizations.of(context)!
                                 .importantNotUrgent,
-                            groupPriority: widget.taskController.taskPriority,
+                            groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT_NOT_URGENT,
-                            selectedPriority:
-                                widget.taskController.selectTaskPriority,
+                            selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
                             title: AppLocalizations.of(context)!.notImportant,
-                            groupPriority: widget.taskController.taskPriority,
+                            groupPriority: controller.taskPriority,
                             priority: TaskPriority.NOT_IMPORTANT,
-                            selectedPriority:
-                                widget.taskController.selectTaskPriority,
+                            selectedPriority: controller.selectTaskPriority,
                           ),
                         ],
                       ),
                     ],
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: controller.validationErrorMessages.isNotEmpty,
+              child: Flexible(
+                child: Container(
+                  padding: const EdgeInsets.all(AppPadding.MEDIUM),
+                  color: Theme.of(context).cardColor,
+                  child: ListView.builder(
+                    itemCount: controller.validationErrorMessages.length,
+                    clipBehavior: Clip.antiAlias,
+                    itemBuilder: (context, index) {
+                      return Text(
+                        '* ${controller.validationErrorMessages.values.elementAt(index)}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(color: Colors.red),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -171,9 +211,14 @@ class _TaskViewState extends State<TaskView> {
       },
       child: GreenButton(
         text: AppLocalizations.of(context)!.createTask,
+        isDisabled: controller.validationErrorMessages.isNotEmpty,
         onTap: () {
-          widget.taskController.createTask();
-          Navigator.pop(context);
+          controller.validateFields(context);
+
+          if (controller.validationErrorMessages.isEmpty) {
+            controller.createTask();
+            Navigator.pop(context);
+          }
         },
       ),
     );
@@ -368,7 +413,12 @@ class DaysOfWeekItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: FilterChip(
-        shape: const CircleBorder(),
+        shape: CircleBorder(
+          side: BorderSide(
+            color:
+                selected ? AppColors.GREEN : Theme.of(context).indicatorColor,
+          ),
+        ),
         labelPadding: const EdgeInsets.all(8.0),
         showCheckmark: false,
         color: selected
@@ -379,7 +429,8 @@ class DaysOfWeekItem extends StatelessWidget {
           child: Text(
             dayOfWeek,
             style: TextStyle(
-              color: selected ? AppColors.GREEN : AppColors.DARK,
+              color:
+                  selected ? AppColors.GREEN : Theme.of(context).indicatorColor,
             ),
           ),
         ),

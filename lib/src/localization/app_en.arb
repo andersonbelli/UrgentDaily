@@ -10,16 +10,19 @@
       }
     }
   },
+
   "@_GENERAL": {},
   "createNew": "CREATE NEW",
+
   "@_NO_TASKS": {},
   "noTasksYet": "No tasks yet :(",
   "startAddingTasksNow": "Start by adding tasks now!",
+
   "@_NEW_TASK_CREATION": {},
   "newTask": "New task",
   "title": "title",
   "whatAreYouPlanning": "What are you planning?",
-  "titleIsMandatory": "title is mandatory",
+  "titleIsMandatory": "title is mandatory!",
   "date": "date",
   "recursiveTask": "recursive task?",
   "sun": "Sun",
@@ -34,5 +37,8 @@
   "important": "important",
   "importantNotUrgent": "important, not urgent",
   "notImportant": "not important",
-  "createTask": "CREATE TASK"
+  "createTask": "CREATE TASK",
+
+  "@_NEW_TASK_CREATION_VALIDATION_MESSAGES": {},
+  "recursiveTaskSelectOneDay": "[Recursive task] - Select at least 1 day!"
 }
