@@ -9,18 +9,21 @@ class GreenButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onTap,
+    this.isDisabled = false,
   });
 
   final String text;
   final VoidCallback onTap;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppPadding.MEDIUM, vertical: AppPadding.SMALL),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppPadding.MEDIUM, vertical: AppPadding.SMALL),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: onTap,
+        onPressed: isDisabled ? null : onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.GREEN,
           shape: RoundedRectangleBorder(

@@ -48,7 +48,11 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: AppColors.CREAM,
             fontFamily: 'Open Sans',
           ),
-          darkTheme: ThemeData.dark(),
+          darkTheme: ThemeData.dark().copyWith(
+            appBarTheme: const AppBarTheme(
+              centerTitle: true,
+            ),
+          ),
           themeMode: settingsController.themeMode,
           onGenerateRoute: (RouteSettings routeSettings) {
             return MaterialPageRoute<void>(

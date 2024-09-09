@@ -1,11 +1,18 @@
-import 'package:flutter/material.dart';
-
 import '../../models/task.model.dart';
 import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
 
-class HomeController extends BaseController with ChangeNotifier {
-  HomeController(tasksService) : _tasksService = tasksService;
+class HomeController extends BaseController {
+  static HomeController? _instance;
+
+  HomeController._(this._tasksService) {
+    loadUserTasks();
+  }
+
+  factory HomeController(TasksService tasksService) {
+    _instance ??= HomeController._(tasksService);
+    return _instance!;
+  }
 
   final TasksService _tasksService;
 
@@ -42,6 +49,18 @@ class HomeController extends BaseController with ChangeNotifier {
 
     final task = await _tasksService.removeTask(taskToRemove);
     _tasks.remove(task);
+
+    notifyListeners();
+    toggleLoading();
+  }
+
+  void editTask(Task editedTask) async {
+    toggleLoading();
+
+    await _tasksService.editTask(editedTask);
+
+    final currentTaskPosition = _tasks.indexWhere((t) => t.id == editedTask.id);
+    _tasks[currentTaskPosition] = editedTask;
 
     notifyListeners();
     toggleLoading();
