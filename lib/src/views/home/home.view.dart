@@ -10,6 +10,7 @@ import '../../helpers/extensions/datetime_formatter.dart';
 import '../../models/task.model.dart';
 import '../calendar/calendar.view.dart';
 import '../task/task.view.dart';
+import 'widgets/create_new_task.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
 
 class HomeView extends StatelessWidget {
@@ -39,85 +40,72 @@ class HomeView extends StatelessWidget {
           ),
           body: Stack(
             children: [
-              Column(
-                children: [
-                  Expanded(
-                    child: homeController.tasks.isEmpty
-                        ? child!
-                        : Builder(
-                            builder: (context) {
-                              final List<Task> urgentTasks =
-                                  getTasksFromSection(TaskPriority.URGENT);
-                              final List<Task> importantTasks =
-                                  getTasksFromSection(TaskPriority.IMPORTANT);
-                              final List<Task> importantNotUrgentTasks =
-                                  getTasksFromSection(
-                                TaskPriority.IMPORTANT_NOT_URGENT,
-                              );
-                              final List<Task> notImportantTasks =
-                                  getTasksFromSection(
-                                TaskPriority.NOT_IMPORTANT,
-                              );
+              homeController.tasks.isEmpty
+                  ? child!
+                  : Builder(
+                      builder: (context) {
+                        final List<Task> urgentTasks =
+                            getTasksFromSection(TaskPriority.URGENT);
+                        final List<Task> importantTasks =
+                            getTasksFromSection(TaskPriority.IMPORTANT);
+                        final List<Task> importantNotUrgentTasks =
+                            getTasksFromSection(
+                          TaskPriority.IMPORTANT_NOT_URGENT,
+                        );
+                        final List<Task> notImportantTasks =
+                            getTasksFromSection(
+                          TaskPriority.NOT_IMPORTANT,
+                        );
 
-                              final List<Widget> listOfSections = [];
+                        final List<Widget> listOfSections = [];
 
-                              if (urgentTasks.isNotEmpty) {
-                                listOfSections.add(
-                                  Flexible(
-                                    child: TaskSection(
-                                      title: 'Urgent',
-                                      color: AppColors.PINK.withOpacity(0.5),
-                                      tasks: urgentTasks,
-                                    ),
-                                  ),
-                                );
-                              }
+                        if (urgentTasks.isNotEmpty) {
+                          listOfSections.add(
+                            TaskSection(
+                              title: 'Urgent',
+                              color: AppColors.PINK.withOpacity(0.5),
+                              tasks: urgentTasks,
+                            ),
+                          );
+                        }
 
-                              if (importantTasks.isNotEmpty) {
-                                listOfSections.add(
-                                  Flexible(
-                                    child: TaskSection(
-                                      title: 'Important',
-                                      color: AppColors.PURPLE.withOpacity(0.5),
-                                      tasks: importantTasks,
-                                    ),
-                                  ),
-                                );
-                              }
+                        if (importantTasks.isNotEmpty) {
+                          listOfSections.add(
+                            TaskSection(
+                              title: 'Important',
+                              color: AppColors.PURPLE.withOpacity(0.5),
+                              tasks: importantTasks,
+                            ),
+                          );
+                        }
 
-                              if (importantNotUrgentTasks.isNotEmpty) {
-                                listOfSections.add(
-                                  Flexible(
-                                    child: TaskSection(
-                                      title: 'Important, not urgent',
-                                      color:
-                                          AppColors.BLUE_LIGHT.withOpacity(0.5),
-                                      tasks: importantNotUrgentTasks,
-                                    ),
-                                  ),
-                                );
-                              }
+                        if (importantNotUrgentTasks.isNotEmpty) {
+                          listOfSections.add(
+                            TaskSection(
+                              title: 'Important, not urgent',
+                              color: AppColors.BLUE_LIGHT.withOpacity(0.5),
+                              tasks: importantNotUrgentTasks,
+                            ),
+                          );
+                        }
 
-                              if (notImportantTasks.isNotEmpty) {
-                                listOfSections.add(
-                                  Flexible(
-                                    child: TaskSection(
-                                      title: 'Not important',
-                                      color: AppColors.GRAY_LIGHT,
-                                      tasks: notImportantTasks,
-                                    ),
-                                  ),
-                                );
-                              }
+                        if (notImportantTasks.isNotEmpty) {
+                          listOfSections.add(
+                            TaskSection(
+                              title: 'Not important',
+                              color: AppColors.GRAY.withOpacity(0.3),
+                              tasks: notImportantTasks,
+                            ),
+                          );
+                        }
 
-                              return Column(
-                                children: listOfSections,
-                              );
-                            },
-                          ),
-                  ),
-                ],
-              ),
+                        listOfSections.add(CreateNewTask());
+
+                        return ListView(
+                          children: listOfSections,
+                        );
+                      },
+                    ),
               _loadingWidget,
             ],
           ),
@@ -235,6 +223,9 @@ class TaskSection extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            margin: const EdgeInsets.only(
+              bottom: AppPadding.SMALL,
+            ),
             padding: const EdgeInsets.symmetric(
               vertical: AppPadding.SMALL,
               horizontal: AppPadding.LARGE,
@@ -255,14 +246,13 @@ class TaskSection extends StatelessWidget {
               ),
             ),
           ),
-          Flexible(
-            child: ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, index) => TaskItem(
-                task: tasks[index],
-                homeController: getIt<HomeController>(),
-                taskController: getIt<TaskController>(),
-              ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: tasks.length,
+            itemBuilder: (context, index) => TaskItem(
+              task: tasks[index],
+              homeController: getIt<HomeController>(),
+              taskController: getIt<TaskController>(),
             ),
           ),
         ],
