@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../controllers/home/home.controller.dart';
 import '../../controllers/task/task.controller.dart';
@@ -36,6 +37,21 @@ class HomeView extends StatelessWidget {
                 CalendarView.routeName,
               ),
               child: Text(homeController.selectedDate.formatDate()),
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => CreateNewTask.showNewTaskModal(context),
+            backgroundColor: AppColors.GREEN,
+            tooltip: AppLocalizations.of(context)!.createNew,
+            shape: CircleBorder(
+              side: BorderSide(
+                color: Theme.of(context).primaryColor,
+                width: 2,
+              ),
+            ),
+            child: Icon(
+              Icons.add,
+              color: Theme.of(context).primaryColor,
             ),
           ),
           body: Stack(
