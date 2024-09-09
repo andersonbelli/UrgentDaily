@@ -75,6 +75,7 @@ class HomeController extends BaseController {
   void toggleCompletedTask(Task task, bool? isCompleted) {
     if (isCompleted != null) {
       _tasks[_getTaskIndex(task)] = task.copyWith(isCompleted: isCompleted);
+      notifyListeners();
     }
   }
 

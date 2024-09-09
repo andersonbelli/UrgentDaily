@@ -2,33 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../controllers/task/task.controller.dart';
+import '../../../helpers/config/di.dart';
+import '../../../helpers/constants/padding.constants.dart';
 import '../../task/task.view.dart';
 import '../../widgets/dashed_border.widget.dart';
 import '../../widgets/green_button.widget.dart';
 
 class CreateNewTask extends StatelessWidget {
-  const CreateNewTask({super.key, required this.taskController});
+  CreateNewTask({super.key});
 
-  final TaskController taskController;
+  final TaskController taskController = getIt<TaskController>();
+
+  static showNewTaskModal(BuildContext context) => showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => FractionallySizedBox(
+          heightFactor: 0.9,
+          child: TaskView(),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const DashedDivider(),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: AppPadding.MEDIUM),
+          child: DashedDivider(
+            borderColor: Theme.of(context).colorScheme.primary,
+          ),
+        ),
         GreenButton(
           text: AppLocalizations.of(context)!.createNew,
-          onTap: () => showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) => FractionallySizedBox(
-              heightFactor: 0.9,
-              child: ListenableBuilder(
-                listenable: taskController,
-                builder: (context, _) => TaskView(),
-              ),
-            ),
-          ),
+          onTap: () => showNewTaskModal(context),
         ),
       ],
     );
