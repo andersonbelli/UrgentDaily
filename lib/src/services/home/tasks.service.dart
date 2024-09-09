@@ -1,6 +1,9 @@
+import 'package:injectable/injectable.dart';
+
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
 
+@Injectable()
 class TasksService {
   Future<Task> addTask(Task task) async {
     /// TODO: Replace with Repository => addTask

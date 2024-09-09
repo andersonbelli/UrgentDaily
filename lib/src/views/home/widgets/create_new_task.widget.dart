@@ -25,11 +25,7 @@ class CreateNewTask extends StatelessWidget {
               heightFactor: 0.9,
               child: ListenableBuilder(
                 listenable: taskController,
-                builder: (context, _) {
-                  return TaskView(
-                    taskController: taskController,
-                  );
-                },
+                builder: (context, _) => TaskView(),
               ),
             ),
           ),
