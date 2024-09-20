@@ -10,6 +10,7 @@ import '../../helpers/extensions/datetime_formatter.dart';
 import '../../models/task.model.dart';
 import '../calendar/calendar.view.dart';
 import '../task/task.view.dart';
+import '../widgets/default_appbar_child.widget.dart';
 import 'widgets/create_new_task.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
 
@@ -35,7 +36,9 @@ class HomeView extends StatelessWidget {
                 context,
                 CalendarView.routeName,
               ),
-              child: Text(homeController.selectedDate.formatDate()),
+              child: DefaultAppBarChild(
+                Text(homeController.selectedDate.formatDate()),
+              ),
             ),
           ),
           floatingActionButton: FloatingActionButton(
