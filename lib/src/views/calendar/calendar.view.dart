@@ -14,7 +14,9 @@ class CalendarView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: DefaultAppBarChild(
-          Text(AppLocalizations.of(context)!.selectADay),
+          Text(
+            AppLocalizations.of(context)!.selectADay,
+          ),
         ),
       ),
       body: TableCalendar(

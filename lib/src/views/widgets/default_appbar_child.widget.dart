@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../helpers/constants/padding.constants.dart';
+
 class DefaultAppBarChild extends StatelessWidget {
   const DefaultAppBarChild(
     this.child, {
@@ -12,7 +14,10 @@ class DefaultAppBarChild extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        child,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppPadding.SMALL),
+          child: child,
+        ),
         Divider(height: 4, color: Theme.of(context).highlightColor),
       ],
     );
