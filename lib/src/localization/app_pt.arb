@@ -29,5 +29,8 @@
   "editTask": "EDITAR TAREFA",
 
   "@_NEW_TASK_CREATION_VALIDATION_MESSAGES": {},
-  "recursiveTaskSelectOneDay": "[Tarefa recursiva] - Selecione ao menos 1 dia!"
+  "recursiveTaskSelectOneDay": "[Tarefa recursiva] - Selecione ao menos 1 dia!",
+
+  "@_CALENDAR": {},
+  "selectADay": "Selecione um dia"
 }

@@ -41,5 +41,8 @@
   "editTask": "EDIT TASK",
 
   "@_NEW_TASK_CREATION_VALIDATION_MESSAGES": {},
-  "recursiveTaskSelectOneDay": "[Recursive task] - Select at least 1 day!"
+  "recursiveTaskSelectOneDay": "[Recursive task] - Select at least 1 day!",
+
+  "@_CALENDAR": {},
+  "selectADay": "Select a day"
 }
