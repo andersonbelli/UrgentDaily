@@ -9,7 +9,7 @@ class TasksService {
     /// TODO: Replace with Repository => addTask
     // tasksRepository.addTask(task)
 
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     return task;
   }
@@ -25,7 +25,7 @@ class TasksService {
     /// TODO: Replace with Repository => editTask
     // tasksRepository.editTask(task)
 
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     return task;
   }
@@ -37,5 +37,14 @@ class TasksService {
     // tasksRepository.loadTasks(dateTime)
 
     return Future.value(MockUserTasks.userTasks);
+  }
+
+  Future<List<UserTasks>> loadTasksForTwoWeeks() {
+    final day1 = MockUserTasks.userTasks
+        .copyWith(date: DateTime.now().subtract(const Duration(days: 3)));
+
+    return Future.value(
+      [day1, MockUserTasks.userTasks],
+    );
   }
 }
