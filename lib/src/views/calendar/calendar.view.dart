@@ -3,15 +3,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../controllers/calendar/calendar.controller.dart';
-import '../../controllers/home/home.controller.dart';
 import '../../helpers/config/di.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../widgets/default_appbar_child.widget.dart';
 
 class CalendarView extends StatelessWidget {
-  CalendarView({super.key});
+  CalendarView({super.key, required this.focusedDate}) {
+    calendarController.updateFocusedDate(focusedDate);
+  }
 
-  final HomeController homeController = getIt.get<HomeController>();
+  final DateTime focusedDate;
+
   final CalendarController calendarController = getIt.get<CalendarController>();
 
   static const routeName = '/calendar';
@@ -27,20 +29,15 @@ class CalendarView extends StatelessWidget {
         ),
       ),
       body: ListenableBuilder(
-        listenable: Listenable.merge(
-          [
-            calendarController,
-            homeController,
-          ],
-        ),
+        listenable: calendarController,
         builder: (context, _) => TableCalendar(
           locale: AppLocalizations.of(context)!.localeName,
           firstDay: DateTime.utc(2010, 10, 16),
           lastDay: DateTime.utc(2030, 3, 14),
-          currentDay: homeController.selectedDate,
-          focusedDay: homeController.selectedDate,
+          currentDay: calendarController.focusedDate,
+          focusedDay: calendarController.focusedDate,
           onDaySelected: (DateTime date, DateTime date1) {
-            homeController.updateSelectedDate(date);
+            calendarController.updateFocusedDate(date);
           },
           calendarFormat: CalendarFormat.twoWeeks,
           headerStyle: const HeaderStyle(formatButtonVisible: false),

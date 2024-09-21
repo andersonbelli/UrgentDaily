@@ -11,6 +11,19 @@ class CalendarController extends BaseController {
     loadTasksForTwoWeeks();
   }
 
+  /// Current Date state
+  late DateTime _focusedDate = DateTime.now();
+
+  DateTime get focusedDate => _focusedDate;
+
+  Future<void> updateFocusedDate(DateTime newFocusedDate) async {
+    if (newFocusedDate == _focusedDate) return;
+
+    _focusedDate = newFocusedDate;
+
+    notifyListeners();
+  }
+
   final TasksService _tasksService = getIt<TasksService>();
 
   /// Tasks state
@@ -20,10 +33,6 @@ class CalendarController extends BaseController {
 
   void loadTasksForTwoWeeks() async {
     final userTasks = await _tasksService.loadTasksForTwoWeeks();
-
-    userTasks.forEach((task) {
-      print('Loaded tasks for two weeks: ${task.date}');
-    });
     _twoWeeksTasks.addAll(userTasks);
 
     notifyListeners();
