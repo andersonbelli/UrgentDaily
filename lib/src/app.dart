@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'controllers/home/home.controller.dart';
 import 'controllers/settings/settings.controller.dart';
 import 'helpers/config/di.dart';
 import 'helpers/constants/colors.constants.dart';
@@ -57,7 +58,9 @@ class MyApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case CalendarView.routeName:
-                    return CalendarView();
+                    return CalendarView(
+                      focusedDate: getIt.get<HomeController>().selectedDate,
+                    );
                   case HomeView.routeName:
                     return HomeView();
                   default:

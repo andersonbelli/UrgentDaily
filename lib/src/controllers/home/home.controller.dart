@@ -32,12 +32,6 @@ class HomeController extends BaseController {
 
   List<Task> get tasks => _tasks;
 
-  /// Priority lists
-  final List<Task> urgentTasks = [],
-      importantTasks = [],
-      importantNotUrgentTasks = [],
-      notImportantTasks = [];
-
   void addTask(Task taskToAdd) async {
     toggleLoading();
 
@@ -49,20 +43,6 @@ class HomeController extends BaseController {
 
     notifyListeners();
     toggleLoading();
-  }
-
-  List<Task> _listOfTaskDependingOnPriority(Task task) {
-    switch (task.priority) {
-      case TaskPriority.URGENT:
-        return urgentTasks;
-      case TaskPriority.IMPORTANT:
-        return importantTasks;
-      case TaskPriority.IMPORTANT_NOT_URGENT:
-        return importantNotUrgentTasks;
-      case TaskPriority.NOT_IMPORTANT:
-      default:
-        return notImportantTasks;
-    }
   }
 
   void removeTask(Task taskToRemove) async {
@@ -102,6 +82,26 @@ class HomeController extends BaseController {
           task.copyWith(isCompleted: isCompleted);
 
       notifyListeners();
+    }
+  }
+
+  /// Priority lists
+  final List<Task> urgentTasks = [],
+      importantTasks = [],
+      importantNotUrgentTasks = [],
+      notImportantTasks = [];
+
+  List<Task> _listOfTaskDependingOnPriority(Task task) {
+    switch (task.priority) {
+      case TaskPriority.URGENT:
+        return urgentTasks;
+      case TaskPriority.IMPORTANT:
+        return importantTasks;
+      case TaskPriority.IMPORTANT_NOT_URGENT:
+        return importantNotUrgentTasks;
+      case TaskPriority.NOT_IMPORTANT:
+      default:
+        return notImportantTasks;
     }
   }
 
