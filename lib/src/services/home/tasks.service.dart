@@ -36,15 +36,19 @@ class TasksService {
     /// TODO: Replace with Repository => loadTasks
     // tasksRepository.loadTasks(dateTime)
 
-    return Future.value(MockUserTasks.userTasks);
+    return Future.value(MockUserTasks.userTasksToday);
   }
 
-  Future<List<UserTasks>> loadTasksForTwoWeeks() {
-    final day1 = MockUserTasks.userTasks
-        .copyWith(date: DateTime.now().subtract(const Duration(days: 3)));
-
+  Future<List<UserTasks>> loadTasksForTwoWeeks(
+    DateTime fromDate,
+    DateTime toDate,
+  ) {
     return Future.value(
-      [day1, MockUserTasks.userTasks],
+      [
+        MockUserTasks.userTasksToday,
+        MockUserTasks.userTasks19,
+        MockUserTasks.userTasks24,
+      ],
     );
   }
 }
