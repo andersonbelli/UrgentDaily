@@ -1,7 +1,7 @@
 import 'task.model.dart';
 
 class UserTasks {
-  static final mockUserTasks = MockUserTasks.userTasks;
+  static final mockUserTasks = MockUserTasks.userTasksToday;
 
   final DateTime date;
   final List<Task> tasks;
@@ -20,6 +20,12 @@ class UserTasks {
 
 /// Mock Tasks data
 final class MockUserTasks {
-  static UserTasks userTasks =
-      UserTasks(tasks: Task.mockTasksList, date: DateTime.now());
+  static UserTasks userTasksToday =
+      UserTasks(tasks: Task.mockTasksList1, date: DateTime.now());
+
+  static UserTasks userTasks24 =
+      UserTasks(tasks: Task.mockTasksList2, date: DateTime.utc(2024, 09, 24));
+
+  static UserTasks userTasks19 =
+      UserTasks(tasks: Task.mockTasksList3, date: DateTime.utc(2024, 09, 19));
 }
