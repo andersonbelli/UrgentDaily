@@ -30,29 +30,54 @@ class CalendarView extends StatelessWidget {
       ),
       body: ListenableBuilder(
         listenable: calendarController,
-        builder: (context, _) => TableCalendar(
-          locale: AppLocalizations.of(context)!.localeName,
-          firstDay: DateTime.utc(2010, 10, 16),
-          lastDay: DateTime.utc(2030, 3, 14),
-          currentDay: calendarController.focusedDate,
-          focusedDay: calendarController.focusedDate,
-          onDaySelected: (DateTime date, DateTime date1) {
-            calendarController.updateFocusedDate(date);
-          },
-          calendarFormat: CalendarFormat.twoWeeks,
-          headerStyle: const HeaderStyle(formatButtonVisible: false),
-          eventLoader: (DateTime date) {
-            final events = [];
+        builder: (context, _) {
+          return Column(
+            children: [
+              TableCalendar(
+                locale: AppLocalizations.of(context)!.localeName,
+                firstDay: DateTime.utc(2010, 10, 16),
+                lastDay: DateTime.utc(2030, 3, 14),
+                currentDay: calendarController.focusedDate,
+                focusedDay: calendarController.focusedDate,
+                onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+                  calendarController.updateFocusedDate(selectedDay);
+                },
+                calendarFormat: CalendarFormat.twoWeeks,
+                headerStyle: const HeaderStyle(formatButtonVisible: false),
+                eventLoader: (DateTime date) {
+                  calendarController.updateVisibleDates(date.formatDate());
 
-            for (final task in calendarController.twoWeeksTasks) {
-              if (task.date.formatDate() == date.formatDate()) {
-                events.addAll(task.tasks);
-              }
-            }
+                  final events = [];
 
-            return events;
-          },
-        ),
+                  for (final task in calendarController.twoWeeksTasks) {
+                    if (task.date.formatDate() == date.formatDate()) {
+                      events.addAll(task.tasks);
+                    }
+                  }
+
+                  return events;
+                },
+              ),
+              DefaultAppBarChild(
+                Text(
+                  calendarController.focusedDate.formatDate(),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: calendarController.tasksOfSelectedDay.length,
+                  itemBuilder: (context, index) {
+                    final task = calendarController.tasksOfSelectedDay[index];
+
+                    return Text(
+                      task.title,
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
