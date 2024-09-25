@@ -4,6 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../controllers/calendar/calendar.controller.dart';
 import '../../helpers/config/di.dart';
+import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../widgets/default_appbar_child.widget.dart';
 
@@ -40,8 +41,21 @@ class CalendarView extends StatelessWidget {
                 },
                 calendarFormat: CalendarFormat.twoWeeks,
                 headerStyle: const HeaderStyle(formatButtonVisible: false),
-                onPageChanged: (_) =>
-                    calendarController.tasksAlreadyLoaded = false,
+                onPageChanged: (_) => calendarController.tasksAlreadyLoaded = false,
+                calendarStyle: const CalendarStyle(
+                  markerDecoration: BoxDecoration(
+                    color: AppColors.GREEN,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                daysOfWeekStyle: DaysOfWeekStyle(
+                  weekdayStyle: TextStyle(
+                    color: Theme.of(context).indicatorColor,
+                  ),
+                  weekendStyle: TextStyle(
+                    color: Theme.of(context).indicatorColor.withOpacity(0.8),
+                  ),
+                ),
                 eventLoader: (DateTime date) {
                   calendarController.updateVisibleDates(date.formatDate());
 
