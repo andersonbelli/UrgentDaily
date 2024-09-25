@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'controllers/home/home.controller.dart';
 import 'controllers/settings/settings.controller.dart';
 import 'helpers/config/di.dart';
 import 'helpers/constants/colors.constants.dart';
@@ -34,8 +33,7 @@ class MyApp extends StatelessWidget {
             Locale('en', ''),
             Locale('pt', ''),
           ],
-          onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context)!.appTitle,
+          onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
           theme: ThemeData(
             appBarTheme: const AppBarTheme(
               backgroundColor: AppColors.CREAM,
@@ -58,9 +56,7 @@ class MyApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case CalendarView.routeName:
-                    return CalendarView(
-                      focusedDate: getIt.get<HomeController>().selectedDate,
-                    );
+                    return CalendarView();
                   case HomeView.routeName:
                     return HomeView();
                   default:
