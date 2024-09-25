@@ -48,6 +48,7 @@ class TasksService {
         MockUserTasks.userTasksToday,
         MockUserTasks.userTasks19,
         MockUserTasks.userTasks24,
+        MockUserTasks.userTasks06,
       ],
     );
   }
