@@ -33,7 +33,8 @@ class MyApp extends StatelessWidget {
             Locale('en', ''),
             Locale('pt', ''),
           ],
-          onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
+          onGenerateTitle: (BuildContext context) =>
+              AppLocalizations.of(context)!.appTitle,
           theme: ThemeData(
             appBarTheme: const AppBarTheme(
               backgroundColor: AppColors.CREAM,

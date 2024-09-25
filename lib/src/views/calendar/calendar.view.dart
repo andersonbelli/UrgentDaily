@@ -40,7 +40,8 @@ class CalendarView extends StatelessWidget {
                 },
                 calendarFormat: CalendarFormat.twoWeeks,
                 headerStyle: const HeaderStyle(formatButtonVisible: false),
-                onPageChanged: (_) => calendarController.tasksAlreadyLoaded = false,
+                onPageChanged: (_) =>
+                    calendarController.tasksAlreadyLoaded = false,
                 eventLoader: (DateTime date) {
                   calendarController.updateVisibleDates(date.formatDate());
 
