@@ -6,9 +6,10 @@ extension DateTimeFormatter on DateTime {
 
 extension StringDateTime on String {
   // Format String of format dd/mm/yyyy to DateTime
+  // 01/34/6789
   DateTime convertStringToDateTime() => DateTime(
         int.parse(
-          substring(7, 10),
+          substring(6, 10),
         ),
         int.parse(
           substring(3, 5),
