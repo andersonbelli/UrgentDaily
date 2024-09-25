@@ -7,6 +7,9 @@ abstract class BaseController extends ChangeNotifier {
 
   void toggleLoading() {
     _isLoading = !_isLoading;
-    notifyListeners();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 }

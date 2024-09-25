@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case CalendarView.routeName:
-                    return const CalendarView();
+                    return CalendarView();
                   case HomeView.routeName:
                     return HomeView();
                   default:

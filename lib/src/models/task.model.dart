@@ -3,7 +3,9 @@ import '../helpers/enums/recursive_days.enum.dart';
 import '../helpers/extensions/datetime_formatter.dart';
 
 class Task {
-  static final mockTasksList = MockTasks.tasks;
+  static final mockTasksList1 = MockTasks.tasks1;
+  static final mockTasksList2 = MockTasks.tasks2;
+  static final mockTasksList3 = MockTasks.tasks3;
 
   late String? id;
 
@@ -89,7 +91,7 @@ class Task {
 /// Mock Tasks data
 class MockTasks {
   static final Task _task1 = Task(
-    title: 'Task 1',
+    title: 'Exercise 15 minutes',
     description: 'Description of Task 1',
     priority: TaskPriority.IMPORTANT,
     isRecursive: true,
@@ -97,17 +99,31 @@ class MockTasks {
     date: DateTime(2024, 09, 03),
   );
   static final Task _task2 = Task(
-    title: 'Task 2',
+    title: 'Pay bills',
     description: 'Description of Task 2',
     priority: TaskPriority.URGENT,
     date: DateTime(2024, 09, 20),
   );
   static final Task _task3 = Task(
-    title: 'Task 3',
-    description: 'Description of Task 3',
+    title: 'Clean desk',
+    description: 'Clean desk',
     priority: TaskPriority.NOT_IMPORTANT,
     date: DateTime(2024, 09, 03),
   );
+  static final Task _task4 = Task(
+    title: 'Play guitar',
+    description: 'description of Task 4',
+    priority: TaskPriority.NOT_IMPORTANT,
+    date: DateTime(2024, 09, 03),
+  );
+  static final Task _task5 = Task(
+    title: 'Study for exams',
+    description: 'description of Task 5',
+    priority: TaskPriority.IMPORTANT,
+    date: DateTime(2024, 09, 03),
+  );
 
-  static final List<Task> tasks = [_task1, _task2, _task3];
+  static final List<Task> tasks1 = [_task1, _task2, _task3];
+  static final List<Task> tasks2 = [_task1, _task4, _task5];
+  static final List<Task> tasks3 = [_task2, _task3, _task5];
 }
