@@ -9,7 +9,7 @@ import '../widgets/default_appbar_child.widget.dart';
 
 class CalendarView extends StatelessWidget {
   CalendarView({super.key, required this.focusedDate}) {
-    calendarController.updateFocusedDate(focusedDate);
+    // calendarController.updateFocusedDate(focusedDate);
   }
 
   final DateTime focusedDate;
@@ -44,6 +44,8 @@ class CalendarView extends StatelessWidget {
                 },
                 calendarFormat: CalendarFormat.twoWeeks,
                 headerStyle: const HeaderStyle(formatButtonVisible: false),
+                onPageChanged: (_) =>
+                    calendarController.tasksAlreadyLoaded = false,
                 eventLoader: (DateTime date) {
                   calendarController.updateVisibleDates(date.formatDate());
 

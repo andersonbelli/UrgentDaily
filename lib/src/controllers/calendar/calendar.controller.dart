@@ -23,17 +23,16 @@ class CalendarController extends BaseController {
 
     _focusedDate = newFocusedDate;
 
-    _selectedDayIsOnVisibleDates();
+    updateTasksOfSelectedDay();
   }
 
   /// Tasks state
   final List<UserTasks> _twoWeeksTasks = [];
 
   List<UserTasks> get twoWeeksTasks => _twoWeeksTasks;
+  bool tasksAlreadyLoaded = false;
 
   void loadTasksForTwoWeeks() async {
-    if (!_visibleDatesIsReady) return;
-
     final userTasks = await _tasksService.loadTasksForTwoWeeks(
       _visibleDates.first.convertStringToDateTime(),
       _visibleDates.last.convertStringToDateTime(),
@@ -41,7 +40,9 @@ class CalendarController extends BaseController {
 
     _twoWeeksTasks.addAll(userTasks);
 
-    updateTasksOfSelectedDay();
+    if (!tasksAlreadyLoaded) {
+      tasksAlreadyLoaded = true;
+    }
   }
 
   /// Tasks of selected day state
@@ -50,44 +51,35 @@ class CalendarController extends BaseController {
   List<Task> get tasksOfSelectedDay => _tasksOfSelectedDay;
 
   updateTasksOfSelectedDay() async {
+    _tasksOfSelectedDay = [];
+
     final tasksForSelectedDay = _twoWeeksTasks
         .where((task) => task.date.formatDate() == _focusedDate.formatDate());
 
     if (tasksForSelectedDay.isNotEmpty) {
       _tasksOfSelectedDay = tasksForSelectedDay.first.tasks;
     }
-
     notifyListeners();
   }
 
   /// Visible dates state
   final List<String> _visibleDates = [];
 
-  bool _visibleDatesIsReady = false;
-
   updateVisibleDates(String date) {
-    _visibleDates.add(date);
-    if (_visibleDates.length == 14) {
-      _visibleDatesIsReady = true;
-      if (_visibleDates.contains(_focusedDate.formatDate()) &&
-          _twoWeeksTasks.isEmpty) {
-        loadTasksForTwoWeeks();
-      }
+    if (tasksAlreadyLoaded && _visibleDates.contains(date)) {
+      print("----> tasks Already loaded ");
     } else {
+      _visibleDates.add(date);
+
       if (_visibleDates.length > 14) {
         final lastDate = _visibleDates.last;
         _visibleDates.clear();
         _visibleDates.add(lastDate);
+      } else if (_visibleDates.length == 14) {
+        if (!tasksAlreadyLoaded) {
+          loadTasksForTwoWeeks();
+        }
       }
-      _visibleDatesIsReady = false;
-    }
-  }
-
-  _selectedDayIsOnVisibleDates() {
-    if (_visibleDates.contains(_focusedDate.formatDate())) {
-      updateTasksOfSelectedDay();
-    } else {
-      loadTasksForTwoWeeks();
     }
   }
 }
