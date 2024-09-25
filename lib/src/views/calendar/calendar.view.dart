@@ -8,9 +8,7 @@ import '../../helpers/extensions/datetime_formatter.dart';
 import '../widgets/default_appbar_child.widget.dart';
 
 class CalendarView extends StatelessWidget {
-  CalendarView({super.key, required this.focusedDate}) {
-    // calendarController.updateFocusedDate(focusedDate);
-  }
+  CalendarView({super.key, required this.focusedDate});
 
   final DateTime focusedDate;
 

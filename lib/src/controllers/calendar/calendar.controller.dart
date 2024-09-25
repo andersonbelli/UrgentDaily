@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../helpers/config/di.dart';
@@ -66,16 +67,20 @@ class CalendarController extends BaseController {
   final List<String> _visibleDates = [];
 
   updateVisibleDates(String date) {
-    if (tasksAlreadyLoaded && _visibleDates.contains(date)) {
-      print("----> tasks Already loaded ");
-    } else {
+    if (!tasksAlreadyLoaded && !_visibleDates.contains(date)) {
       _visibleDates.add(date);
 
       if (_visibleDates.length > 14) {
         final lastDate = _visibleDates.last;
+        _twoWeeksTasks.clear();
         _visibleDates.clear();
         _visibleDates.add(lastDate);
       } else if (_visibleDates.length == 14) {
+        if (_visibleDates.contains(_focusedDate.formatDate())) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            notifyListeners();
+          });
+        }
         if (!tasksAlreadyLoaded) {
           loadTasksForTwoWeeks();
         }
