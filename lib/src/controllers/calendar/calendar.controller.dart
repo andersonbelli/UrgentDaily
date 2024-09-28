@@ -40,6 +40,9 @@ class CalendarController extends BaseController {
     );
 
     _twoWeeksTasks.addAll(userTasks);
+    for (final task in _twoWeeksTasks) {
+      task.tasks.sort((a, b) => a.priority.index.compareTo(b.priority.index));
+    }
 
     if (!tasksAlreadyLoaded) {
       tasksAlreadyLoaded = true;
@@ -54,8 +57,9 @@ class CalendarController extends BaseController {
   updateTasksOfSelectedDay() async {
     _tasksOfSelectedDay = [];
 
-    final tasksForSelectedDay = _twoWeeksTasks
-        .where((task) => task.date.formatDate() == _focusedDate.formatDate());
+    final tasksForSelectedDay = _twoWeeksTasks.where(
+      (task) => task.date.formatDate() == _focusedDate.formatDate(),
+    );
 
     if (tasksForSelectedDay.isNotEmpty) {
       _tasksOfSelectedDay = tasksForSelectedDay.first.tasks;
