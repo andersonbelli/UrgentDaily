@@ -40,8 +40,7 @@ class Task {
     this.isRecursive = false,
     this.recursiveDays = const {},
   }) {
-    id ??=
-        '${title.trim().replaceAll(' ', '')}$priority${date?.formatDate()}${DateTime.now()}';
+    id ??= '${title.trim().replaceAll(' ', '')}$priority${date?.formatDate()}${DateTime.now()}';
   }
 
   Map<String, dynamic> toJson() => {
@@ -97,6 +96,7 @@ class MockTasks {
     isRecursive: true,
     recursiveDays: {RecursiveDay.MON: true, RecursiveDay.WED: true},
     date: DateTime(2024, 09, 03),
+    isCompleted: true,
   );
   static final Task _task2 = Task(
     title: 'Pay bills',
@@ -109,6 +109,7 @@ class MockTasks {
     description: 'Clean desk',
     priority: TaskPriority.NOT_IMPORTANT,
     date: DateTime(2024, 09, 03),
+    isCompleted: true,
   );
   static final Task _task4 = Task(
     title: 'Play guitar',
@@ -124,6 +125,6 @@ class MockTasks {
   );
 
   static final List<Task> tasks1 = [_task1, _task2, _task3];
-  static final List<Task> tasks2 = [_task1, _task4, _task5];
-  static final List<Task> tasks3 = [_task2, _task3, _task5];
+  static final List<Task> tasks2 = [_task2, _task4, _task5];
+  static final List<Task> tasks3 = [_task4, _task3, _task5];
 }
