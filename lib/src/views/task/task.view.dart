@@ -44,20 +44,36 @@ class _TaskViewState extends State<TaskView> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                            controller.taskId == null
-                                ? AppLocalizations.of(context)!.newTask
-                                : controller.originalTitle,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: AppTextSize.LARGE,
-                              color: AppColors.GREEN,
-                            ),
+                      ListTile(
+                        dense: true,
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Theme.of(context).colorScheme.inverseSurface,
+                            shadows: const [
+                              BoxShadow(
+                                color: AppColors.DARK,
+                                blurRadius: 2,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        title: Text(
+                          controller.taskId == null ? AppLocalizations.of(context)!.newTask : controller.originalTitle,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: AppTextSize.LARGE,
+                            color: AppColors.GREEN,
+                            fontWeight: FontWeight.w600,
+                            shadows: [
+                              Shadow(
+                                offset: const Offset(1, 1),
+                                color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -125,10 +141,10 @@ class _TaskViewState extends State<TaskView> {
                             },
                             child: Text(
                               AppLocalizations.of(context)!.recursiveTask,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: AppTextSize.MEDIUM,
-                                color: AppColors.GRAY,
-                                fontWeight: FontWeight.w100,
+                                color: Theme.of(context).colorScheme.inverseSurface,
+                                fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
@@ -149,10 +165,10 @@ class _TaskViewState extends State<TaskView> {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.priority,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: AppTextSize.MEDIUM,
-                              color: AppColors.GRAY,
-                              fontWeight: FontWeight.w100,
+                              color: Theme.of(context).colorScheme.inverseSurface,
+                              fontWeight: FontWeight.w300,
                               fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -253,10 +269,10 @@ class TaskFieldWithTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: AppTextSize.MEDIUM,
-            color: AppColors.GRAY,
-            fontWeight: FontWeight.w100,
+            color: Theme.of(context).colorScheme.inverseSurface,
+            fontWeight: FontWeight.w300,
             fontStyle: FontStyle.italic,
           ),
         ),
@@ -352,51 +368,37 @@ class DaysOfWeekRow extends StatelessWidget {
       children: [
         DaysOfWeekItem(
           dayOfWeek: AppLocalizations.of(context)!.sun,
-          daySelected: (value) {
-            onSelectedDaysOfWeek(RecursiveDay.SUN, value);
-          },
+          daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.SUN, value),
           selected: selectedDays[RecursiveDay.SUN] == true,
         ),
         DaysOfWeekItem(
           dayOfWeek: AppLocalizations.of(context)!.mon,
-          daySelected: (value) {
-            onSelectedDaysOfWeek(RecursiveDay.MON, value);
-          },
+          daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.MON, value),
           selected: selectedDays[RecursiveDay.MON] == true,
         ),
         DaysOfWeekItem(
           dayOfWeek: AppLocalizations.of(context)!.tue,
-          daySelected: (value) {
-            onSelectedDaysOfWeek(RecursiveDay.TUE, value);
-          },
+          daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.TUE, value),
           selected: selectedDays[RecursiveDay.TUE] == true,
         ),
         DaysOfWeekItem(
           dayOfWeek: AppLocalizations.of(context)!.wed,
-          daySelected: (value) {
-            onSelectedDaysOfWeek(RecursiveDay.WED, value);
-          },
+          daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.WED, value),
           selected: selectedDays[RecursiveDay.WED] == true,
         ),
         DaysOfWeekItem(
           dayOfWeek: AppLocalizations.of(context)!.thu,
-          daySelected: (value) {
-            onSelectedDaysOfWeek(RecursiveDay.THU, value);
-          },
+          daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.THU, value),
           selected: selectedDays[RecursiveDay.THU] == true,
         ),
         DaysOfWeekItem(
           dayOfWeek: AppLocalizations.of(context)!.fri,
-          daySelected: (value) {
-            onSelectedDaysOfWeek(RecursiveDay.FRI, value);
-          },
+          daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.FRI, value),
           selected: selectedDays[RecursiveDay.FRI] == true,
         ),
         DaysOfWeekItem(
           dayOfWeek: AppLocalizations.of(context)!.sat,
-          daySelected: (value) {
-            onSelectedDaysOfWeek(RecursiveDay.SAT, value);
-          },
+          daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.SAT, value),
           selected: selectedDays[RecursiveDay.SAT] == true,
         ),
       ],
