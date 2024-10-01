@@ -81,10 +81,12 @@ class HomeController extends BaseController {
 
   void toggleCompletedTask(Task task, bool? isCompleted) {
     if (isCompleted != null) {
-      _tasks[_getTaskIndex(task, _tasks)] = task.copyWith(isCompleted: isCompleted);
+      task = task.copyWith(isCompleted: isCompleted);
+
+      _tasks[_getTaskIndex(task, _tasks)] = task;
 
       final listToUpdate = _listOfTaskDependingOnPriority(task);
-      listToUpdate[_getTaskIndex(task, listToUpdate)] = task.copyWith(isCompleted: isCompleted);
+      listToUpdate[_getTaskIndex(task, listToUpdate)] = task;
 
       notifyListeners();
     }

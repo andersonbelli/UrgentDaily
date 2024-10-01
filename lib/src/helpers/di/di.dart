@@ -15,8 +15,8 @@ configureDependencies() async {
 
   // Controllers
   getIt.addSingleton(TaskController.new);
-  getIt.add(HomeController.new);
-  getIt.add(CalendarController.new);
+  getIt.addSingleton(HomeController.new);
+  getIt.addSingleton(CalendarController.new);
 
   // Settings
   getIt.addSingleton(SettingsService.new);

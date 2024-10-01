@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../controllers/home/home.controller.dart';
-import '../../../controllers/task/task.controller.dart';
 import '../../../helpers/constants/colors.constants.dart';
 import '../../../helpers/constants/padding.constants.dart';
-import '../../../helpers/di/di.dart';
 import '../../../models/task.model.dart';
 import 'task_item.widget.dart';
 
@@ -81,8 +78,6 @@ class TaskSection extends StatelessWidget {
               itemCount: tasks.length,
               itemBuilder: (context, index) => TaskItem(
                 task: tasks[index],
-                homeController: getIt<HomeController>(),
-                taskController: getIt<TaskController>(),
               ),
             ),
           ),

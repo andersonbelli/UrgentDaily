@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 import '../../../controllers/home/home.controller.dart';
 import '../../../controllers/task/task.controller.dart';
 import '../../../helpers/constants/colors.constants.dart';
+import '../../../helpers/di/di.dart';
 import '../../../models/task.model.dart';
 import '../../task/task.view.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({
+  TaskItem({
     super.key,
     required this.task,
-    required this.homeController,
-    required this.taskController,
   });
 
   final Task task;
-  final HomeController homeController;
-  final TaskController taskController;
+  final HomeController homeController = getIt<HomeController>();
+  final TaskController taskController = getIt<TaskController>();
 
   @override
   Widget build(BuildContext context) {
