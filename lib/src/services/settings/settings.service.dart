@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
 
-@Singleton()
 class SettingsService {
-  Future<ThemeMode> themeMode() async => ThemeMode.system;
+  Future<ThemeMode> themeMode() async => ThemeMode.light;
 
   Future<void> updateThemeMode(ThemeMode theme) async {
     // Use the shared_preferences package to persist settings locally or the

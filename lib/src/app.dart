@@ -3,8 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'controllers/settings/settings.controller.dart';
-import 'helpers/config/di.dart';
 import 'helpers/constants/colors.constants.dart';
+import 'helpers/di/di.dart';
 import 'views/calendar/calendar.view.dart';
 import 'views/home/home.view.dart';
 import 'views/settings/settings_view.dart';
@@ -33,8 +33,7 @@ class MyApp extends StatelessWidget {
             Locale('en', ''),
             Locale('pt', ''),
           ],
-          onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context)!.appTitle,
+          onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
           theme: ThemeData(
             appBarTheme: const AppBarTheme(
               backgroundColor: AppColors.CREAM,

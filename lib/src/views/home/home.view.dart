@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../controllers/home/home.controller.dart';
-import '../../controllers/task/task.controller.dart';
-import '../../helpers/config/di.dart';
 import '../../helpers/constants/colors.constants.dart';
+import '../../helpers/di/di.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../calendar/calendar.view.dart';
@@ -21,7 +20,6 @@ class HomeView extends StatelessWidget {
   });
 
   final HomeController homeController = getIt.get<HomeController>();
-  final TaskController taskController = getIt.get<TaskController>();
 
   static const routeName = '/';
 

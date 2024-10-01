@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../controllers/task/task.controller.dart';
-import '../../../helpers/config/di.dart';
 import '../../../helpers/constants/padding.constants.dart';
+import '../../../helpers/di/di.dart';
 import '../../task/task.view.dart';
 import '../../widgets/dashed_border.widget.dart';
 import '../../widgets/green_button.widget.dart';
