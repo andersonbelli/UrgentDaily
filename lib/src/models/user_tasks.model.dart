@@ -20,7 +20,7 @@ class UserTasks {
 
 /// Mock Tasks data
 final class MockUserTasks {
-  static UserTasks userTasksToday = UserTasks(tasks: Task.mockTasksList1, date: DateTime.utc(2024, 09, 28));
+  static UserTasks userTasksToday = UserTasks(tasks: Task.mockTasksList1, date: DateTime.now());
 
   static UserTasks userTasks24 = UserTasks(tasks: Task.mockTasksList2, date: DateTime.utc(2024, 09, 25));
 

@@ -425,7 +425,7 @@ class DaysOfWeekItem extends StatelessWidget {
             color: selected ? AppColors.GREEN : Theme.of(context).highlightColor,
           ),
         ),
-        labelPadding: const EdgeInsets.all(8.0),
+        labelPadding: const EdgeInsets.all(4.0),
         showCheckmark: false,
         color: selected ? WidgetStateProperty.all(AppColors.DARK) : WidgetStateProperty.all(Colors.transparent),
         label: FittedBox(
