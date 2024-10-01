@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../../../controllers/task/task.controller.dart';
 import '../../../helpers/constants/colors.constants.dart';
 import '../../../helpers/constants/padding.constants.dart';
+import '../../../helpers/di/di.dart';
 import '../../../helpers/enums/priority.enum.dart';
+import '../../../models/task.model.dart';
+import '../../task/task.view.dart';
 
 class CalendarTaskItem extends StatelessWidget {
   const CalendarTaskItem({
     super.key,
+    required this.task,
     required this.title,
     required this.priority,
     this.isCompleted = false,
   });
 
+  final Task task;
   final String title;
   final TaskPriority priority;
   final bool isCompleted;
@@ -24,6 +30,22 @@ class CalendarTaskItem extends StatelessWidget {
         vertical: AppPadding.SMALL / 2,
       ),
       child: ListTile(
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              getIt<TaskController>().taskData(
+                task,
+              );
+
+              return FractionallySizedBox(
+                heightFactor: 0.9,
+                child: TaskView(),
+              );
+            },
+          );
+        },
         dense: true,
         title: Text(
           title,

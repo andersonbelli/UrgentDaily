@@ -37,7 +37,7 @@ class TaskItem extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             builder: (context) {
-              taskController.editTaskData(
+              taskController.taskData(
                 task,
               );
 

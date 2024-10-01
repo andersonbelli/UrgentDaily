@@ -3,8 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../controllers/calendar/calendar.controller.dart';
-import '../../helpers/config/di.dart';
 import '../../helpers/constants/colors.constants.dart';
+import '../../helpers/di/di.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../widgets/default_appbar_child.widget.dart';
 import '../widgets/loading.widget.dart';
@@ -86,6 +86,7 @@ class CalendarView extends StatelessWidget {
                         final task = calendarController.tasksOfSelectedDay[index];
 
                         return CalendarTaskItem(
+                          task: task,
                           title: task.title,
                           priority: task.priority,
                           isCompleted: task.isCompleted,
