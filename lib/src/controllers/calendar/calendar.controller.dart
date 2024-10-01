@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
 
-import '../../helpers/config/di.dart';
+import '../../helpers/di/di.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
-import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
+import '../task/task.controller.dart';
 
-@Injectable()
 class CalendarController extends BaseController {
   CalendarController();
-
-  final TasksService _tasksService = getIt<TasksService>();
 
   /// Current Date state
   late DateTime _focusedDate = DateTime.now();
@@ -28,13 +24,16 @@ class CalendarController extends BaseController {
   }
 
   /// Tasks state
+
+  final TaskController taskController = getIt<TaskController>();
+
   final List<UserTasks> _twoWeeksTasks = [];
 
   List<UserTasks> get twoWeeksTasks => _twoWeeksTasks;
   bool tasksAlreadyLoaded = false;
 
   void loadTasksForTwoWeeks() async {
-    final userTasks = await _tasksService.loadTasksForTwoWeeks(
+    final userTasks = await taskController.loadTasksForTwoWeeks(
       _visibleDates.first.convertStringToDateTime(),
       _visibleDates.last.convertStringToDateTime(),
     );

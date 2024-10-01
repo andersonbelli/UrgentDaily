@@ -1,9 +1,6 @@
-import 'package:injectable/injectable.dart';
-
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
 
-@Injectable()
 class TasksService {
   Future<Task> addTask(Task task) async {
     /// TODO: Replace with Repository => addTask
@@ -14,11 +11,11 @@ class TasksService {
     return task;
   }
 
-  Future<Task> removeTask(Task task) async {
+  Future<bool> removeTask(Task task) async {
     /// TODO: Replace with Repository => removeTask
     // tasksRepository.removeTask(task)
 
-    return task;
+    return true;
   }
 
   Future<Task> editTask(Task task) async {
