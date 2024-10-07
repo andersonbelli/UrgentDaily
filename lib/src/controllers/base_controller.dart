@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class BaseController extends ChangeNotifier {
+class BaseController extends ChangeNotifier {
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
@@ -8,8 +8,6 @@ abstract class BaseController extends ChangeNotifier {
   void toggleLoading() {
     _isLoading = !_isLoading;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      notifyListeners();
-    });
+    notifyListeners();
   }
 }

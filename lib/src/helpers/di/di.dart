@@ -1,5 +1,6 @@
 import 'package:auto_injector/auto_injector.dart';
 
+import '../../controllers/base_controller.dart';
 import '../../controllers/calendar/calendar.controller.dart';
 import '../../controllers/home/home.controller.dart';
 import '../../controllers/settings/settings.controller.dart';
@@ -14,6 +15,7 @@ configureDependencies() async {
   getIt.add(TasksService.new);
 
   // Controllers
+  getIt.addSingleton(BaseController.new);
   getIt.addSingleton(TaskController.new);
   getIt.addSingleton(HomeController.new);
   getIt.addSingleton(CalendarController.new);
