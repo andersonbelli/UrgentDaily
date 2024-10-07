@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../controllers/calendar/calendar.controller.dart';
 import '../../controllers/home/home.controller.dart';
 import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/di/di.dart';
@@ -9,6 +10,7 @@ import '../../helpers/extensions/datetime_formatter.dart';
 import '../calendar/calendar.view.dart';
 import '../widgets/default_appbar_child.widget.dart';
 import '../widgets/loading.widget.dart';
+import '../widgets/show_task_modal.dart';
 import '../widgets/text_underline.widget.dart';
 import 'widgets/create_new_task.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
@@ -31,17 +33,30 @@ class HomeView extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: GestureDetector(
-              onTap: () => Navigator.restorablePushNamed(
-                context,
-                CalendarView.routeName,
-              ),
+              onTap: () {
+                getIt.get<CalendarController>().updateTasksOfSelectedDay(
+                      tasks: homeController.tasks,
+                    );
+
+                Navigator.restorablePushNamed(
+                  context,
+                  CalendarView.routeName,
+                );
+              },
               child: DefaultAppBarChild(
                 TextUnderline(homeController.selectedDate.formatDate()),
               ),
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => CreateNewTask.showNewTaskModal(context),
+            onPressed: () {
+              final createdTask = showTaskModal(context);
+              createdTask.then((value) {
+                if (value != null) {
+                  homeController.addTask(value);
+                }
+              });
+            },
             backgroundColor: AppColors.GREEN,
             tooltip: AppLocalizations.of(context)!.newTask,
             shape: const CircleBorder(
