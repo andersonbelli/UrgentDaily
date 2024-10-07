@@ -39,8 +39,16 @@ class CalendarController extends BaseController {
     );
 
     _twoWeeksTasks.addAll(userTasks);
-    for (final task in _twoWeeksTasks) {
-      task.tasks.sort((a, b) => a.priority.index.compareTo(b.priority.index));
+    for (var i = 0; i < _twoWeeksTasks.length; i++) {
+      final sortedTasks = UserTasks.orderTasksByPriority(
+        tasks: _twoWeeksTasks[i].tasks,
+        date: _twoWeeksTasks[i].date,
+      ).tasks;
+
+      _twoWeeksTasks[i] = UserTasks.fromListOfTasks(
+        tasks: sortedTasks,
+        date: _twoWeeksTasks[i].date,
+      );
     }
 
     if (!tasksAlreadyLoaded) {
@@ -53,16 +61,21 @@ class CalendarController extends BaseController {
 
   List<Task> get tasksOfSelectedDay => _tasksOfSelectedDay;
 
-  updateTasksOfSelectedDay() async {
+  updateTasksOfSelectedDay({List<Task>? tasks}) async {
     _tasksOfSelectedDay = [];
 
-    final tasksForSelectedDay = _twoWeeksTasks.where(
-      (task) => task.date.formatDate() == _focusedDate.formatDate(),
-    );
+    if (tasks != null) {
+      _tasksOfSelectedDay = tasks;
+    } else {
+      final tasksForSelectedDay = _twoWeeksTasks.where(
+        (task) => task.date.formatDate() == _focusedDate.formatDate(),
+      );
 
-    if (tasksForSelectedDay.isNotEmpty) {
-      _tasksOfSelectedDay = tasksForSelectedDay.first.tasks;
+      if (tasksForSelectedDay.isNotEmpty) {
+        _tasksOfSelectedDay = tasksForSelectedDay.first.tasks;
+      }
     }
+
     notifyListeners();
   }
 

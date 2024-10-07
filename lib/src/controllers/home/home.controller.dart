@@ -1,6 +1,7 @@
 import '../../helpers/di/di.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../models/task.model.dart';
+import '../../models/user_tasks.model.dart';
 import '../base_controller.dart';
 import '../task/task.controller.dart';
 
@@ -29,16 +30,32 @@ class HomeController extends BaseController {
 
   List<Task> get tasks => _tasks;
 
-  void addTask(Task taskToAdd) async {
+  void addTask(Task task) async {
     toggleLoading();
 
-    taskController.taskData(taskToAdd);
-    final task = await taskController.createTask();
+    taskController.taskData(task);
+    await taskController.createTask();
 
     _tasks.add(task);
 
-    final listToAdd = _listOfTaskDependingOnPriority(taskToAdd);
+    final listToAdd = _listOfTaskDependingOnPriority(task);
     listToAdd.add(task);
+
+    final sortedListToAdd = UserTasks.orderTasksByPriority(
+      tasks: listToAdd,
+      date: selectedDate,
+    ).tasks;
+
+    listToAdd.clear();
+    listToAdd.addAll(sortedListToAdd);
+
+    final sortedTasks = UserTasks.orderTasksByPriority(
+      tasks: _tasks,
+      date: selectedDate,
+    ).tasks;
+
+    _tasks.clear();
+    _tasks.addAll(sortedTasks);
 
     notifyListeners();
     toggleLoading();
@@ -64,11 +81,8 @@ class HomeController extends BaseController {
     toggleLoading();
   }
 
-  void editTask(Task editedTask) async {
+  void editTask(Task task) async {
     toggleLoading();
-
-    taskController.taskData(editedTask);
-    final task = await taskController.editTask();
 
     _tasks[_getTaskIndex(task, _tasks)] = task;
 
@@ -87,6 +101,9 @@ class HomeController extends BaseController {
 
       final listToUpdate = _listOfTaskDependingOnPriority(task);
       listToUpdate[_getTaskIndex(task, listToUpdate)] = task;
+
+      taskController.taskData(task);
+      taskController.editTask();
 
       notifyListeners();
     }

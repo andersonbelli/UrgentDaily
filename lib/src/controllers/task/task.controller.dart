@@ -33,6 +33,7 @@ class TaskController extends BaseController {
 
   /// Task state
   final TasksService _tasksService = getIt<TasksService>();
+  late Task classTask;
 
   void taskData(Task task) {
     taskId = task.id;
@@ -42,6 +43,15 @@ class TaskController extends BaseController {
     isRecursive = task.isRecursive;
     selectedDaysOfWeek = task.recursiveDays;
     taskPriority = task.priority;
+
+    classTask = Task(
+      id: taskId,
+      title: title.text,
+      date: selectedDate,
+      isRecursive: isRecursive,
+      recursiveDays: selectedDaysOfWeek,
+      priority: taskPriority,
+    );
     notifyListeners();
   }
 
@@ -80,21 +90,25 @@ class TaskController extends BaseController {
   }
 
   void taskAction() {
-    taskId != null ? editTask() : createTask();
-
-    notifyListeners();
-  }
-
-  Future<Task> createTask() async {
-    final Task taskToBeCreated = Task(
+    final Task taskData = Task(
+      id: taskId,
       title: title.text,
       date: selectedDate,
       isRecursive: isRecursive,
       recursiveDays: selectedDaysOfWeek,
       priority: taskPriority,
     );
-    final createdTask = await _tasksService.addTask(taskToBeCreated);
+    classTask = taskData;
 
+    toggleLoading();
+    taskId != null ? editTask() : createTask();
+  }
+
+  Future<Task> createTask() async {
+    final createdTask = await _tasksService.addTask(classTask);
+
+    toggleLoading();
+    notifyListeners();
     return createdTask;
   }
 
@@ -107,23 +121,17 @@ class TaskController extends BaseController {
       recursiveDays: selectedDaysOfWeek,
       priority: taskPriority,
     );
+    classTask = taskToBeEdited;
 
-    final editedTask = await _tasksService.editTask(taskToBeEdited);
+    final editedTask = await _tasksService.editTask(classTask);
 
+
+    loadTasksForDate(editedTask.date!);
     return editedTask;
   }
 
   Future<bool> removeTask() async {
-    final Task taskToBeRemoved = Task(
-      id: taskId,
-      title: title.text,
-      date: selectedDate,
-      isRecursive: isRecursive,
-      recursiveDays: selectedDaysOfWeek,
-      priority: taskPriority,
-    );
-
-    final hasTaskBeenRemoved = await _tasksService.removeTask(taskToBeRemoved);
+    final hasTaskBeenRemoved = await _tasksService.removeTask(classTask);
 
     return hasTaskBeenRemoved;
   }
@@ -131,6 +139,7 @@ class TaskController extends BaseController {
   Future<UserTasks> loadTasksForDate(DateTime date) async {
     toggleLoading();
     final loadedTasks = await _tasksService.loadTasks(selectedDate);
+    print('selected date ${selectedDate}');
     toggleLoading();
     return loadedTasks;
   }
