@@ -1,6 +1,7 @@
+import 'package:uuid/uuid.dart';
+
 import '../helpers/enums/priority.enum.dart';
 import '../helpers/enums/recursive_days.enum.dart';
-import '../helpers/extensions/datetime_formatter.dart';
 
 class Task {
   static final mockTasksList1 = MockTasks.tasks1;
@@ -40,7 +41,7 @@ class Task {
     this.isRecursive = false,
     this.recursiveDays = const {},
   }) {
-    id ??= '${title.trim().replaceAll(' ', '')}$priority${date?.formatDate()}${DateTime.now()}';
+    id ??= '${DateTime.now().toUtc().toString().trim().replaceAll(' ', '')}-${const Uuid().v4()}';
   }
 
   Map<String, dynamic> toJson() => {
