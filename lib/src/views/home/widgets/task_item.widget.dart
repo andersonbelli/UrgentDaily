@@ -5,7 +5,7 @@ import '../../../controllers/task/task.controller.dart';
 import '../../../helpers/constants/colors.constants.dart';
 import '../../../helpers/di/di.dart';
 import '../../../models/task.model.dart';
-import '../../task/task.view.dart';
+import '../../widgets/show_task_modal.dart';
 
 class TaskItem extends StatelessWidget {
   TaskItem({
@@ -31,22 +31,12 @@ class TaskItem extends StatelessWidget {
         !task.isCompleted,
       ),
       leading: IconButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) {
-              taskController.taskData(
-                task,
-              );
-
-              return FractionallySizedBox(
-                heightFactor: 0.9,
-                child: TaskView(),
-              );
-            },
-          );
-        },
+        onPressed: () async => await showTaskModal(
+          context,
+          buildFunction: () => taskController.taskData(
+            task,
+          ),
+        ),
         icon: const Icon(
           Icons.edit,
         ),

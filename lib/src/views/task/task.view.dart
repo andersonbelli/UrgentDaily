@@ -235,8 +235,7 @@ class _TaskViewState extends State<TaskView> {
           widget.taskController.validateFields(context);
 
           if (widget.taskController.validationErrorMessages.isEmpty) {
-            widget.taskController.taskAction();
-            Navigator.pop(context);
+            Navigator.pop(context, widget.taskController.classTask);
           }
         },
       ),

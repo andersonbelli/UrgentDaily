@@ -89,21 +89,6 @@ class TaskController extends BaseController {
     notifyListeners();
   }
 
-  void taskAction() {
-    final Task taskData = Task(
-      id: taskId,
-      title: title.text,
-      date: selectedDate,
-      isRecursive: isRecursive,
-      recursiveDays: selectedDaysOfWeek,
-      priority: taskPriority,
-    );
-    classTask = taskData;
-
-    toggleLoading();
-    taskId != null ? editTask() : createTask();
-  }
-
   Future<Task> createTask() async {
     final createdTask = await _tasksService.addTask(classTask);
 
@@ -124,7 +109,6 @@ class TaskController extends BaseController {
     classTask = taskToBeEdited;
 
     final editedTask = await _tasksService.editTask(classTask);
-
 
     loadTasksForDate(editedTask.date!);
     return editedTask;

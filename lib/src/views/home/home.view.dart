@@ -49,14 +49,10 @@ class HomeView extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              final createdTask = showTaskModal(context);
-              createdTask.then((value) {
-                if (value != null) {
-                  homeController.addTask(value);
-                }
-              });
-            },
+            onPressed: () async => await showTaskModal(
+              context,
+              onCompleteFunction: homeController.loadUserTasks,
+            ),
             backgroundColor: AppColors.GREEN,
             tooltip: AppLocalizations.of(context)!.newTask,
             shape: const CircleBorder(
@@ -118,7 +114,7 @@ class HomeView extends StatelessWidget {
                           );
                         }
 
-                        listOfSections.add(CreateNewTask());
+                        listOfSections.add(const CreateNewTask());
 
                         final outerListChildren = <SliverList>[
                           SliverList(

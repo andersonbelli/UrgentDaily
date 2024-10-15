@@ -6,7 +6,7 @@ import '../../../helpers/constants/padding.constants.dart';
 import '../../../helpers/di/di.dart';
 import '../../../helpers/enums/priority.enum.dart';
 import '../../../models/task.model.dart';
-import '../../task/task.view.dart';
+import '../../widgets/show_task_modal.dart';
 
 class CalendarTaskItem extends StatelessWidget {
   const CalendarTaskItem({
@@ -30,22 +30,12 @@ class CalendarTaskItem extends StatelessWidget {
         vertical: AppPadding.SMALL / 2,
       ),
       child: ListTile(
-        onTap: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) {
-              getIt<TaskController>().taskData(
-                task,
-              );
-
-              return FractionallySizedBox(
-                heightFactor: 0.9,
-                child: TaskView(),
-              );
-            },
-          );
-        },
+        onTap: () async => await showTaskModal(
+          context,
+          buildFunction: () => getIt<TaskController>().taskData(
+            task,
+          ),
+        ),
         dense: true,
         title: Text(
           title,
