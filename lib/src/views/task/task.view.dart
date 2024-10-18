@@ -59,7 +59,9 @@ class _TaskViewState extends State<TaskView> {
                           onPressed: () => Navigator.pop(context),
                         ),
                         title: Text(
-                          controller.taskId == null ? AppLocalizations.of(context)!.newTask : controller.originalTitle,
+                          controller.taskId == null
+                              ? AppLocalizations.of(context)!.newTask
+                              : controller.originalTitle,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -69,7 +71,10 @@ class _TaskViewState extends State<TaskView> {
                             shadows: [
                               Shadow(
                                 offset: const Offset(1, 1),
-                                color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inverseSurface
+                                    .withOpacity(0.5),
                               ),
                             ],
                           ),
@@ -79,17 +84,20 @@ class _TaskViewState extends State<TaskView> {
                         title: AppLocalizations.of(context)!.title,
                         child: TextField(
                           cursorColor: Theme.of(context).colorScheme.outline,
-                          cursorErrorColor: Theme.of(context).colorScheme.outline,
+                          cursorErrorColor:
+                              Theme.of(context).colorScheme.outline,
                           maxLength: 120,
                           decoration: InputDecoration(
                             counterText: '',
-                            hintText: AppLocalizations.of(context)!.whatAreYouPlanning,
+                            hintText: AppLocalizations.of(context)!
+                                .whatAreYouPlanning,
                             hintStyle: const TextStyle(
                               color: AppColors.GRAY,
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
-                                color: controller.validationErrorMessages.containsKey(ErrorFieldsEnum.TITLE)
+                                color: controller.validationErrorMessages
+                                        .containsKey(ErrorFieldsEnum.TITLE)
                                     ? Theme.of(context).colorScheme.error
                                     : AppColors.DARK_LIGHT.withOpacity(0.6),
                                 width: 1.5,
@@ -98,16 +106,20 @@ class _TaskViewState extends State<TaskView> {
                             focusedErrorBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: AppColors.GRAY),
                             ),
-                            errorText: controller.validationErrorMessages.containsKey(ErrorFieldsEnum.TITLE)
-                                ? controller.validationErrorMessages[ErrorFieldsEnum.TITLE]
+                            errorText: controller.validationErrorMessages
+                                    .containsKey(ErrorFieldsEnum.TITLE)
+                                ? controller.validationErrorMessages[
+                                    ErrorFieldsEnum.TITLE]
                                 : '',
                           ),
                           controller: controller.title,
                           onChanged: (value) {
                             controller.title.clearComposing();
                             if (value.trim().isNotEmpty &&
-                                controller.validationErrorMessages.containsKey(ErrorFieldsEnum.TITLE)) {
-                              controller.removeValidationError(ErrorFieldsEnum.TITLE);
+                                controller.validationErrorMessages
+                                    .containsKey(ErrorFieldsEnum.TITLE)) {
+                              controller
+                                  .removeValidationError(ErrorFieldsEnum.TITLE);
                             } else {
                               controller.validateFields(context);
                             }
@@ -141,7 +153,9 @@ class _TaskViewState extends State<TaskView> {
                               AppLocalizations.of(context)!.recursiveTask,
                               style: TextStyle(
                                 fontSize: AppTextSize.MEDIUM,
-                                color: Theme.of(context).colorScheme.inverseSurface,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inverseSurface,
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.italic,
                               ),
@@ -165,31 +179,40 @@ class _TaskViewState extends State<TaskView> {
                             AppLocalizations.of(context)!.priority,
                             style: TextStyle(
                               fontSize: AppTextSize.MEDIUM,
-                              color: Theme.of(context).colorScheme.inverseSurface,
+                              color:
+                                  Theme.of(context).colorScheme.inverseSurface,
                               fontWeight: FontWeight.w300,
                               fontStyle: FontStyle.italic,
                             ),
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.urgent.toLowerCase(),
+                            title: AppLocalizations.of(context)!
+                                .urgent
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.URGENT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.important.toLowerCase(),
+                            title: AppLocalizations.of(context)!
+                                .important
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.importantNotUrgent.toLowerCase(),
+                            title: AppLocalizations.of(context)!
+                                .importantNotUrgent
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT_NOT_URGENT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!.notImportant.toLowerCase(),
+                            title: AppLocalizations.of(context)!
+                                .notImportant
+                                .toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.NOT_IMPORTANT,
                             selectedPriority: controller.selectTaskPriority,
@@ -213,9 +236,10 @@ class _TaskViewState extends State<TaskView> {
                     itemBuilder: (context, index) {
                       return Text(
                         '* ${controller.validationErrorMessages.values.elementAt(index)}',
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.error,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                       );
                     },
                   ),
@@ -235,6 +259,13 @@ class _TaskViewState extends State<TaskView> {
           widget.taskController.validateFields(context);
 
           if (widget.taskController.validationErrorMessages.isEmpty) {
+            controller.taskData();
+
+            if (controller.taskId != null) {
+              controller.editTask();
+            } else {
+              controller.createTask();
+            }
             Navigator.pop(context, widget.taskController.classTask);
           }
         },
@@ -421,18 +452,23 @@ class DaysOfWeekItem extends StatelessWidget {
       child: FilterChip(
         shape: CircleBorder(
           side: BorderSide(
-            color: selected ? AppColors.GREEN : Theme.of(context).highlightColor,
+            color:
+                selected ? AppColors.GREEN : Theme.of(context).highlightColor,
           ),
         ),
         labelPadding: const EdgeInsets.all(4.0),
         showCheckmark: false,
-        color: selected ? WidgetStateProperty.all(AppColors.DARK) : WidgetStateProperty.all(Colors.transparent),
+        color: selected
+            ? WidgetStateProperty.all(AppColors.DARK)
+            : WidgetStateProperty.all(Colors.transparent),
         label: FittedBox(
           fit: BoxFit.fitWidth,
           child: Text(
             dayOfWeek,
             style: TextStyle(
-              color: selected ? AppColors.GREEN : Theme.of(context).colorScheme.inverseSurface,
+              color: selected
+                  ? AppColors.GREEN
+                  : Theme.of(context).colorScheme.inverseSurface,
             ),
           ),
         ),

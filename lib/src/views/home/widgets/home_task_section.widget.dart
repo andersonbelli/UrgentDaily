@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../helpers/constants/colors.constants.dart';
 import '../../../helpers/constants/padding.constants.dart';
 import '../../../models/task.model.dart';
-import 'task_item.widget.dart';
+import 'home_task_item.widget.dart';
 
-class TaskSection extends StatelessWidget {
-  const TaskSection({
+class HomeTaskSection extends StatelessWidget {
+  const HomeTaskSection({
     super.key,
     required this.title,
     required this.color,
@@ -76,7 +76,7 @@ class TaskSection extends StatelessWidget {
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: tasks.length,
-              itemBuilder: (context, index) => TaskItem(
+              itemBuilder: (context, index) => HomeTaskItem(
                 task: tasks[index],
               ),
             ),

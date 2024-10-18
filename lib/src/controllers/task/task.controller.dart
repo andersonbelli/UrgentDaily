@@ -35,23 +35,35 @@ class TaskController extends BaseController {
   final TasksService _tasksService = getIt<TasksService>();
   late Task classTask;
 
-  void taskData(Task task) {
-    taskId = task.id;
-    title.text = task.title;
-    originalTitle = task.title;
-    selectedDate = task.date ?? DateTime.now();
-    isRecursive = task.isRecursive;
-    selectedDaysOfWeek = task.recursiveDays;
-    taskPriority = task.priority;
+  void taskData({Task? task}) {
+    if (task != null) {
+      taskId = task.id;
+      title.text = task.title;
+      originalTitle = task.title;
+      selectedDate = task.date ?? DateTime.now();
+      isRecursive = task.isRecursive;
+      selectedDaysOfWeek = task.recursiveDays;
+      taskPriority = task.priority;
 
-    classTask = Task(
-      id: taskId,
-      title: title.text,
-      date: selectedDate,
-      isRecursive: isRecursive,
-      recursiveDays: selectedDaysOfWeek,
-      priority: taskPriority,
-    );
+      classTask = Task(
+        id: taskId,
+        title: title.text,
+        date: selectedDate,
+        isRecursive: isRecursive,
+        recursiveDays: selectedDaysOfWeek,
+        priority: taskPriority,
+      );
+    } else {
+      classTask = Task(
+        id: taskId,
+        title: title.text,
+        date: selectedDate,
+        isRecursive: isRecursive,
+        recursiveDays: selectedDaysOfWeek,
+        priority: taskPriority,
+      );
+    }
+
     notifyListeners();
   }
 
@@ -73,7 +85,8 @@ class TaskController extends BaseController {
   }
 
   void selectRecursiveDay(RecursiveDay day, bool selected) {
-    final Map<RecursiveDay, bool> newSelectedDays = Map.from(selectedDaysOfWeek);
+    final Map<RecursiveDay, bool> newSelectedDays =
+        Map.from(selectedDaysOfWeek);
     newSelectedDays[day] = selected;
     selectedDaysOfWeek = newSelectedDays;
 
@@ -123,12 +136,15 @@ class TaskController extends BaseController {
   Future<UserTasks> loadTasksForDate(DateTime date) async {
     toggleLoading();
     final loadedTasks = await _tasksService.loadTasks(selectedDate);
-    print('selected date ${selectedDate}');
+    print('loadTasksForDate - selected date ${selectedDate}');
     toggleLoading();
     return loadedTasks;
   }
 
-  Future<List<UserTasks>> loadTasksForTwoWeeks(DateTime first, DateTime last) async {
+  Future<List<UserTasks>> loadTasksForTwoWeeks(
+    DateTime first,
+    DateTime last,
+  ) async {
     final loadedTasks = await _tasksService.loadTasksForTwoWeeks(
       first,
       last,
@@ -155,7 +171,8 @@ class TaskController extends BaseController {
   /// Field validation
   void validateFields(BuildContext context) {
     if (title.text.isEmpty) {
-      validationErrorMessages[ErrorFieldsEnum.TITLE] = '${AppLocalizations.of(context)?.titleIsMandatory}';
+      validationErrorMessages[ErrorFieldsEnum.TITLE] =
+          '${AppLocalizations.of(context)?.titleIsMandatory}';
     }
 
     if (isRecursive == true) {
@@ -173,5 +190,6 @@ class TaskController extends BaseController {
     notifyListeners();
   }
 
-  bool isRecursiveDaysValid() => selectedDaysOfWeek.containsValue(true) ? true : false;
+  bool isRecursiveDaysValid() =>
+      selectedDaysOfWeek.containsValue(true) ? true : false;
 }

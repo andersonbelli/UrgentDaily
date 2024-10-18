@@ -13,8 +13,8 @@ import '../widgets/loading.widget.dart';
 import '../widgets/show_task_modal.dart';
 import '../widgets/text_underline.widget.dart';
 import 'widgets/create_new_task.widget.dart';
+import 'widgets/home_task_section.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
-import 'widgets/task_section.widget.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({
@@ -76,7 +76,7 @@ class HomeView extends StatelessWidget {
 
                         if (homeController.urgentTasks.isNotEmpty) {
                           listOfSections.add(
-                            TaskSection(
+                            HomeTaskSection(
                               title: AppLocalizations.of(context)!.urgent,
                               color: TaskPriority.URGENT.color.withOpacity(0.5),
                               tasks: homeController.urgentTasks,
@@ -86,9 +86,10 @@ class HomeView extends StatelessWidget {
 
                         if (homeController.importantTasks.isNotEmpty) {
                           listOfSections.add(
-                            TaskSection(
+                            HomeTaskSection(
                               title: AppLocalizations.of(context)!.important,
-                              color: TaskPriority.IMPORTANT.color.withOpacity(0.5),
+                              color:
+                                  TaskPriority.IMPORTANT.color.withOpacity(0.5),
                               tasks: homeController.importantTasks,
                             ),
                           );
@@ -96,9 +97,11 @@ class HomeView extends StatelessWidget {
 
                         if (homeController.importantNotUrgentTasks.isNotEmpty) {
                           listOfSections.add(
-                            TaskSection(
-                              title: AppLocalizations.of(context)!.importantNotUrgent,
-                              color: TaskPriority.IMPORTANT_NOT_URGENT.color.withOpacity(0.5),
+                            HomeTaskSection(
+                              title: AppLocalizations.of(context)!
+                                  .importantNotUrgent,
+                              color: TaskPriority.IMPORTANT_NOT_URGENT.color
+                                  .withOpacity(0.5),
                               tasks: homeController.importantNotUrgentTasks,
                             ),
                           );
@@ -106,9 +109,10 @@ class HomeView extends StatelessWidget {
 
                         if (homeController.notImportantTasks.isNotEmpty) {
                           listOfSections.add(
-                            TaskSection(
+                            HomeTaskSection(
                               title: AppLocalizations.of(context)!.notImportant,
-                              color: TaskPriority.NOT_IMPORTANT.color.withOpacity(0.3),
+                              color: TaskPriority.NOT_IMPORTANT.color
+                                  .withOpacity(0.3),
                               tasks: homeController.notImportantTasks,
                             ),
                           );

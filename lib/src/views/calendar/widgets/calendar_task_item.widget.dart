@@ -32,9 +32,7 @@ class CalendarTaskItem extends StatelessWidget {
       child: ListTile(
         onTap: () async => await showTaskModal(
           context,
-          buildFunction: () => getIt<TaskController>().taskData(
-            task,
-          ),
+          buildFunction: () => getIt<TaskController>().taskData(task: task),
         ),
         dense: true,
         title: Text(

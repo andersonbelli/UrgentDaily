@@ -7,8 +7,8 @@ import '../../../helpers/di/di.dart';
 import '../../../models/task.model.dart';
 import '../../widgets/show_task_modal.dart';
 
-class TaskItem extends StatelessWidget {
-  TaskItem({
+class HomeTaskItem extends StatelessWidget {
+  HomeTaskItem({
     super.key,
     required this.task,
   });
@@ -23,7 +23,9 @@ class TaskItem extends StatelessWidget {
       title: Text(
         task.title,
         style: TextStyle(
-          decoration: task.isCompleted ? TextDecoration.lineThrough : TextDecoration.none,
+          decoration: task.isCompleted
+              ? TextDecoration.lineThrough
+              : TextDecoration.none,
         ),
       ),
       onTap: () => homeController.toggleCompletedTask(
@@ -31,12 +33,14 @@ class TaskItem extends StatelessWidget {
         !task.isCompleted,
       ),
       leading: IconButton(
-        onPressed: () async => await showTaskModal(
-          context,
-          buildFunction: () => taskController.taskData(
-            task,
-          ),
-        ),
+        onPressed: () async {
+          var returnedTask = await showTaskModal(
+            context,
+            buildFunction: () => taskController.taskData(task: task),
+          );
+
+          print('returned task ${returnedTask}');
+        },
         icon: const Icon(
           Icons.edit,
         ),

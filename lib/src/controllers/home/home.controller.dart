@@ -33,7 +33,7 @@ class HomeController extends BaseController {
   void addTask(Task task) async {
     toggleLoading();
 
-    taskController.taskData(task);
+    taskController.taskData(task: task);
     await taskController.createTask();
 
     _tasks.add(task);
@@ -64,7 +64,7 @@ class HomeController extends BaseController {
   void removeTask(Task taskToRemove) async {
     toggleLoading();
 
-    taskController.taskData(taskToRemove);
+    taskController.taskData(task: taskToRemove);
     final taskHasBeenRemoved = await taskController.removeTask();
 
     if (taskHasBeenRemoved) {
@@ -102,7 +102,7 @@ class HomeController extends BaseController {
       final listToUpdate = _listOfTaskDependingOnPriority(task);
       listToUpdate[_getTaskIndex(task, listToUpdate)] = task;
 
-      taskController.taskData(task);
+      taskController.taskData(task: task);
       taskController.editTask();
 
       notifyListeners();
@@ -110,7 +110,10 @@ class HomeController extends BaseController {
   }
 
   /// Priority lists
-  final List<Task> urgentTasks = [], importantTasks = [], importantNotUrgentTasks = [], notImportantTasks = [];
+  final List<Task> urgentTasks = [],
+      importantTasks = [],
+      importantNotUrgentTasks = [],
+      notImportantTasks = [];
 
   List<Task> _listOfTaskDependingOnPriority(Task task) {
     switch (task.priority) {
@@ -126,7 +129,8 @@ class HomeController extends BaseController {
     }
   }
 
-  int _getTaskIndex(Task task, List<Task> listOfTasks) => listOfTasks.indexWhere((t) => t.id == task.id);
+  int _getTaskIndex(Task task, List<Task> listOfTasks) =>
+      listOfTasks.indexWhere((t) => t.id == task.id);
 
   void loadUserTasks() async {
     toggleLoading();
