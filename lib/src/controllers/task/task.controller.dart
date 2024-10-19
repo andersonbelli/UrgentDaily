@@ -135,8 +135,7 @@ class TaskController extends BaseController {
 
   Future<UserTasks> loadTasksForDate(DateTime date) async {
     toggleLoading();
-    final loadedTasks = await _tasksService.loadTasks(selectedDate);
-    print('loadTasksForDate - selected date ${selectedDate}');
+    final loadedTasks = await _tasksService.loadTasks(date);
     toggleLoading();
     return loadedTasks;
   }

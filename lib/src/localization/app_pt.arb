@@ -32,5 +32,6 @@
   "recursiveTaskSelectOneDay": "[Tarefa recursiva] - Selecione ao menos 1 dia!",
 
   "@_CALENDAR": {},
-  "selectADay": "Selecione um dia"
+  "selectADay": "Selecione um dia",
+  "confirm": "Confirmar"
 }

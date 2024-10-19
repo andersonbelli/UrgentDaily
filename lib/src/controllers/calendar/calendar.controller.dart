@@ -8,19 +8,18 @@ import '../base_controller.dart';
 import '../task/task.controller.dart';
 
 class CalendarController extends BaseController {
-  CalendarController();
-
   /// Current Date state
-  late DateTime _focusedDate = DateTime.now();
+  late final ValueNotifier<DateTime> focusedDate =
+      ValueNotifier(DateTime.now());
 
-  DateTime get focusedDate => _focusedDate;
+  DateTime get getFocusedDate => focusedDate.value;
 
   Future<void> updateFocusedDate(DateTime newFocusedDate) async {
-    if (newFocusedDate == _focusedDate) return;
+    if (newFocusedDate == focusedDate.value) return;
 
-    _focusedDate = newFocusedDate;
+    focusedDate.value = newFocusedDate;
 
-    updateTasksOfSelectedDay();
+    notifyListeners();
   }
 
   /// Tasks state
@@ -68,7 +67,7 @@ class CalendarController extends BaseController {
       _tasksOfSelectedDay = tasks;
     } else {
       final tasksForSelectedDay = _twoWeeksTasks.where(
-        (task) => task.date.formatDate() == _focusedDate.formatDate(),
+        (task) => task.date.formatDate() == focusedDate.value.formatDate(),
       );
 
       if (tasksForSelectedDay.isNotEmpty) {
@@ -92,7 +91,7 @@ class CalendarController extends BaseController {
         _visibleDates.clear();
         _visibleDates.add(lastDate);
       } else if (_visibleDates.length == 14) {
-        if (_visibleDates.contains(_focusedDate.formatDate())) {
+        if (_visibleDates.contains(focusedDate.value.formatDate())) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             notifyListeners();
           });

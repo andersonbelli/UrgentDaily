@@ -109,6 +109,14 @@ class HomeController extends BaseController {
     }
   }
 
+  void clearTasksLists() {
+    _tasks.clear();
+    urgentTasks.clear();
+    importantTasks.clear();
+    importantNotUrgentTasks.clear();
+    notImportantTasks.clear();
+  }
+
   /// Priority lists
   final List<Task> urgentTasks = [],
       importantTasks = [],
@@ -132,7 +140,8 @@ class HomeController extends BaseController {
   int _getTaskIndex(Task task, List<Task> listOfTasks) =>
       listOfTasks.indexWhere((t) => t.id == task.id);
 
-  void loadUserTasks() async {
+  Future<void> loadUserTasks() async {
+    clearTasksLists();
     toggleLoading();
 
     final userTasks = await taskController.loadTasksForDate(selectedDate);

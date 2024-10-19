@@ -33,14 +33,10 @@ class HomeTaskItem extends StatelessWidget {
         !task.isCompleted,
       ),
       leading: IconButton(
-        onPressed: () async {
-          var returnedTask = await showTaskModal(
-            context,
-            buildFunction: () => taskController.taskData(task: task),
-          );
-
-          print('returned task ${returnedTask}');
-        },
+        onPressed: () async => await showTaskModal(
+          context,
+          buildFunction: () => taskController.taskData(task: task),
+        ),
         icon: const Icon(
           Icons.edit,
         ),

@@ -1,3 +1,4 @@
+import '../../helpers/extensions/datetime_formatter.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
 
@@ -33,7 +34,13 @@ class TasksService {
     /// TODO: Replace with Repository => loadTasks
     // tasksRepository.loadTasks(dateTime)
 
-    return Future.value(MockUserTasks.userTasksToday);
+    /// TODO: DELETE TEMPORARY CODE!
+    final UserTasks userTasksForDate = MockUserTasks.allUserTasks.firstWhere(
+      (userTasks) => userTasks.date.formatDate() == date?.formatDate(),
+      orElse: () => MockUserTasks.userTasksToday,
+    );
+
+    return Future.value(userTasksForDate);
   }
 
   Future<List<UserTasks>> loadTasksForTwoWeeks(
