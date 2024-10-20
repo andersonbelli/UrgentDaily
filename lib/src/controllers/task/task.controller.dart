@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:injectable/injectable.dart';
 
-import '../../helpers/config/di.dart';
+import '../../helpers/di/di.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/recursive_days.enum.dart';
 import '../../models/task.model.dart';
+import '../../models/user_tasks.model.dart';
+import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
-import '../home/home.controller.dart';
 
 enum ErrorFieldsEnum {
   TITLE,
   DAYS_OF_WEEK,
 }
 
-@Singleton()
 class TaskController extends BaseController {
-  final HomeController homeController = getIt<HomeController>();
-
   /// Task properties
   String? taskId;
   DateTime selectedDate = DateTime.now();
@@ -35,14 +32,38 @@ class TaskController extends BaseController {
   Map<ErrorFieldsEnum, String> validationErrorMessages = {};
 
   /// Task state
-  void editTaskData(Task task) {
-    taskId = task.id;
-    title.text = task.title;
-    originalTitle = task.title;
-    selectedDate = task.date ?? DateTime.now();
-    isRecursive = task.isRecursive;
-    selectedDaysOfWeek = task.recursiveDays;
-    taskPriority = task.priority;
+  final TasksService _tasksService = getIt<TasksService>();
+  late Task classTask;
+
+  void taskData({Task? task}) {
+    if (task != null) {
+      taskId = task.id;
+      title.text = task.title;
+      originalTitle = task.title;
+      selectedDate = task.date ?? DateTime.now();
+      isRecursive = task.isRecursive;
+      selectedDaysOfWeek = task.recursiveDays;
+      taskPriority = task.priority;
+
+      classTask = Task(
+        id: taskId,
+        title: title.text,
+        date: selectedDate,
+        isRecursive: isRecursive,
+        recursiveDays: selectedDaysOfWeek,
+        priority: taskPriority,
+      );
+    } else {
+      classTask = Task(
+        id: taskId,
+        title: title.text,
+        date: selectedDate,
+        isRecursive: isRecursive,
+        recursiveDays: selectedDaysOfWeek,
+        priority: taskPriority,
+      );
+    }
+
     notifyListeners();
   }
 
@@ -81,32 +102,55 @@ class TaskController extends BaseController {
     notifyListeners();
   }
 
-  void taskAction() {
-    taskId != null ? _editTask() : _createTask();
+  Future<Task> createTask() async {
+    final createdTask = await _tasksService.addTask(classTask);
 
+    toggleLoading();
     notifyListeners();
+    return createdTask;
   }
 
-  void _createTask() => homeController.addTask(
-        Task(
-          title: title.text,
-          date: selectedDate,
-          isRecursive: isRecursive,
-          recursiveDays: selectedDaysOfWeek,
-          priority: taskPriority,
-        ),
-      );
+  Future<Task> editTask() async {
+    final Task taskToBeEdited = Task(
+      id: taskId,
+      title: title.text,
+      date: selectedDate,
+      isRecursive: isRecursive,
+      recursiveDays: selectedDaysOfWeek,
+      priority: taskPriority,
+    );
+    classTask = taskToBeEdited;
 
-  void _editTask() => homeController.editTask(
-        Task(
-          id: taskId,
-          title: title.text,
-          date: selectedDate,
-          isRecursive: isRecursive,
-          recursiveDays: selectedDaysOfWeek,
-          priority: taskPriority,
-        ),
-      );
+    final editedTask = await _tasksService.editTask(classTask);
+
+    loadTasksForDate(editedTask.date!);
+    return editedTask;
+  }
+
+  Future<bool> removeTask() async {
+    final hasTaskBeenRemoved = await _tasksService.removeTask(classTask);
+
+    return hasTaskBeenRemoved;
+  }
+
+  Future<UserTasks> loadTasksForDate(DateTime date) async {
+    toggleLoading();
+    final loadedTasks = await _tasksService.loadTasks(date);
+    toggleLoading();
+    return loadedTasks;
+  }
+
+  Future<List<UserTasks>> loadTasksForTwoWeeks(
+    DateTime first,
+    DateTime last,
+  ) async {
+    final loadedTasks = await _tasksService.loadTasksForTwoWeeks(
+      first,
+      last,
+    );
+
+    return loadedTasks;
+  }
 
   void clearTaskData() {
     taskId = null;

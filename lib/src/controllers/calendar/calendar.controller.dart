@@ -1,45 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
 
-import '../../helpers/config/di.dart';
+import '../../helpers/di/di.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
-import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
+import '../task/task.controller.dart';
 
-@Injectable()
 class CalendarController extends BaseController {
-  CalendarController();
-
-  final TasksService _tasksService = getIt<TasksService>();
-
   /// Current Date state
-  late DateTime _focusedDate = DateTime.now();
+  late final ValueNotifier<DateTime> focusedDate =
+      ValueNotifier(DateTime.now());
 
-  DateTime get focusedDate => _focusedDate;
+  DateTime get getFocusedDate => focusedDate.value;
 
   Future<void> updateFocusedDate(DateTime newFocusedDate) async {
-    if (newFocusedDate == _focusedDate) return;
+    if (newFocusedDate == focusedDate.value) return;
 
-    _focusedDate = newFocusedDate;
+    focusedDate.value = newFocusedDate;
 
-    updateTasksOfSelectedDay();
+    notifyListeners();
   }
 
   /// Tasks state
+
+  final TaskController taskController = getIt<TaskController>();
+
   final List<UserTasks> _twoWeeksTasks = [];
 
   List<UserTasks> get twoWeeksTasks => _twoWeeksTasks;
   bool tasksAlreadyLoaded = false;
 
   void loadTasksForTwoWeeks() async {
-    final userTasks = await _tasksService.loadTasksForTwoWeeks(
+    final userTasks = await taskController.loadTasksForTwoWeeks(
       _visibleDates.first.convertStringToDateTime(),
       _visibleDates.last.convertStringToDateTime(),
     );
 
     _twoWeeksTasks.addAll(userTasks);
+    for (var i = 0; i < _twoWeeksTasks.length; i++) {
+      final sortedTasks = UserTasks.orderTasksByPriority(
+        tasks: _twoWeeksTasks[i].tasks,
+        date: _twoWeeksTasks[i].date,
+      ).tasks;
+
+      _twoWeeksTasks[i] = UserTasks.fromListOfTasks(
+        tasks: sortedTasks,
+        date: _twoWeeksTasks[i].date,
+      );
+    }
 
     if (!tasksAlreadyLoaded) {
       tasksAlreadyLoaded = true;
@@ -51,15 +60,21 @@ class CalendarController extends BaseController {
 
   List<Task> get tasksOfSelectedDay => _tasksOfSelectedDay;
 
-  updateTasksOfSelectedDay() async {
+  updateTasksOfSelectedDay({List<Task>? tasks}) async {
     _tasksOfSelectedDay = [];
 
-    final tasksForSelectedDay = _twoWeeksTasks
-        .where((task) => task.date.formatDate() == _focusedDate.formatDate());
+    if (tasks != null) {
+      _tasksOfSelectedDay = tasks;
+    } else {
+      final tasksForSelectedDay = _twoWeeksTasks.where(
+        (task) => task.date.formatDate() == focusedDate.value.formatDate(),
+      );
 
-    if (tasksForSelectedDay.isNotEmpty) {
-      _tasksOfSelectedDay = tasksForSelectedDay.first.tasks;
+      if (tasksForSelectedDay.isNotEmpty) {
+        _tasksOfSelectedDay = tasksForSelectedDay.first.tasks;
+      }
     }
+
     notifyListeners();
   }
 
@@ -76,7 +91,7 @@ class CalendarController extends BaseController {
         _visibleDates.clear();
         _visibleDates.add(lastDate);
       } else if (_visibleDates.length == 14) {
-        if (_visibleDates.contains(_focusedDate.formatDate())) {
+        if (_visibleDates.contains(focusedDate.value.formatDate())) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             notifyListeners();
           });

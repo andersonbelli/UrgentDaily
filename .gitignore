@@ -46,4 +46,3 @@ app.*.map.json
 linux
 macos
 windows
-/lib/src/helpers/config/di.config.dart

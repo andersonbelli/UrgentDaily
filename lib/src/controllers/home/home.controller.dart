@@ -1,18 +1,16 @@
-import 'package:injectable/injectable.dart';
-
-import '../../helpers/config/di.dart';
+import '../../helpers/di/di.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../models/task.model.dart';
-import '../../services/home/tasks.service.dart';
+import '../../models/user_tasks.model.dart';
 import '../base_controller.dart';
+import '../task/task.controller.dart';
 
-@Singleton()
 class HomeController extends BaseController {
   HomeController() {
     loadUserTasks();
   }
 
-  final TasksService _tasksService = getIt<TasksService>();
+  final TaskController taskController = getIt<TaskController>();
 
   /// Current Date state
   late DateTime _selectedDate = DateTime.now();
@@ -32,14 +30,32 @@ class HomeController extends BaseController {
 
   List<Task> get tasks => _tasks;
 
-  void addTask(Task taskToAdd) async {
+  void addTask(Task task) async {
     toggleLoading();
 
-    final task = await _tasksService.addTask(taskToAdd);
+    taskController.taskData(task: task);
+    await taskController.createTask();
+
     _tasks.add(task);
 
-    final listToAdd = _listOfTaskDependingOnPriority(taskToAdd);
+    final listToAdd = _listOfTaskDependingOnPriority(task);
     listToAdd.add(task);
+
+    final sortedListToAdd = UserTasks.orderTasksByPriority(
+      tasks: listToAdd,
+      date: selectedDate,
+    ).tasks;
+
+    listToAdd.clear();
+    listToAdd.addAll(sortedListToAdd);
+
+    final sortedTasks = UserTasks.orderTasksByPriority(
+      tasks: _tasks,
+      date: selectedDate,
+    ).tasks;
+
+    _tasks.clear();
+    _tasks.addAll(sortedTasks);
 
     notifyListeners();
     toggleLoading();
@@ -48,25 +64,30 @@ class HomeController extends BaseController {
   void removeTask(Task taskToRemove) async {
     toggleLoading();
 
-    final task = await _tasksService.removeTask(taskToRemove);
-    _tasks.remove(task);
+    taskController.taskData(task: taskToRemove);
+    final taskHasBeenRemoved = await taskController.removeTask();
 
-    final listToRemove = _listOfTaskDependingOnPriority(taskToRemove);
-    listToRemove.remove(task);
+    if (taskHasBeenRemoved) {
+      _tasks.remove(taskToRemove);
 
-    notifyListeners();
+      final listToRemove = _listOfTaskDependingOnPriority(taskToRemove);
+      listToRemove.remove(taskToRemove);
+
+      notifyListeners();
+    } else {
+      print('ERROR: Task has not been removed');
+    }
+
     toggleLoading();
   }
 
-  void editTask(Task editedTask) async {
+  void editTask(Task task) async {
     toggleLoading();
 
-    await _tasksService.editTask(editedTask);
+    _tasks[_getTaskIndex(task, _tasks)] = task;
 
-    _tasks[_getTaskIndex(editedTask, _tasks)] = editedTask;
-
-    final listToEdit = _listOfTaskDependingOnPriority(editedTask);
-    listToEdit[_getTaskIndex(editedTask, listToEdit)] = editedTask;
+    final listToEdit = _listOfTaskDependingOnPriority(task);
+    listToEdit[_getTaskIndex(task, listToEdit)] = task;
 
     notifyListeners();
     toggleLoading();
@@ -74,15 +95,26 @@ class HomeController extends BaseController {
 
   void toggleCompletedTask(Task task, bool? isCompleted) {
     if (isCompleted != null) {
-      _tasks[_getTaskIndex(task, _tasks)] =
-          task.copyWith(isCompleted: isCompleted);
+      task = task.copyWith(isCompleted: isCompleted);
+
+      _tasks[_getTaskIndex(task, _tasks)] = task;
 
       final listToUpdate = _listOfTaskDependingOnPriority(task);
-      listToUpdate[_getTaskIndex(task, listToUpdate)] =
-          task.copyWith(isCompleted: isCompleted);
+      listToUpdate[_getTaskIndex(task, listToUpdate)] = task;
+
+      taskController.taskData(task: task);
+      taskController.editTask();
 
       notifyListeners();
     }
+  }
+
+  void clearTasksLists() {
+    _tasks.clear();
+    urgentTasks.clear();
+    importantTasks.clear();
+    importantNotUrgentTasks.clear();
+    notImportantTasks.clear();
   }
 
   /// Priority lists
@@ -108,10 +140,11 @@ class HomeController extends BaseController {
   int _getTaskIndex(Task task, List<Task> listOfTasks) =>
       listOfTasks.indexWhere((t) => t.id == task.id);
 
-  void loadUserTasks() async {
+  Future<void> loadUserTasks() async {
+    clearTasksLists();
     toggleLoading();
 
-    final userTasks = await _tasksService.loadTasks(selectedDate);
+    final userTasks = await taskController.loadTasksForDate(selectedDate);
     _tasks.addAll(userTasks.tasks);
 
     _separateTasksByPriority();

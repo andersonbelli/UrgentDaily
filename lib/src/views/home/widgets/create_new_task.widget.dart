@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../controllers/task/task.controller.dart';
-import '../../../helpers/config/di.dart';
 import '../../../helpers/constants/padding.constants.dart';
-import '../../task/task.view.dart';
 import '../../widgets/dashed_border.widget.dart';
 import '../../widgets/green_button.widget.dart';
+import '../../widgets/show_task_modal.dart';
 
 class CreateNewTask extends StatelessWidget {
-  CreateNewTask({super.key});
-
-  final TaskController taskController = getIt<TaskController>();
-
-  static showNewTaskModal(BuildContext context) => showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) => FractionallySizedBox(
-          heightFactor: 0.9,
-          child: TaskView(),
-        ),
-      );
+  const CreateNewTask({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +22,7 @@ class CreateNewTask extends StatelessWidget {
         ),
         GreenButton(
           text: AppLocalizations.of(context)!.createNew,
-          onTap: () => showNewTaskModal(context),
+          onTap: () async => await showTaskModal(context),
         ),
       ],
     );

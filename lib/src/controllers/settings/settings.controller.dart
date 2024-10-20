@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../services/settings/settings.service.dart';
 
-@Singleton()
 class SettingsController with ChangeNotifier {
   SettingsController(this._settingsService);
 

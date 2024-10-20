@@ -44,5 +44,6 @@
   "recursiveTaskSelectOneDay": "[Recursive task] - Select at least 1 day!",
 
   "@_CALENDAR": {},
-  "selectADay": "Select a day"
+  "selectADay": "Select a day",
+  "confirm": "Confirm"
 }
