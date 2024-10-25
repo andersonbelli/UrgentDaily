@@ -1,5 +1,5 @@
-name: urgent_daily
-description: "A new Flutter project."
+name: taskit
+description: "ToDo list organizer using tasks and calendar"
 
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
@@ -18,12 +18,13 @@ dependencies:
   table_calendar: ^3.1.2
   auto_injector: ^2.0.5
   uuid: ^4.5.1
+  firebase_core: ^3.6.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   mobkit_dashed_border: ^0.0.6
 
 flutter:
