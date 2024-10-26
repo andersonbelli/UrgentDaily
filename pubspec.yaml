@@ -1,4 +1,4 @@
-name: taskit
+name: urgent_daily
 description: "ToDo list organizer using tasks and calendar"
 
 # Prevent accidental publishing to pub.dev.
