@@ -1,5 +1,5 @@
 name: urgent_daily
-description: "ToDo list organizer using tasks and calendar"
+description: "Your Daily Urgency organized!"
 
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'

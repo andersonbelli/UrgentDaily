@@ -49,4 +49,6 @@ windows
 
 .env
 /firebase.json
-/android/app/google-services.json
+/android/app/*.json
+*.jks
+/ios/*.plist
