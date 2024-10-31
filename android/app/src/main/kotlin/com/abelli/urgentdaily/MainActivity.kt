@@ -1,4 +1,4 @@
-package com.example.urgent_daily
+package com.abelli.urgentdaily
 
 import io.flutter.embedding.android.FlutterActivity
 

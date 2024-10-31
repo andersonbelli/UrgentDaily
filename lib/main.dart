@@ -3,19 +3,26 @@ import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
 import 'src/app.dart';
+import 'src/controllers/settings/env_flavor.controller.dart';
 import 'src/controllers/settings/settings.controller.dart';
 import 'src/helpers/di/di.dart';
+import 'src/services/auth/auth.service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await EnvFlavorController.loadEnvironment();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   configureDependencies();
 
   await getIt.get<SettingsController>().loadSettings();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // TODO: Move anonymous sign-in to SplashScreen loading
+  await getIt.get<AuthService>().signInUser();
 
   runApp(MyApp());
 }

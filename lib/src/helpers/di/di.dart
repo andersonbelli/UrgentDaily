@@ -1,18 +1,24 @@
 import 'package:auto_injector/auto_injector.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../controllers/base_controller.dart';
 import '../../controllers/calendar/calendar.controller.dart';
 import '../../controllers/home/home.controller.dart';
 import '../../controllers/settings/settings.controller.dart';
 import '../../controllers/task/task.controller.dart';
+import '../../services/auth/auth.service.dart';
 import '../../services/home/tasks.service.dart';
 import '../../services/settings/settings.service.dart';
 
 final getIt = AutoInjector();
 
 configureDependencies() async {
+  // Register Firebase services
+  getIt.addSingleton(() => FirebaseAuth.instance);
+
   // Services
   getIt.add(TasksService.new);
+  getIt.addSingleton(AuthService.new);
 
   // Controllers
   getIt.addSingleton(BaseController.new);
