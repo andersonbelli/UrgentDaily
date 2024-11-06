@@ -1,16 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../controllers/task/task.controller.dart';
 import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/constants/padding.constants.dart';
 import '../../helpers/constants/text_sizes.constants.dart';
 import '../../helpers/di/di.dart';
+import '../../helpers/enums/error_fields/task_error_fields.enum.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/recursive_days.enum.dart';
+import '../../localization/localization.dart';
 import '../widgets/dashed_border.widget.dart';
+import '../widgets/error_messages_container.widget.dart';
 import '../widgets/green_button.widget.dart';
+import '../widgets/text_field_with_title.widget.dart';
+import '../widgets/text_shadow.widget.dart';
 import 'widgets/calendar_picker.widget.dart';
 
 class TaskView extends StatefulWidget {
@@ -58,76 +62,42 @@ class _TaskViewState extends State<TaskView> {
                           ),
                           onPressed: () => Navigator.pop(context),
                         ),
-                        title: Text(
-                          controller.taskId == null
-                              ? AppLocalizations.of(context)!.newTask
+                        title: TextShadow(
+                          text: controller.taskId == null
+                              ? t.newTask
                               : controller.originalTitle,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: AppTextSize.LARGE,
-                            color: AppColors.GREEN,
-                            fontWeight: FontWeight.w600,
-                            shadows: [
-                              Shadow(
-                                offset: const Offset(1, 1),
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .inverseSurface
-                                    .withOpacity(0.5),
-                              ),
-                            ],
-                          ),
+                          shadowOpacity: 0.5,
                         ),
                       ),
                       TaskFieldWithTitle(
-                        title: AppLocalizations.of(context)!.title,
-                        child: TextField(
-                          cursorColor: Theme.of(context).colorScheme.outline,
-                          cursorErrorColor:
-                              Theme.of(context).colorScheme.outline,
-                          maxLength: 120,
-                          decoration: InputDecoration(
-                            counterText: '',
-                            hintText: AppLocalizations.of(context)!
-                                .whatAreYouPlanning,
-                            hintStyle: const TextStyle(
-                              color: AppColors.GRAY,
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: controller.validationErrorMessages
-                                        .containsKey(ErrorFieldsEnum.TITLE)
-                                    ? Theme.of(context).colorScheme.error
-                                    : AppColors.DARK_LIGHT.withOpacity(0.6),
-                                width: 1.5,
-                              ),
-                            ),
-                            focusedErrorBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: AppColors.GRAY),
-                            ),
-                            errorText: controller.validationErrorMessages
-                                    .containsKey(ErrorFieldsEnum.TITLE)
-                                ? controller.validationErrorMessages[
-                                    ErrorFieldsEnum.TITLE]
-                                : '',
-                          ),
+                        title: t.title,
+                        child: CustomTextField(
+                          hintText: t.whatAreYouPlanning,
+                          hasError: controller.validationErrorMessages
+                              .containsKey(TaskErrorFieldsEnum.TITLE),
+                          errorText: controller.validationErrorMessages
+                                  .containsKey(TaskErrorFieldsEnum.TITLE)
+                              ? controller.validationErrorMessages[
+                                      TaskErrorFieldsEnum.TITLE] ??
+                                  ''
+                              : '',
                           controller: controller.title,
                           onChanged: (value) {
                             controller.title.clearComposing();
                             if (value.trim().isNotEmpty &&
                                 controller.validationErrorMessages
-                                    .containsKey(ErrorFieldsEnum.TITLE)) {
-                              controller
-                                  .removeValidationError(ErrorFieldsEnum.TITLE);
+                                    .containsKey(TaskErrorFieldsEnum.TITLE)) {
+                              controller.removeValidationError(
+                                TaskErrorFieldsEnum.TITLE,
+                              );
                             } else {
-                              controller.validateFields(context);
+                              controller.validateFields();
                             }
                           },
                         ),
                       ),
                       TaskFieldWithTitle(
-                        title: AppLocalizations.of(context)!.date,
+                        title: t.date,
                         child: SizedBox(
                           width: double.infinity,
                           child: CalendarPickerWidget(
@@ -139,18 +109,15 @@ class _TaskViewState extends State<TaskView> {
                         children: [
                           Checkbox(
                             value: controller.isRecursive,
-                            onChanged: (value) {
-                              controller.toggleRecursive(recursive: value);
-                            },
+                            onChanged: (value) =>
+                                controller.toggleRecursive(recursive: value),
                             checkColor: AppColors.DARK,
                             activeColor: AppColors.GREEN,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              controller.toggleRecursive();
-                            },
+                            onTap: () => controller.toggleRecursive(),
                             child: Text(
-                              AppLocalizations.of(context)!.recursiveTask,
+                              t.recursiveTask,
                               style: TextStyle(
                                 fontSize: AppTextSize.MEDIUM,
                                 color: Theme.of(context)
@@ -176,7 +143,7 @@ class _TaskViewState extends State<TaskView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.priority,
+                            t.priority,
                             style: TextStyle(
                               fontSize: AppTextSize.MEDIUM,
                               color:
@@ -186,33 +153,25 @@ class _TaskViewState extends State<TaskView> {
                             ),
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!
-                                .urgent
-                                .toLowerCase(),
+                            title: t.urgent.toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.URGENT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!
-                                .important
-                                .toLowerCase(),
+                            title: t.important.toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!
-                                .importantNotUrgent
-                                .toLowerCase(),
+                            title: t.importantNotUrgent.toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.IMPORTANT_NOT_URGENT,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: AppLocalizations.of(context)!
-                                .notImportant
-                                .toLowerCase(),
+                            title: t.notImportant.toLowerCase(),
                             groupPriority: controller.taskPriority,
                             priority: TaskPriority.NOT_IMPORTANT,
                             selectedPriority: controller.selectTaskPriority,
@@ -224,39 +183,19 @@ class _TaskViewState extends State<TaskView> {
                 ),
               ),
             ),
-            Visibility(
-              visible: controller.validationErrorMessages.isNotEmpty,
-              child: Flexible(
-                child: Container(
-                  padding: const EdgeInsets.all(AppPadding.MEDIUM),
-                  color: Theme.of(context).focusColor,
-                  child: ListView.builder(
-                    itemCount: controller.validationErrorMessages.length,
-                    clipBehavior: Clip.antiAlias,
-                    itemBuilder: (context, index) {
-                      return Text(
-                        '* ${controller.validationErrorMessages.values.elementAt(index)}',
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+            ErrorMessagesContainer(
+              isVisible: controller.validationErrorMessages.isNotEmpty,
+              errorMessagesList: controller.validationErrorMessages,
             ),
             child!,
           ],
         );
       },
       child: GreenButton(
-        text: widget.taskController.taskId == null
-            ? AppLocalizations.of(context)!.createTask
-            : AppLocalizations.of(context)!.editTask,
+        text: widget.taskController.taskId == null ? t.createTask : t.editTask,
         isDisabled: controller.validationErrorMessages.isNotEmpty,
         onTap: () {
-          widget.taskController.validateFields(context);
+          widget.taskController.validateFields();
 
           if (widget.taskController.validationErrorMessages.isEmpty) {
             controller.taskData();
@@ -380,7 +319,7 @@ class RadioPriority extends StatelessWidget {
 }
 
 class DaysOfWeekRow extends StatelessWidget {
-  final Function(RecursiveDay day, bool selected) onSelectedDaysOfWeek;
+  final void Function(RecursiveDay day, bool selected) onSelectedDaysOfWeek;
   final Map<RecursiveDay, bool> selectedDays;
 
   const DaysOfWeekRow({
@@ -395,37 +334,37 @@ class DaysOfWeekRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         DaysOfWeekItem(
-          dayOfWeek: AppLocalizations.of(context)!.sun,
+          dayOfWeek: t.sun,
           daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.SUN, value),
           selected: selectedDays[RecursiveDay.SUN] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: AppLocalizations.of(context)!.mon,
+          dayOfWeek: t.mon,
           daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.MON, value),
           selected: selectedDays[RecursiveDay.MON] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: AppLocalizations.of(context)!.tue,
+          dayOfWeek: t.tue,
           daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.TUE, value),
           selected: selectedDays[RecursiveDay.TUE] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: AppLocalizations.of(context)!.wed,
+          dayOfWeek: t.wed,
           daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.WED, value),
           selected: selectedDays[RecursiveDay.WED] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: AppLocalizations.of(context)!.thu,
+          dayOfWeek: t.thu,
           daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.THU, value),
           selected: selectedDays[RecursiveDay.THU] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: AppLocalizations.of(context)!.fri,
+          dayOfWeek: t.fri,
           daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.FRI, value),
           selected: selectedDays[RecursiveDay.FRI] == true,
         ),
         DaysOfWeekItem(
-          dayOfWeek: AppLocalizations.of(context)!.sat,
+          dayOfWeek: t.sat,
           daySelected: (value) => onSelectedDaysOfWeek(RecursiveDay.SAT, value),
           selected: selectedDays[RecursiveDay.SAT] == true,
         ),

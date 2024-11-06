@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../controllers/calendar/calendar.controller.dart';
@@ -7,6 +6,7 @@ import '../../controllers/home/home.controller.dart';
 import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/di/di.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
+import '../../localization/localization.dart';
 import '../widgets/default_appbar_child.widget.dart';
 import '../widgets/loading.widget.dart';
 import 'widgets/calendar_task_item.widget.dart';
@@ -25,7 +25,7 @@ class CalendarView extends StatelessWidget {
       appBar: AppBar(
         title: DefaultAppBarChild(
           Text(
-            AppLocalizations.of(context)!.selectADay,
+            t.selectADay,
           ),
         ),
         actions: [
@@ -46,7 +46,7 @@ class CalendarView extends StatelessWidget {
                     }
                   }),
                   child: Text(
-                    AppLocalizations.of(context)!.confirm,
+                    t.confirm,
                   ),
                 );
               }
@@ -65,7 +65,7 @@ class CalendarView extends StatelessWidget {
               Column(
                 children: [
                   TableCalendar(
-                    locale: AppLocalizations.of(context)!.localeName,
+                    locale: t.localeName,
                     firstDay: DateTime.utc(2010, 10, 16),
                     lastDay: DateTime.utc(2030, 3, 14),
                     currentDay: calendarController.getFocusedDate,

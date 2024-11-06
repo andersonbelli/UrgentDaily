@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../helpers/di/di.dart';
+import '../../helpers/enums/error_fields/task_error_fields.enum.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/recursive_days.enum.dart';
+import '../../helpers/typedefs/error_messages.typedef.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
 import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
-
-enum ErrorFieldsEnum {
-  TITLE,
-  DAYS_OF_WEEK,
-}
 
 class TaskController extends BaseController {
   /// Task properties
@@ -29,11 +24,14 @@ class TaskController extends BaseController {
   String originalTitle = '';
 
   /// Filed validation
-  Map<ErrorFieldsEnum, String> validationErrorMessages = {};
+  ErrorMessagesMap<TaskErrorFieldsEnum> validationErrorMessages = {};
 
   /// Task state
-  final TasksService _tasksService = getIt<TasksService>();
+  final TasksService _tasksService;
   late Task classTask;
+
+  TaskController({required TasksService tasksService})
+      : _tasksService = tasksService;
 
   void taskData({Task? task}) {
     if (task != null) {
@@ -74,7 +72,7 @@ class TaskController extends BaseController {
       isRecursive = recursive;
     }
 
-    removeValidationError(ErrorFieldsEnum.DAYS_OF_WEEK);
+    removeValidationError(TaskErrorFieldsEnum.DAYS_OF_WEEK);
 
     notifyListeners();
   }
@@ -90,7 +88,7 @@ class TaskController extends BaseController {
     newSelectedDays[day] = selected;
     selectedDaysOfWeek = newSelectedDays;
 
-    removeValidationError(ErrorFieldsEnum.DAYS_OF_WEEK);
+    removeValidationError(TaskErrorFieldsEnum.DAYS_OF_WEEK);
 
     notifyListeners();
   }
@@ -168,27 +166,27 @@ class TaskController extends BaseController {
   }
 
   /// Field validation
-  void validateFields(BuildContext context) {
-    if (title.text.isEmpty) {
-      validationErrorMessages[ErrorFieldsEnum.TITLE] =
-          '${AppLocalizations.of(context)?.titleIsMandatory}';
+  void validateFields() {
+    if (title.text.isEmpty &&
+        !validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)) {
+      validationErrorMessages[TaskErrorFieldsEnum.TITLE] =
+          TaskErrorFieldsEnum.TITLE.message;
     }
 
     if (isRecursive == true) {
       if (isRecursiveDaysValid() == false) {
-        validationErrorMessages[ErrorFieldsEnum.DAYS_OF_WEEK] =
-            '${AppLocalizations.of(context)?.recursiveTaskSelectOneDay}';
+        validationErrorMessages[TaskErrorFieldsEnum.DAYS_OF_WEEK] =
+            TaskErrorFieldsEnum.DAYS_OF_WEEK.message;
       }
     }
 
     notifyListeners();
   }
 
-  void removeValidationError(ErrorFieldsEnum field) {
+  void removeValidationError(TaskErrorFieldsEnum field) {
     validationErrorMessages.remove(field);
     notifyListeners();
   }
 
-  bool isRecursiveDaysValid() =>
-      selectedDaysOfWeek.containsValue(true) ? true : false;
+  bool isRecursiveDaysValid() => selectedDaysOfWeek.containsValue(true);
 }

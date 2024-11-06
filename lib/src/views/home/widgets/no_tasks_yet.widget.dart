@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../helpers/constants/text_sizes.constants.dart';
+import '../../../localization/localization.dart';
 
 class NoTasksYet extends StatelessWidget {
   const NoTasksYet({super.key});
@@ -22,7 +22,7 @@ class NoTasksYet extends StatelessWidget {
               ),
             ),
             Text(
-              AppLocalizations.of(context)!.noTasksYet,
+              t.noTasksYet,
               style: const TextStyle(
                 fontSize: AppTextSize.EXTRA_LARGE,
                 fontWeight: FontWeight.bold,
@@ -30,7 +30,7 @@ class NoTasksYet extends StatelessWidget {
               ),
             ),
             Text(
-              AppLocalizations.of(context)!.startAddingTasksNow,
+              t.startAddingTasksNow,
               style: const TextStyle(
                 fontSize: AppTextSize.MEDIUM,
                 fontWeight: FontWeight.w200,

@@ -1,4 +1,5 @@
-import '../../helpers/di/di.dart';
+import 'dart:developer';
+
 import '../../helpers/enums/priority.enum.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
@@ -6,11 +7,11 @@ import '../base_controller.dart';
 import '../task/task.controller.dart';
 
 class HomeController extends BaseController {
-  HomeController() {
+  HomeController(this.taskController) {
     loadUserTasks();
   }
 
-  final TaskController taskController = getIt<TaskController>();
+  final TaskController taskController;
 
   /// Current Date state
   late DateTime _selectedDate = DateTime.now();
@@ -75,7 +76,7 @@ class HomeController extends BaseController {
 
       notifyListeners();
     } else {
-      print('ERROR: Task has not been removed');
+      log('ERROR: Task has not been removed');
     }
 
     toggleLoading();

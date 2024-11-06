@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../helpers/constants/padding.constants.dart';
+import '../../../localization/localization.dart';
 import '../../widgets/dashed_border.widget.dart';
 import '../../widgets/green_button.widget.dart';
 import '../../widgets/show_task_modal.dart';
@@ -21,7 +21,7 @@ class CreateNewTask extends StatelessWidget {
           ),
         ),
         GreenButton(
-          text: AppLocalizations.of(context)!.createNew,
+          text: t.createNew,
           onTap: () async => await showTaskModal(context),
         ),
       ],
