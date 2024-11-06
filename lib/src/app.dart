@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'controllers/settings/settings.controller.dart';
 import 'helpers/constants/colors.constants.dart';
 import 'helpers/di/di.dart';
+import 'localization/localization.dart';
 import 'views/calendar/calendar.view.dart';
 import 'views/home/home.view.dart';
 import 'views/settings/settings_view.dart';
@@ -33,8 +34,20 @@ class MyApp extends StatelessWidget {
             Locale('en', ''),
             Locale('pt', ''),
           ],
-          onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
+          onGenerateTitle: (BuildContext context) => t.appTitle,
           theme: ThemeData(
+            primarySwatch: AppColors.mainColor,
+            colorScheme: const ColorScheme(
+              primary: AppColors.mainColor,
+              secondary: AppColors.PINK,
+              onPrimary: AppColors.DARK,
+              onSecondary: AppColors.DARK,
+              onError: Colors.red,
+              error: AppColors.RED,
+              brightness: Brightness.light,
+              surface: AppColors.CREAM,
+              onSurface: AppColors.DARK_LIGHT,
+            ),
             appBarTheme: const AppBarTheme(
               backgroundColor: AppColors.CREAM,
               centerTitle: true,
