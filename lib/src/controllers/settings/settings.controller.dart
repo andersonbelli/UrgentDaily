@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../helpers/di/di.dart';
+import '../../localization/localization.dart';
 import '../../services/settings/settings.service.dart';
 
 class SettingsController with ChangeNotifier {
@@ -11,8 +14,17 @@ class SettingsController with ChangeNotifier {
 
   ThemeMode get themeMode => _themeMode;
 
+  late String _language;
+
+  String get language => _language;
+
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
+    _language = await _settingsService.preferredLanguage();
+
+    currentLocaleTranslation = await getIt
+        .get<LocalizationsDelegate<AppLocalizations>>()
+        .load(Locale(_language));
 
     notifyListeners();
   }
@@ -25,5 +37,15 @@ class SettingsController with ChangeNotifier {
     notifyListeners();
 
     await _settingsService.updateThemeMode(newThemeMode);
+  }
+
+  Future<void> updateLocalization(String newLanguage) async {
+    if (newLanguage.isEmpty) return;
+    if (newLanguage == _language) return;
+
+    _language = newLanguage;
+    notifyListeners();
+
+    await _settingsService.updatePreferredLanguage(newLanguage);
   }
 }
