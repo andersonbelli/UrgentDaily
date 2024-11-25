@@ -33,5 +33,34 @@
 
   "@_CALENDAR": {},
   "selectADay": "Selecione um dia",
-  "confirm": "Confirmar"
+  "confirm": "Confirmar",
+
+  "@_ERROR": {},
+  "errorTitle": "Oops, algo não está certo",
+  "errorOkButton": "Okay",
+  
+  "email": "Email",
+  "password": "Senha",
+  "confirmPassword": "Confirmar senha",
+  "forgotPassword": "Esqueceu sua senha?",
+  "loginWithGoogle": "Login com Google",
+  "signUp": "Registrar-se",
+  "emailCantBeEmpty": "Por favor, digite seu email",
+  "passwordCantBeEmpty": "Por favor, digite sua senha",
+  
+  "@_SIGN_IN": {},
+  "signIn": "Login",
+  "incorrectEmailOrPassword": "Email ou senha incorrectos",
+  "resetPasswordEmailSent": "Email de recuperação de senha enviado. Por favor, verifique seu email.",
+  "logout": "Sair",
+  
+  "@_SIGN_UP": {},
+  "invalidEmail": "Email inválido",
+  "emailAlreadyExists": "Email já existe",
+  "passwordsDoNotMatch": "Senhas não coincidem",
+  "passwordTooShort": "Senha é muito curta. Mínimo de 8 caracteres",
+  "passwordRequiresUppercase": "Senhar requer ao menos uma letra MAIÚSCULA",
+  "passwordRequiresLowercase": "Senhar requer ao menos uma letra MINÚSCULA",
+  "passwordRequiresNumber": "Senha requer ao menos um NÚMERO",
+  "passwordRequiresSpecialCharacter": "Senha requer ao menos um caracter especial. (e.g. @#$&!)"
 }
