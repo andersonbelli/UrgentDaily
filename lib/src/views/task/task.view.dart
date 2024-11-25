@@ -71,7 +71,7 @@ class _TaskViewState extends State<TaskView> {
                       ),
                       TaskFieldWithTitle(
                         title: t.title,
-                        child: CustomTextField(
+                        child: TextFieldWithTitle(
                           hintText: t.whatAreYouPlanning,
                           hasError: controller.validationErrorMessages
                               .containsKey(TaskErrorFieldsEnum.TITLE),

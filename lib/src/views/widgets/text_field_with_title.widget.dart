@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../helpers/constants/colors.constants.dart';
 
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
+class TextFieldWithTitle extends StatelessWidget {
+  const TextFieldWithTitle({
     super.key,
     required this.hintText,
     required this.controller,
@@ -11,12 +11,16 @@ class CustomTextField extends StatelessWidget {
     this.maxLength = 120,
     this.hasError = false,
     this.errorText = '',
+    this.keyboardType = TextInputType.text,
+    this.obscureText = false,
   });
 
   final int maxLength;
   final String hintText;
   final bool hasError;
   final String errorText;
+  final TextInputType keyboardType;
+  final bool obscureText;
   final TextEditingController controller;
   final Function(String) onChanged;
 
@@ -26,6 +30,7 @@ class CustomTextField extends StatelessWidget {
       cursorColor: Theme.of(context).colorScheme.outline,
       cursorErrorColor: Theme.of(context).colorScheme.outline,
       maxLength: maxLength,
+      obscureText: obscureText,
       decoration: InputDecoration(
         counterText: '',
         hintText: hintText,
@@ -45,6 +50,7 @@ class CustomTextField extends StatelessWidget {
         ),
         errorText: errorText,
       ),
+      keyboardType: keyboardType,
       controller: controller,
       onChanged: onChanged,
     );
