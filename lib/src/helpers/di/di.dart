@@ -2,7 +2,8 @@ import 'package:auto_injector/auto_injector.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../controllers/auth/auth.controller.dart';
+import '../../controllers/auth/sign_in.controller.dart';
+import '../../controllers/auth/sign_up.controller.dart';
 import '../../controllers/base_controller.dart';
 import '../../controllers/calendar/calendar.controller.dart';
 import '../../controllers/home/home.controller.dart';
@@ -29,7 +30,8 @@ void configureDependencies() async {
   getIt.addSingleton(TaskController.new);
   getIt.addSingleton(HomeController.new);
   getIt.addSingleton(CalendarController.new);
-  getIt.addSingleton(AuthController.new);
+  getIt.addSingleton(SignInController.new);
+  getIt.addSingleton(SignUpController.new);
 
   // Settings
   getIt.addSingleton(SettingsService.new);

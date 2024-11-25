@@ -4,6 +4,7 @@ import '../../../localization/localization.dart';
 import 'error_fields.dart';
 
 enum SignUpErrorFieldsEnum implements ErrorFields {
+  EMAIL_CANT_BE_EMPTY,
   INVALID_EMAIL,
   EMAIL_ALREADY_EXISTS,
   PASSWORDS_DO_NOT_MATCH,
@@ -16,6 +17,8 @@ enum SignUpErrorFieldsEnum implements ErrorFields {
   @override
   String get message {
     switch (this) {
+      case EMAIL_CANT_BE_EMPTY:
+        return t.emailCantBeEmpty;
       case INVALID_EMAIL:
         return t.invalidEmail;
       case EMAIL_ALREADY_EXISTS:
