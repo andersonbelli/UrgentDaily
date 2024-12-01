@@ -191,7 +191,7 @@ class MenuDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const SignInView(),
+                    builder: (context) => SignInView(),
                   ),
                 );
               },
@@ -206,7 +206,7 @@ class MenuDrawer extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SignInView(),
+                      builder: (context) => SignInView(),
                     ),
                   );
                 }

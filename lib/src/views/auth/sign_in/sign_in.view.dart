@@ -6,41 +6,16 @@ import '../../../helpers/constants/padding.constants.dart';
 import '../../../helpers/di/di.dart';
 import '../../../helpers/enums/error_fields/sign_in_error_fields.enum.dart';
 import '../../../localization/localization.dart';
+import '../../widgets/message_dialog.widget.dart';
 import '../../widgets/text_field_with_title.widget.dart';
 import '../sign_up/sign_up.view.dart';
 
-class SignInView extends StatefulWidget {
-  const SignInView({super.key});
+class SignInView extends StatelessWidget {
+  SignInView({super.key});
 
   static const routeName = '/sing_in';
 
-  @override
-  State<SignInView> createState() => _SignInViewState();
-}
-
-class _SignInViewState extends State<SignInView> {
   final auth = getIt<SignInController>();
-
-  @override
-  void dispose() {
-    auth.emailController.dispose();
-    auth.passwordController.dispose();
-    super.dispose();
-  }
-
-  void _showErrorDialog(String message) => showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text(t.errorTitle),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: Text(t.errorOkButton),
-              onPressed: () => Navigator.of(ctx).pop(),
-            ),
-          ],
-        ),
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -106,19 +81,25 @@ class _SignInViewState extends State<SignInView> {
                       TextButton(
                         child: Text(t.forgotPassword),
                         onPressed: () async {
+                          String dialogMessage = '';
+
                           if (auth.emailController.text.isEmpty) {
-                            _showErrorDialog(
-                              t.emailCantBeEmpty,
-                            );
-                            return;
+                            dialogMessage = t.emailCantBeEmpty;
+                          } else {
+                            try {
+                              await auth
+                                  .resetPassword(auth.emailController.text);
+                              dialogMessage = t.resetPasswordEmailSent;
+                            } catch (e) {
+                              dialogMessage = e.toString();
+                            }
                           }
-                          try {
-                            await auth.resetPassword(auth.emailController.text);
-                            _showErrorDialog(
-                              t.resetPasswordEmailSent,
+
+                          if (context.mounted) {
+                            showMessageDialog(
+                              context,
+                              dialogMessage,
                             );
-                          } catch (e) {
-                            _showErrorDialog(e.toString());
                           }
                         },
                       ),
@@ -132,7 +113,12 @@ class _SignInViewState extends State<SignInView> {
                                     auth.passwordController.text,
                                   );
                                 } catch (e) {
-                                  _showErrorDialog(e.toString());
+                                  if (context.mounted) {
+                                    showMessageDialog(
+                                      context,
+                                      e.toString(),
+                                    );
+                                  }
                                 }
                               }
                             : null,
@@ -147,25 +133,26 @@ class _SignInViewState extends State<SignInView> {
                       try {
                         await auth.loginWithGoogle();
                       } catch (e) {
-                        _showErrorDialog(e.toString());
+                        if (context.mounted) {
+                          showMessageDialog(
+                            context,
+                            e.toString(),
+                          );
+                        }
                       }
                     },
                   ),
                   const SizedBox(height: AppPadding.LARGE),
                   CupertinoButton(
                     child: Text(t.signUp),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (context) {
-                          return const FractionallySizedBox(
-                            heightFactor: 0.9,
-                            child: SignUpView(),
-                          );
-                        },
-                      );
-                    },
+                    onPressed: () => showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => FractionallySizedBox(
+                        heightFactor: 0.9,
+                        child: SignUpView(),
+                      ),
+                    ),
                   ),
                 ],
               ),

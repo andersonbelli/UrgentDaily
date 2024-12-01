@@ -6,31 +6,13 @@ import '../../../helpers/constants/padding.constants.dart';
 import '../../../helpers/di/di.dart';
 import '../../../localization/localization.dart';
 import '../../widgets/error_messages_container.widget.dart';
+import '../../widgets/message_dialog.widget.dart';
 import '../../widgets/text_shadow.widget.dart';
 
-class SignUpView extends StatefulWidget {
-  const SignUpView({super.key});
+class SignUpView extends StatelessWidget {
+  SignUpView({super.key});
 
-  @override
-  State<SignUpView> createState() => _SignUpViewState();
-}
-
-class _SignUpViewState extends State<SignUpView> {
   final auth = getIt<SignUpController>();
-
-  void _showErrorDialog(String message) => showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text(t.errorTitle),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: Text(t.errorOkButton),
-              onPressed: () => Navigator.of(ctx).pop(),
-            ),
-          ],
-        ),
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +86,9 @@ class _SignUpViewState extends State<SignUpView> {
 
                         if (context.mounted) Navigator.pop(context);
                       } catch (e) {
-                        _showErrorDialog(e.toString());
+                        if (context.mounted) {
+                          showMessageDialog(context, e.toString());
+                        }
                       }
                     }
                   },
