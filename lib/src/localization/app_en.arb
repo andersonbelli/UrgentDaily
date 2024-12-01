@@ -41,6 +41,13 @@
   "errorTitle": "Oops, something is not right",
   "errorOkButton": "Okay",
 
+  "@_HOME": {},
+  "home": "Home",
+  "noName": "No Name",
+  "guestUser": "Guest User",
+  "registerNow": "Register now!",
+  "anonymousSession": "Anonymous Session",
+
   "email": "Email",
   "password": "Password",
   "confirmPassword": "Confirm password",

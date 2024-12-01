@@ -70,63 +70,7 @@ class HomeView extends StatelessWidget {
               color: AppColors.DARK,
             ),
           ),
-          drawer: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                UserAccountsDrawerHeader(
-                  decoration: const BoxDecoration(color: AppColors.GREEN),
-                  accountName: user != null && !user!.isAnonymous
-                      ? Text(user?.displayName ?? 'No Name')
-                      : const Text('Guest User'),
-                  accountEmail: user != null && !user!.isAnonymous
-                      ? Text(user?.email ?? '')
-                      : const Text('Anonymous Session'),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: user != null && !user!.isAnonymous
-                        ? const Icon(Icons.person, size: 40)
-                        : const Icon(Icons.person_outline, size: 40),
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.home),
-                  title: const Text('Home'),
-                  onTap: () => Navigator.pop(context),
-                ),
-                if (user == null || user!.isAnonymous)
-                  ListTile(
-                    leading: const Icon(Icons.login),
-                    title: const Text('Sign In'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignInView(),
-                        ),
-                      );
-                    },
-                  ),
-                if (user != null && !user!.isAnonymous)
-                  ListTile(
-                    leading: const Icon(Icons.logout),
-                    title: Text(t.logout),
-                    onTap: () async {
-                      await getIt<SignInController>().logout();
-                      if (context.mounted) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignInView(),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-              ],
-            ),
-          ),
+          drawer: MenuDrawer(user: user),
           body: Stack(
             children: [
               homeController.tasks.isEmpty
@@ -200,6 +144,76 @@ class HomeView extends StatelessWidget {
         );
       },
       child: const NoTasksYet(),
+    );
+  }
+}
+
+class MenuDrawer extends StatelessWidget {
+  const MenuDrawer({
+    super.key,
+    required this.user,
+  });
+
+  final User? user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            decoration: const BoxDecoration(color: AppColors.GREEN),
+            accountName: user != null && !user!.isAnonymous
+                ? Text(user?.displayName ?? t.noName)
+                : Text(t.guestUser),
+            accountEmail: user != null && !user!.isAnonymous
+                ? Text(user?.email ?? '')
+                : Text(t.anonymousSession),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: user != null && !user!.isAnonymous
+                  ? const Icon(Icons.person, size: 40)
+                  : const Icon(Icons.person_outline, size: 40),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: Text(t.home),
+            onTap: () => Navigator.pop(context),
+          ),
+          if (user == null || user!.isAnonymous)
+            ListTile(
+              leading: const Icon(Icons.login),
+              title: Text(t.signIn),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignInView(),
+                  ),
+                );
+              },
+            ),
+          if (user != null && !user!.isAnonymous)
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: Text(t.logout),
+              onTap: () async {
+                await getIt<SignInController>().logout();
+                if (context.mounted) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SignInView(),
+                    ),
+                  );
+                }
+              },
+            ),
+        ],
+      ),
     );
   }
 }

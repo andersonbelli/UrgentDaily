@@ -40,7 +40,14 @@
   "@_ERROR": {},
   "errorTitle": "Oops, algo não está certo",
   "errorOkButton": "Okay",
-  
+
+  "@_HOME": {},
+  "home": "Início",
+  "noName": "Sem nome",
+  "guestUser": "Convidado",
+  "registerNow": "Registre-se agora!",
+  "anonymousSession": "Sessão anônima",
+
   "email": "Email",
   "password": "Senha",
   "confirmPassword": "Confirmar senha",

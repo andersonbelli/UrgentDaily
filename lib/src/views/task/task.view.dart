@@ -52,11 +52,11 @@ class _TaskViewState extends State<TaskView> {
                           icon: Icon(
                             Icons.close,
                             color: Theme.of(context).colorScheme.inverseSurface,
-                            shadows: const [
+                            shadows: [
                               BoxShadow(
-                                color: AppColors.DARK,
-                                blurRadius: 2,
-                                offset: Offset(0, 2),
+                                color: AppColors.DARK.withOpacity(0.3),
+                                blurRadius: 0.4,
+                                offset: const Offset(0, 2),
                               ),
                             ],
                           ),
