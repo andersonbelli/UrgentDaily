@@ -6,6 +6,7 @@ import '../../../helpers/constants/padding.constants.dart';
 import '../../../helpers/di/di.dart';
 import '../../../helpers/enums/error_fields/sign_in_error_fields.enum.dart';
 import '../../../localization/localization.dart';
+import '../../widgets/default_appbar_child.widget.dart';
 import '../../widgets/message_dialog.widget.dart';
 import '../../widgets/text_field_with_title.widget.dart';
 import '../sign_up/sign_up.view.dart';
@@ -21,7 +22,9 @@ class SignInView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(t.signIn),
+        title: DefaultAppBarChild(
+          Text(t.signIn),
+        ),
       ),
       body: auth.isLoading
           ? const Center(child: CircularProgressIndicator())

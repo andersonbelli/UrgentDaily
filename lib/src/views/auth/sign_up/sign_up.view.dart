@@ -45,11 +45,11 @@ class SignUpView extends StatelessWidget {
               children: <Widget>[
                 TextFormField(
                   controller: auth.emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  decoration: InputDecoration(labelText: t.email),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return t.emailCantBeEmpty;
                     }
                     return null;
                   },
@@ -57,25 +57,24 @@ class SignUpView extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: auth.passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  decoration: InputDecoration(labelText: t.password),
                   obscureText: true,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: auth.confirmPasswordController,
-                  decoration:
-                      const InputDecoration(labelText: 'Confirm Password'),
+                  decoration: InputDecoration(labelText: t.confirmPassword),
                   obscureText: true,
                   validator: (value) {
                     if (value != auth.passwordController.text) {
-                      return 'Passwords do not match';
+                      return t.passwordsDoNotMatch;
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  child: const Text('Sign Up'),
+                  child: Text(t.signUp),
                   onPressed: () async {
                     if (auth.formKey.currentState!.validate()) {
                       try {
