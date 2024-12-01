@@ -19,7 +19,7 @@ class ErrorMessagesContainer extends StatelessWidget {
       visible: isVisible,
       child: Flexible(
         child: Container(
-          padding: const EdgeInsets.all(AppPadding.MEDIUM),
+          padding: const EdgeInsets.all(AppPadding.size16),
           color: Theme.of(context).focusColor,
           child: ListView.builder(
             itemCount: errorMessagesList.length,

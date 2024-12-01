@@ -7,6 +7,7 @@ import '../../../helpers/di/di.dart';
 import '../../../helpers/enums/error_fields/sign_in_error_fields.enum.dart';
 import '../../../localization/localization.dart';
 import '../../widgets/default_appbar_child.widget.dart';
+import '../../widgets/loading.widget.dart';
 import '../../widgets/message_dialog.widget.dart';
 import '../../widgets/text_field_with_title.widget.dart';
 import '../sign_up/sign_up.view.dart';
@@ -26,10 +27,12 @@ class SignInView extends StatelessWidget {
           Text(t.signIn),
         ),
       ),
-      body: auth.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(AppPadding.MEDIUM),
+      body: ListenableBuilder(
+        listenable: auth,
+        builder: (context, _) => Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(AppPadding.size16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -77,59 +80,61 @@ class SignInView extends StatelessWidget {
                       }
                     },
                   ),
-                  const SizedBox(height: AppPadding.LARGE),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                        child: Text(t.forgotPassword),
-                        onPressed: () async {
-                          String dialogMessage = '';
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: AppPadding.size24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          child: Text(t.forgotPassword),
+                          onPressed: () async {
+                            String dialogMessage = '';
 
-                          if (auth.emailController.text.isEmpty) {
-                            dialogMessage = t.emailCantBeEmpty;
-                          } else {
-                            try {
-                              await auth
-                                  .resetPassword(auth.emailController.text);
-                              dialogMessage = t.resetPasswordEmailSent;
-                            } catch (e) {
-                              dialogMessage = e.toString();
+                            if (auth.emailController.text.isEmpty) {
+                              dialogMessage = t.emailCantBeEmpty;
+                            } else {
+                              try {
+                                await auth
+                                    .resetPassword(auth.emailController.text);
+                                dialogMessage = t.resetPasswordEmailSent;
+                              } catch (e) {
+                                dialogMessage = e.toString();
+                              }
                             }
-                          }
 
-                          if (context.mounted) {
-                            showMessageDialog(
-                              context,
-                              dialogMessage,
-                            );
-                          }
-                        },
-                      ),
-                      ElevatedButton(
-                        onPressed: (auth.emailController.text.isNotEmpty &&
-                                auth.passwordController.text.isNotEmpty)
-                            ? () async {
-                                try {
-                                  await auth.loginWithEmail(
-                                    auth.emailController.text,
-                                    auth.passwordController.text,
-                                  );
-                                } catch (e) {
-                                  if (context.mounted) {
-                                    showMessageDialog(
-                                      context,
-                                      e.toString(),
+                            if (context.mounted) {
+                              showMessageDialog(
+                                context,
+                                dialogMessage,
+                              );
+                            }
+                          },
+                        ),
+                        ElevatedButton(
+                          onPressed: (auth.emailController.text.isNotEmpty &&
+                                  auth.passwordController.text.isNotEmpty)
+                              ? () async {
+                                  try {
+                                    await auth.loginWithEmail(
+                                      auth.emailController.text,
+                                      auth.passwordController.text,
                                     );
+                                  } catch (e) {
+                                    if (context.mounted) {
+                                      showMessageDialog(
+                                        context,
+                                        e.toString(),
+                                      );
+                                    }
                                   }
                                 }
-                              }
-                            : null,
-                        child: Text(t.signIn),
-                      ),
-                    ],
+                              : null,
+                          child: Text(t.signIn),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: AppPadding.LARGE),
                   ElevatedButton(
                     child: Text(t.loginWithGoogle),
                     onPressed: () async {
@@ -145,7 +150,7 @@ class SignInView extends StatelessWidget {
                       }
                     },
                   ),
-                  const SizedBox(height: AppPadding.LARGE),
+                  const SizedBox(height: AppPadding.size24),
                   CupertinoButton(
                     child: Text(t.signUp),
                     onPressed: () => showModalBottomSheet(
@@ -160,6 +165,10 @@ class SignInView extends StatelessWidget {
                 ],
               ),
             ),
+            loadingWidget(auth.isLoading),
+          ],
+        ),
+      ),
     );
   }
 }

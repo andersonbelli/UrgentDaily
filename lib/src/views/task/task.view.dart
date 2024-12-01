@@ -40,8 +40,8 @@ class _TaskViewState extends State<TaskView> {
               flex: 6,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: AppPadding.SMALL,
-                  horizontal: AppPadding.MEDIUM,
+                  vertical: AppPadding.size8,
+                  horizontal: AppPadding.size16,
                 ),
                 child: SingleChildScrollView(
                   child: Column(
@@ -244,7 +244,7 @@ class TaskFieldWithTitle extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 24.0),
+          padding: const EdgeInsets.only(left: AppPadding.size24),
           child: child,
         ),
         const SizedBox(
@@ -285,10 +285,10 @@ class RadioPriority extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: AppPadding.SMALL),
+              padding: const EdgeInsets.symmetric(vertical: AppPadding.size8),
               width: double.infinity,
               margin: const EdgeInsets.symmetric(
-                horizontal: AppPadding.MEDIUM,
+                horizontal: AppPadding.size16,
               ),
               child: DashedDivider(
                 dashLength: 6,
@@ -298,8 +298,8 @@ class RadioPriority extends StatelessWidget {
                     color: priority.color.withOpacity(0.3),
                   ),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: AppPadding.MEDIUM,
-                    vertical: AppPadding.SMALL,
+                    horizontal: AppPadding.size16,
+                    vertical: AppPadding.size8,
                   ),
                   child: Text(
                     title,
