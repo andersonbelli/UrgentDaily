@@ -14,6 +14,7 @@ void main() async {
   await EnvFlavorController.loadEnvironment();
 
   await Firebase.initializeApp(
+    name: 'UrgentDaily',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
@@ -22,7 +23,7 @@ void main() async {
   await getIt.get<SettingsController>().loadSettings();
 
   // TODO: Move anonymous sign-in to SplashScreen loading
-  await getIt.get<AuthService>().signInUser();
+  await getIt.get<AuthService>().signInAnonymously();
 
   runApp(MyApp());
 }

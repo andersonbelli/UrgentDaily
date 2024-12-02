@@ -9,6 +9,13 @@ plugins {
 }
 
 android {
+    def props = new Properties()
+    file("../local.properties").withInputStream { props.load(it) }
+
+    def jksPassword = props.getProperty("jks_signingPassword")
+    def jksPath = props.getProperty("jks_path")
+    def jksAlias = props.getProperty("jks_signingAlias")
+
     namespace = "com.abelli.urgentdaily"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
@@ -42,10 +49,18 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        /// Define the storePassword and keyAlias for the jks file on the [gradle.properties] file
+        debug {
+            storeFile file(jksPath)
+            storePassword jksPassword
+            keyAlias jksAlias
+            keyPassword jksPassword
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
         }
     }

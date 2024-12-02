@@ -1,15 +1,5 @@
 {
-  "appTitle": "urgent_daily",
-  "hello": "Hello {userName}",
-  "@hello": {
-    "description": "A message with a single parameter",
-    "placeholders": {
-      "userName": {
-        "type": "String",
-        "example": "Bob"
-      }
-    }
-  },
+  "appTitle": "Urgent Daily",
 
   "@_GENERAL": {},
   "createNew": "CREATE NEW",
@@ -45,5 +35,41 @@
 
   "@_CALENDAR": {},
   "selectADay": "Select a day",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+
+  "@_ERROR": {},
+  "errorTitle": "Oops, something is not right",
+  "errorOkButton": "Okay",
+
+  "@_HOME": {},
+  "home": "Home",
+  "noName": "No Name",
+  "guestUser": "Guest User",
+  "registerNow": "Register now!",
+  "anonymousSession": "Anonymous Session",
+
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm password",
+  "forgotPassword": "Forgot Password?",
+  "loginWithGoogle": "Login with Google",
+  "signUp": "Sign Up",
+  "emailCantBeEmpty": "Please enter your email address.",
+  "passwordCantBeEmpty": "Please enter your password",
+
+  "@_SIGN_IN": {},
+  "signIn": "Login",
+  "incorrectEmailOrPassword": "Incorrect Email or Password",
+  "resetPasswordEmailSent": "Password reset email sent. Please check your inbox.",
+  "logout": "Logout",
+
+  "@_SIGN_UP": {},
+  "invalidEmail": "Invalid email address",
+  "emailAlreadyExists": "Email address already exists",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "passwordTooShort": "Password is too short. Minimum of 8 characters",
+  "passwordRequiresUppercase": "Password requires at least one uppercase letter",
+  "passwordRequiresLowercase": "Password requires at least one lowercase letter",
+  "passwordRequiresNumber": "Password requires at least one number",
+  "passwordRequiresSpecialCharacter": "Password requires at least one special character. (e.g. @#$&!)"
 }

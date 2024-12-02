@@ -1,26 +1,88 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth;
 
-  AuthService(this._auth);
-
-  Future<void> signInUser() async {
-    if (_auth.currentUser == null) {
-      // TODO: Implement sign-in with providers
-      _signInAnonymously();
+  AuthService(this._auth) {
+    if (kDebugMode) {
+      _auth.useAuthEmulator('127.0.0.1', 9099);
     }
   }
 
-  Future<User?> _signInAnonymously() async {
-    User? user;
+  Future<void> loginWithEmail(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      throw e.message ?? 'An error occurred during login.';
+    }
+  }
 
-    if (_auth.currentUser == null) {
+  Future<void> signUpWithEmail(String email, String password) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      throw e.message ?? 'An error occurred during sign-up.';
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    try {
+      if (kIsWeb) {
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+        await _auth.signInWithPopup(googleProvider);
+      } else {
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        if (googleUser == null) {
+          return;
+        }
+
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        await _auth.signInWithCredential(credential);
+      }
+    } on FirebaseAuthException catch (e) {
+      throw e.message ?? 'An error occurred during Google sign-in.';
+    } catch (e) {
+      log('===> Error signing in: $e');
+    }
+  }
+
+  Future<void> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email.trim());
+    } on FirebaseAuthException catch (e) {
+      throw e.message ??
+          'An error occurred while sending password reset email.';
+    }
+  }
+
+  Future<void> logout() async => _auth.signOut();
+
+  Future<User?> signInAnonymously() async {
+    User? user = _auth.currentUser;
+
+    if (user == null) {
       try {
         final UserCredential userCredential = await _auth.signInAnonymously();
         user = userCredential.user;
+      } on FirebaseAuthException catch (e) {
+        throw e.message ?? 'An error occurred during anonymous sign-in.';
       } catch (e) {
         log('Error signing in anonymously: $e');
       }
@@ -28,6 +90,4 @@ class AuthService {
 
     return user;
   }
-
-// TODO: Add other methods like signInWithGoogle, signOut, etc.
 }
