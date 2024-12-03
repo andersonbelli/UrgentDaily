@@ -6,6 +6,7 @@ import 'controllers/settings/settings.controller.dart';
 import 'helpers/constants/colors.constants.dart';
 import 'helpers/di/di.dart';
 import 'localization/localization.dart';
+import 'views/auth/sign_in/sign_in.view.dart';
 import 'views/calendar/calendar.view.dart';
 import 'views/home/home.view.dart';
 import 'views/settings/settings_view.dart';
@@ -72,6 +73,8 @@ class MyApp extends StatelessWidget {
                     return CalendarView();
                   case HomeView.routeName:
                     return HomeView();
+                  case SignInView.routeName:
+                    return SignInView();
                   default:
                     return HomeView();
                 }

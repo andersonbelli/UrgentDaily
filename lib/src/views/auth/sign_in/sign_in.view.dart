@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../routes.dart';
 import '../../../controllers/auth/sign_in.controller.dart';
 import '../../../helpers/constants/padding.constants.dart';
 import '../../../helpers/di/di.dart';
@@ -14,7 +15,7 @@ import '../sign_up/sign_up.view.dart';
 class SignInView extends StatelessWidget {
   SignInView({super.key});
 
-  static const routeName = '/sing_in';
+  static const String routeName = Routes.singIn;
 
   final auth = getIt<SignInController>();
 
@@ -41,8 +42,7 @@ class SignInView extends StatelessWidget {
                       auth.emailController.clearComposing();
 
                       final isNotEmpty = value.trim().isNotEmpty;
-                      final hasEmptyEmailError =
-                          auth.validationErrorMessages.containsKey(
+                      final hasEmptyEmailError = auth.validationErrorMessages.containsKey(
                         SignInErrorFieldsEnum.EMAIL_CANT_BE_EMPTY,
                       );
 
@@ -63,8 +63,7 @@ class SignInView extends StatelessWidget {
                       auth.passwordController.clearComposing();
 
                       final isNotEmpty = value.trim().isNotEmpty;
-                      final hasEmptyPasswordError =
-                          auth.validationErrorMessages.containsKey(
+                      final hasEmptyPasswordError = auth.validationErrorMessages.containsKey(
                         SignInErrorFieldsEnum.PASSWORD_CANT_BE_EMPTY,
                       );
 
@@ -90,8 +89,7 @@ class SignInView extends StatelessWidget {
                             dialogMessage = t.emailCantBeEmpty;
                           } else {
                             try {
-                              await auth
-                                  .resetPassword(auth.emailController.text);
+                              await auth.resetPassword(auth.emailController.text);
                               dialogMessage = t.resetPasswordEmailSent;
                             } catch (e) {
                               dialogMessage = e.toString();
@@ -107,8 +105,7 @@ class SignInView extends StatelessWidget {
                         },
                       ),
                       ElevatedButton(
-                        onPressed: (auth.emailController.text.isNotEmpty &&
-                                auth.passwordController.text.isNotEmpty)
+                        onPressed: (auth.emailController.text.isNotEmpty && auth.passwordController.text.isNotEmpty)
                             ? () async {
                                 try {
                                   await auth.loginWithEmail(
