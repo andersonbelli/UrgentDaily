@@ -191,23 +191,26 @@ class _TaskViewState extends State<TaskView> {
           ],
         );
       },
-      child: GreenButton(
-        text: widget.taskController.taskId == null ? t.createTask : t.editTask,
-        isDisabled: controller.validationErrorMessages.isNotEmpty,
-        onTap: () {
-          widget.taskController.validateFields();
+      child: Expanded(
+        child: GreenButton(
+          text:
+              widget.taskController.taskId == null ? t.createTask : t.editTask,
+          isDisabled: controller.validationErrorMessages.isNotEmpty,
+          onTap: () {
+            widget.taskController.validateFields();
 
-          if (widget.taskController.validationErrorMessages.isEmpty) {
-            controller.taskData();
+            if (widget.taskController.validationErrorMessages.isEmpty) {
+              controller.taskData();
 
-            if (controller.taskId != null) {
-              controller.editTask();
-            } else {
-              controller.createTask();
+              if (controller.taskId != null) {
+                controller.editTask();
+              } else {
+                controller.createTask();
+              }
+              Navigator.pop(context, widget.taskController.classTask);
             }
-            Navigator.pop(context, widget.taskController.classTask);
-          }
-        },
+          },
+        ),
       ),
     );
   }
