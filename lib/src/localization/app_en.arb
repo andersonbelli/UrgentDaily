@@ -40,6 +40,7 @@
   "@_ERROR": {},
   "errorTitle": "Oops, something is not right",
   "errorOkButton": "Okay",
+  "internalServerError": "A server error has occurred.\nPlease try again in a few minutes :)",
 
   "@_HOME": {},
   "home": "Home",
