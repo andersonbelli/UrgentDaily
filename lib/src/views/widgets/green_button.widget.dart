@@ -10,23 +10,28 @@ class GreenButton extends StatelessWidget {
     required this.text,
     required this.onTap,
     this.isDisabled = false,
+    this.width,
+    this.margin,
   });
 
   final String text;
   final VoidCallback onTap;
   final bool isDisabled;
+  final double? width;
+  final EdgeInsets? margin;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(
-        bottom: AppPadding.size16,
-      ),
+      margin: margin ??
+          const EdgeInsets.only(
+            bottom: AppPadding.size16,
+          ),
       padding: const EdgeInsets.symmetric(
         horizontal: AppPadding.size16,
         vertical: AppPadding.size8,
       ),
-      width: double.infinity,
+      width: width ?? MediaQuery.of(context).size.width,
       child: ElevatedButton(
         onPressed: isDisabled ? null : onTap,
         style: ElevatedButton.styleFrom(
