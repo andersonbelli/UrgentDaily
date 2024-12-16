@@ -18,28 +18,36 @@ class SignInController extends BaseController {
   SignInController({required AuthService auth}) : _auth = auth;
 
   Future<void> loginWithEmail(String email, String password) async {
-    toggleLoading();
-    await _auth
-        .loginWithEmail(
-      email.trim(),
-      password.trim(),
-    )
-        .onError((error, stack) {
-      validationErrorMessages.clear();
-      validationErrorMessages[
-              SignInErrorFieldsEnum.INCORRECT_EMAIL_OR_PASSWORD] =
-          SignInErrorFieldsEnum.INCORRECT_EMAIL_OR_PASSWORD.message;
-      log('Login Error: $error\n$stack');
-    }).whenComplete(() => toggleLoading());
+    await apiCall(
+      callHandler: () => _auth.loginWithEmail(
+        email.trim(),
+        password.trim(),
+      ),
+      errorHandler: (error, stack) {
+        log('Login Error: $error\n$stack');
+        throw validateError(error);
+      },
+    );
   }
 
   Future<void> loginWithGoogle() async {
-    toggleLoading();
-    _auth.loginWithGoogle().whenComplete(() => toggleLoading());
+    await apiCall(
+      callHandler: () => _auth.loginWithGoogle(),
+      errorHandler: (error, stack) {
+        log('Login with Google Error: $error\n$stack');
+        throw validateError(error);
+      },
+    );
   }
 
   Future<void> resetPassword(String email) async {
-    await _auth.resetPassword(email.trim());
+    await apiCall(
+      callHandler: () => _auth.resetPassword(email.trim()),
+      errorHandler: (error, stack) {
+        log('Reset password Error: $error\n$stack');
+        throw validateError(error);
+      },
+    );
   }
 
   Future<void> logout() async {
@@ -67,5 +75,21 @@ class SignInController extends BaseController {
   void removeValidationError(SignInErrorFieldsEnum field) {
     validationErrorMessages.remove(field);
     notifyListeners();
+  }
+
+  String validateError(String errorMessage) {
+    errorMessage = errorMessage.toLowerCase();
+
+    if (errorMessage.contains('internal error')) {
+      validationErrorMessages.clear();
+      validationErrorMessages[SignInErrorFieldsEnum.INTERNAL_SERVER_ERROR] =
+          SignInErrorFieldsEnum.INTERNAL_SERVER_ERROR.message;
+    } else if (errorMessage.contains('password')) {
+      validationErrorMessages.clear();
+      validationErrorMessages[
+              SignInErrorFieldsEnum.INCORRECT_EMAIL_OR_PASSWORD] =
+          SignInErrorFieldsEnum.INCORRECT_EMAIL_OR_PASSWORD.message;
+    }
+    return validationErrorMessages.values.first;
   }
 }
