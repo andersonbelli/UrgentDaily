@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../../routes.dart';
 import '../../controllers/settings/settings.controller.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key, required this.controller});
 
-  static const routeName = '/settings';
+  static const String routeName = Routes.settings;
 
   final SettingsController controller;
 

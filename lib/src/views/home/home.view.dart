@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../routes.dart';
 import '../../controllers/auth/sign_in.controller.dart';
 import '../../controllers/calendar/calendar.controller.dart';
 import '../../controllers/home/home.controller.dart';
@@ -27,7 +28,7 @@ class HomeView extends StatelessWidget {
   final HomeController homeController = getIt.get<HomeController>();
   final user = getIt<FirebaseAuth>().currentUser;
 
-  static const routeName = '/';
+  static const String routeName = Routes.home;
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +94,7 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.important,
-                              color:
-                                  TaskPriority.IMPORTANT.color.withOpacity(0.5),
+                              color: TaskPriority.IMPORTANT.color.withOpacity(0.5),
                               tasks: homeController.importantTasks,
                             ),
                           );
@@ -104,8 +104,7 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.importantNotUrgent,
-                              color: TaskPriority.IMPORTANT_NOT_URGENT.color
-                                  .withOpacity(0.5),
+                              color: TaskPriority.IMPORTANT_NOT_URGENT.color.withOpacity(0.5),
                               tasks: homeController.importantNotUrgentTasks,
                             ),
                           );
@@ -115,8 +114,7 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.notImportant,
-                              color: TaskPriority.NOT_IMPORTANT.color
-                                  .withOpacity(0.3),
+                              color: TaskPriority.NOT_IMPORTANT.color.withOpacity(0.3),
                               tasks: homeController.notImportantTasks,
                             ),
                           );
@@ -164,12 +162,8 @@ class MenuDrawer extends StatelessWidget {
         children: <Widget>[
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: AppColors.GREEN),
-            accountName: user != null && !user!.isAnonymous
-                ? Text(user?.displayName ?? t.noName)
-                : Text(t.guestUser),
-            accountEmail: user != null && !user!.isAnonymous
-                ? Text(user?.email ?? '')
-                : Text(t.anonymousSession),
+            accountName: user != null && !user!.isAnonymous ? Text(user?.displayName ?? t.noName) : Text(t.guestUser),
+            accountEmail: user != null && !user!.isAnonymous ? Text(user?.email ?? '') : Text(t.anonymousSession),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: user != null && !user!.isAnonymous

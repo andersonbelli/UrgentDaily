@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../routes.dart';
 import '../../../controllers/auth/sign_in.controller.dart';
 import '../../../helpers/constants/colors.constants.dart';
 import '../../../helpers/constants/padding.constants.dart';
@@ -20,7 +21,7 @@ import '../sign_up/sign_up.view.dart';
 class SignInView extends StatelessWidget {
   SignInView({super.key});
 
-  static const routeName = '/sing_in';
+  static const String routeName = Routes.singIn;
 
   final auth = getIt<SignInController>();
 
