@@ -6,7 +6,8 @@ import 'error_fields.dart';
 enum SignInErrorFieldsEnum implements ErrorFields {
   EMAIL_CANT_BE_EMPTY,
   PASSWORD_CANT_BE_EMPTY,
-  INCORRECT_EMAIL_OR_PASSWORD;
+  INCORRECT_EMAIL_OR_PASSWORD,
+  INTERNAL_SERVER_ERROR;
 
   @override
   String get message {
@@ -17,6 +18,8 @@ enum SignInErrorFieldsEnum implements ErrorFields {
         return t.passwordCantBeEmpty;
       case INCORRECT_EMAIL_OR_PASSWORD:
         return t.incorrectEmailOrPassword;
+      case INTERNAL_SERVER_ERROR:
+        return t.internalServerError;
       default:
         return '';
     }
