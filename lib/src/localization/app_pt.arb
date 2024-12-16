@@ -62,6 +62,7 @@
   "incorrectEmailOrPassword": "Email ou senha incorrectos",
   "resetPasswordEmailSent": "Email de recuperação de senha enviado. Por favor, verifique seu email.",
   "logout": "Sair",
+  "or": "ou",
   
   "@_SIGN_UP": {},
   "invalidEmail": "Email inválido",

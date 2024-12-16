@@ -15,7 +15,7 @@ class CreateNewTask extends StatelessWidget {
       children: [
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: AppPadding.MEDIUM),
+          padding: const EdgeInsets.symmetric(vertical: AppPadding.size16),
           child: DashedDivider(
             borderColor: Theme.of(context).colorScheme.primary,
           ),

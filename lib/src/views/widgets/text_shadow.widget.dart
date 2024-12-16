@@ -31,7 +31,7 @@ class TextShadow extends StatelessWidget {
         fontWeight: weight,
         shadows: [
           Shadow(
-            offset: const Offset(1, 1),
+            offset: const Offset(0.3, 0.5),
             color: Theme.of(context)
                 .colorScheme
                 .inverseSurface

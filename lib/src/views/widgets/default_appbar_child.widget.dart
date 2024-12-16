@@ -15,7 +15,7 @@ class DefaultAppBarChild extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: AppPadding.SMALL),
+          padding: const EdgeInsets.symmetric(vertical: AppPadding.size8),
           child: child,
         ),
         Divider(height: 4, color: Theme.of(context).highlightColor),

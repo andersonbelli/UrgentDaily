@@ -62,6 +62,7 @@
   "incorrectEmailOrPassword": "Incorrect Email or Password",
   "resetPasswordEmailSent": "Password reset email sent. Please check your inbox.",
   "logout": "Logout",
+  "or": "or",
 
   "@_SIGN_UP": {},
   "invalidEmail": "Invalid email address",

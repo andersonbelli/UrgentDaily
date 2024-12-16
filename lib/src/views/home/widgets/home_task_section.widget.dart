@@ -21,10 +21,10 @@ class HomeTaskSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(
-        horizontal: AppPadding.MEDIUM,
-        vertical: AppPadding.SMALL,
+        horizontal: AppPadding.size16,
+        vertical: AppPadding.size8,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: AppPadding.MEDIUM),
+      padding: const EdgeInsets.symmetric(horizontal: AppPadding.size16),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(8),
@@ -42,8 +42,8 @@ class HomeTaskSection extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(
-              vertical: AppPadding.SMALL,
-              horizontal: AppPadding.LARGE,
+              vertical: AppPadding.size8,
+              horizontal: AppPadding.size24,
             ),
             decoration: BoxDecoration(
               color: Colors.amber,
@@ -71,7 +71,7 @@ class HomeTaskSection extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.symmetric(
-              vertical: AppPadding.MEDIUM,
+              vertical: AppPadding.size16,
             ),
             child: ListView.builder(
               shrinkWrap: true,

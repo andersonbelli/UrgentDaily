@@ -37,7 +37,7 @@ class SignUpView extends StatelessWidget {
           title: TextShadow(text: t.signUp),
         ),
         Padding(
-          padding: const EdgeInsets.all(AppPadding.MEDIUM),
+          padding: const EdgeInsets.all(AppPadding.size16),
           child: Form(
             key: auth.formKey,
             child: Column(
@@ -54,13 +54,16 @@ class SignUpView extends StatelessWidget {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: auth.passwordController,
-                  decoration: InputDecoration(labelText: t.password),
-                  obscureText: true,
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: AppPadding.size16,
+                  ),
+                  child: TextFormField(
+                    controller: auth.passwordController,
+                    decoration: InputDecoration(labelText: t.password),
+                    obscureText: true,
+                  ),
                 ),
-                const SizedBox(height: 16),
                 TextFormField(
                   controller: auth.confirmPasswordController,
                   decoration: InputDecoration(labelText: t.confirmPassword),
@@ -72,7 +75,7 @@ class SignUpView extends StatelessWidget {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppPadding.size24),
                 ElevatedButton(
                   child: Text(t.signUp),
                   onPressed: () async {

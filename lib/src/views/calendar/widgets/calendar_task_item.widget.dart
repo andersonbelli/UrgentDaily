@@ -26,8 +26,8 @@ class CalendarTaskItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(
-        horizontal: AppPadding.SMALL,
-        vertical: AppPadding.SMALL / 2,
+        horizontal: AppPadding.size8,
+        vertical: AppPadding.size8 / 2,
       ),
       child: ListTile(
         onTap: () async => await showTaskModal(
@@ -57,8 +57,8 @@ class CalendarTaskItem extends StatelessWidget {
           backgroundColor: AppColors.GREEN,
           textColor: AppColors.DARK,
           padding: const EdgeInsets.symmetric(
-            horizontal: AppPadding.SMALL,
-            vertical: AppPadding.SMALL / 2,
+            horizontal: AppPadding.size8,
+            vertical: AppPadding.size8 / 2,
           ),
           isLabelVisible: isCompleted,
         ),
