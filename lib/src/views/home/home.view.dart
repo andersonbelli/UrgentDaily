@@ -10,7 +10,6 @@ import '../../helpers/di/di.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../../localization/localization.dart';
-import '../auth/sign_in/sign_in.view.dart';
 import '../calendar/calendar.view.dart';
 import '../widgets/default_appbar_child.widget.dart';
 import '../widgets/loading.widget.dart';
@@ -94,7 +93,8 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.important,
-                              color: TaskPriority.IMPORTANT.color.withOpacity(0.5),
+                              color:
+                                  TaskPriority.IMPORTANT.color.withOpacity(0.5),
                               tasks: homeController.importantTasks,
                             ),
                           );
@@ -104,7 +104,8 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.importantNotUrgent,
-                              color: TaskPriority.IMPORTANT_NOT_URGENT.color.withOpacity(0.5),
+                              color: TaskPriority.IMPORTANT_NOT_URGENT.color
+                                  .withOpacity(0.5),
                               tasks: homeController.importantNotUrgentTasks,
                             ),
                           );
@@ -114,7 +115,8 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.notImportant,
-                              color: TaskPriority.NOT_IMPORTANT.color.withOpacity(0.3),
+                              color: TaskPriority.NOT_IMPORTANT.color
+                                  .withOpacity(0.3),
                               tasks: homeController.notImportantTasks,
                             ),
                           );
@@ -162,8 +164,12 @@ class MenuDrawer extends StatelessWidget {
         children: <Widget>[
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: AppColors.GREEN),
-            accountName: user != null && !user!.isAnonymous ? Text(user?.displayName ?? t.noName) : Text(t.guestUser),
-            accountEmail: user != null && !user!.isAnonymous ? Text(user?.email ?? '') : Text(t.anonymousSession),
+            accountName: user != null && !user!.isAnonymous
+                ? Text(user?.displayName ?? t.noName)
+                : Text(t.guestUser),
+            accountEmail: user != null && !user!.isAnonymous
+                ? Text(user?.email ?? '')
+                : Text(t.anonymousSession),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: user != null && !user!.isAnonymous
@@ -182,11 +188,9 @@ class MenuDrawer extends StatelessWidget {
               title: Text(t.signIn),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => SignInView(),
-                  ),
+                  Routes.singIn,
                 );
               },
             ),
@@ -197,11 +201,9 @@ class MenuDrawer extends StatelessWidget {
               onTap: () async {
                 await getIt<SignInController>().logout();
                 if (context.mounted) {
-                  Navigator.pushReplacement(
+                  Navigator.pushReplacementNamed(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => SignInView(),
-                    ),
+                    Routes.singIn,
                   );
                 }
               },
