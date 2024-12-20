@@ -7,8 +7,8 @@ import 'loading.widget.dart';
 class DefaultScaffold extends StatelessWidget {
   const DefaultScaffold({
     super.key,
-    required this.child,
     required this.controller,
+    required this.child,
     this.appBarText,
     this.customAppBar,
   }) : assert(
