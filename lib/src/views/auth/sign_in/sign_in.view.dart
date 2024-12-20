@@ -16,7 +16,6 @@ import '../../widgets/message_dialog.widget.dart';
 import '../../widgets/text_field_with_title.widget.dart';
 import '../../widgets/text_shadow.widget.dart';
 import '../../widgets/text_underline.widget.dart';
-import '../sign_up/sign_up.view.dart';
 
 class SignInView extends StatelessWidget {
   SignInView({super.key});
@@ -176,13 +175,9 @@ class SignInView extends StatelessWidget {
                         t.signUp,
                         textSize: 20,
                       ),
-                      onPressed: () => showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (context) => FractionallySizedBox(
-                          heightFactor: 0.9,
-                          child: SignUpView(),
-                        ),
+                      onPressed: () => Navigator.pushNamed(
+                        context,
+                        Routes.signUp,
                       ),
                     ),
                   ],
