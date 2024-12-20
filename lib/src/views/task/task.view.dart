@@ -48,20 +48,7 @@ class _TaskViewState extends State<TaskView> {
                     children: [
                       ListTile(
                         dense: true,
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.close,
-                            color: Theme.of(context).colorScheme.inverseSurface,
-                            shadows: [
-                              BoxShadow(
-                                color: AppColors.DARK.withOpacity(0.3),
-                                blurRadius: 0.4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
+                        trailing: const CloseButton(),
                         title: TextShadow(
                           text: controller.taskId == null
                               ? t.newTask
