@@ -14,7 +14,7 @@ class DefaultScaffold extends StatelessWidget {
   }) : assert(
           (appBarText != null && customAppBar == null) ||
               (appBarText == null && customAppBar != null),
-          'Either [appBarText] or [customAppBar] must be provided, but not both.',
+          'Exactly one of [appBarText] or [customAppBar] must be provided.',
         );
 
   final String? appBarText;
