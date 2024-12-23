@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../../controllers/base_controller.dart';
 import 'default_appbar_child.widget.dart';
-import 'loading.widget.dart';
 
 class DefaultScaffold extends StatelessWidget {
   const DefaultScaffold({
     super.key,
-    required this.controller,
     required this.child,
     this.appBarText,
     this.customAppBar,
   }) : assert(
           (appBarText != null && customAppBar == null) ||
               (appBarText == null && customAppBar != null),
-          'Exactly one of [appBarText] or [customAppBar] must be provided.',
+          'Either [appBarText] or [customAppBar] must be provided.',
         );
 
   final String? appBarText;
   final AppBar? customAppBar;
   final Widget child;
-  final BaseController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +28,7 @@ class DefaultScaffold extends StatelessWidget {
               ),
             )
           : customAppBar,
-      body: ListenableBuilder(
-        listenable: controller,
-        builder: (context, _) {
-          return Stack(
-            children: [
-              child,
-              loadingWidget(controller.isLoading),
-            ],
-          );
-        },
-      ),
+      body: child,
     );
   }
 }

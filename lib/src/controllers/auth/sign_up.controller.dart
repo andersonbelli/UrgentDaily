@@ -18,6 +18,12 @@ class SignUpController extends BaseController {
 
   SignUpController({required AuthService auth}) : _auth = auth;
 
+  bool get isButtonDisabled =>
+      validationErrorMessages.isNotEmpty ||
+      (emailController.text.isEmpty &&
+          passwordController.text.isEmpty &&
+          confirmPasswordController.text.isEmpty);
+
   Future<void> signUpWithEmail(String email, String password) async {
     toggleLoading();
     await _auth
@@ -42,13 +48,17 @@ class SignUpController extends BaseController {
   }
 
   void validateEmail(String value) {
-    if (value.isEmpty) {
+    if (value.isEmpty &&
+        validationErrorMessages[SignUpErrorFieldsEnum.EMAIL_CANT_BE_EMPTY] ==
+            null) {
       validationErrorMessages[SignUpErrorFieldsEnum.EMAIL_CANT_BE_EMPTY] =
           SignUpErrorFieldsEnum.EMAIL_CANT_BE_EMPTY.message;
+      return;
     }
 
     final RegExp emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value)) {
+    if (!emailRegex.hasMatch(value) &&
+        validationErrorMessages[SignUpErrorFieldsEnum.INVALID_EMAIL] == null) {
       validationErrorMessages[SignUpErrorFieldsEnum.INVALID_EMAIL] =
           SignUpErrorFieldsEnum.INVALID_EMAIL.message;
     }
