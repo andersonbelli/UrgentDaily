@@ -15,25 +15,24 @@ class ErrorMessagesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: isVisible,
-      child: Flexible(
-        child: Container(
-          padding: const EdgeInsets.all(AppPadding.size16),
-          color: Theme.of(context).focusColor,
-          child: ListView.builder(
-            itemCount: errorMessagesList.length,
-            clipBehavior: Clip.antiAlias,
-            itemBuilder: (context, index) {
-              return Text(
-                '* ${errorMessagesList.values.elementAt(index)}',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-              );
-            },
-          ),
-        ),
+    if (!isVisible || errorMessagesList.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(AppPadding.size16),
+      color: Theme.of(context).focusColor,
+      child: ListView(
+        shrinkWrap: true,
+        children: errorMessagesList.values.map((message) {
+          return Text(
+            '* $message',
+            textAlign: TextAlign.start,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+          );
+        }).toList(),
       ),
     );
   }
