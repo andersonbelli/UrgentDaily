@@ -14,7 +14,6 @@ void main() async {
   await EnvFlavorController.loadEnvironment();
 
   await Firebase.initializeApp(
-    name: 'UrgentDaily',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
