@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -9,7 +10,15 @@ class AuthService {
 
   AuthService(this._auth) {
     if (kDebugMode) {
-      _auth.useAuthEmulator('127.0.0.1', 9099);
+      _auth
+          .useAuthEmulator(
+            dotenv.env['firebase_auth_ip']!,
+            int.parse(dotenv.env['firebase_auth_port']!),
+          )
+          .timeout(
+            const Duration(seconds: 5),
+            onTimeout: () => log('ERROR -> Authentication timeout'),
+          );
     }
   }
 
