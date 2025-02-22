@@ -25,7 +25,8 @@
 - **App**
     - Flutter
 - **Backend**
-    - Pocketbase
+    - ~~Pocketbase~~
+    - Firebase
 
 ---
 ### Screenshots
