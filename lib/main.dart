@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
+import 'flavors.dart';
 import 'src/app.dart';
 import 'src/controllers/settings/env_flavor.controller.dart';
 import 'src/controllers/settings/settings.controller.dart';
@@ -14,6 +15,7 @@ void main() async {
   await EnvFlavorController.loadEnvironment();
 
   await Firebase.initializeApp(
+    name: F.title,
     options: DefaultFirebaseOptions.currentPlatform,
   );
 

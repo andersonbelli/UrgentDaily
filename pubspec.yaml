@@ -2,12 +2,12 @@ name: urgent_daily
 description: "Your Daily Urgency organized!"
 
 # Prevent accidental publishing to pub.dev.
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.1
+  sdk: ^3.6.1
 
 dependencies:
   flutter:
@@ -24,12 +24,16 @@ dependencies:
   google_sign_in: ^6.2.2
   google_sign_in_web: ^0.12.4+3
 
+  abelliz_essentials:
+    path: "../abelliz_essentials"
+
+  mobkit_dashed_border: any
 dev_dependencies:
+  flutter_flavorizr: ^2.2.3
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^5.0.0
-  mobkit_dashed_border: ^0.0.6
 
 flutter:
   uses-material-design: true
@@ -41,3 +45,16 @@ flutter:
     # Add assets from the images directory to the application.
     - assets/images/
     - .env
+
+flavorizr:
+  app:
+    ios:
+      flavorDimensions: "dev"
+  flavors:
+    dev:
+      app:
+        name: "UrgentDaily"
+      ios:
+        bundleId: "com.abelli.urgentdaily"
+        firebase:
+          config: "ios/Flutter/GoogleService-Info.plist"
