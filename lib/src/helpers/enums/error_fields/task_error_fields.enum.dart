@@ -14,8 +14,6 @@ enum TaskErrorFieldsEnum implements ErrorFields {
         return t.title;
       case DAYS_OF_WEEK:
         return t.recursiveTaskSelectOneDay;
-      default:
-        return '';
     }
   }
 }

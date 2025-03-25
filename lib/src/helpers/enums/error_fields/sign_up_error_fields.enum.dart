@@ -38,8 +38,6 @@ enum SignUpErrorFieldsEnum implements ErrorFields {
         return t.passwordRequiresSpecialCharacter;
       case INTERNAL_SERVER_ERROR:
         return t.internalServerError;
-      default:
-        return '';
     }
   }
 }

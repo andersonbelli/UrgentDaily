@@ -20,8 +20,6 @@ enum SignInErrorFieldsEnum implements ErrorFields {
         return t.incorrectEmailOrPassword;
       case INTERNAL_SERVER_ERROR:
         return t.internalServerError;
-      default:
-        return '';
     }
   }
 }

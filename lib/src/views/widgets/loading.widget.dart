@@ -7,7 +7,7 @@ Widget loadingWidget(bool isLoading) => isLoading
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          color: AppColors.CREAM.withOpacity(0.7),
+          color: AppColors.CREAM.withValues(alpha: 0.7),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),

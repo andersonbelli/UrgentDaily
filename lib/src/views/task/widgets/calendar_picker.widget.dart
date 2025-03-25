@@ -40,14 +40,11 @@ class CalendarPickerWidget extends StatelessWidget {
             ),
             Text(
               taskController.selectedDate.formatDate(),
-              style: Theme.of(context)
-                  .textTheme
-                  .displaySmall
-                  ?.copyWith(fontSize: 18),
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 18),
               textAlign: TextAlign.start,
             ),
             Divider(
-              color: AppColors.DARK_LIGHT.withOpacity(0.8),
+              color: AppColors.DARK_LIGHT.withValues(alpha: 0.8),
             ),
           ],
         ),

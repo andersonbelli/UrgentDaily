@@ -18,7 +18,7 @@ class CloseButton extends StatelessWidget {
         color: Theme.of(context).colorScheme.inverseSurface,
         shadows: [
           BoxShadow(
-            color: AppColors.DARK.withOpacity(0.3),
+            color: AppColors.DARK.withValues(alpha: 0.3),
             blurRadius: 0.4,
             offset: const Offset(0, 2),
           ),

@@ -83,7 +83,7 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.urgent,
-                              color: TaskPriority.URGENT.color.withOpacity(0.5),
+                              color: TaskPriority.URGENT.color.withValues(alpha: 0.5),
                               tasks: homeController.urgentTasks,
                             ),
                           );
@@ -93,8 +93,7 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.important,
-                              color:
-                                  TaskPriority.IMPORTANT.color.withOpacity(0.5),
+                              color: TaskPriority.IMPORTANT.color.withValues(alpha: 0.5),
                               tasks: homeController.importantTasks,
                             ),
                           );
@@ -104,8 +103,7 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.importantNotUrgent,
-                              color: TaskPriority.IMPORTANT_NOT_URGENT.color
-                                  .withOpacity(0.5),
+                              color: TaskPriority.IMPORTANT_NOT_URGENT.color.withValues(alpha: 0.5),
                               tasks: homeController.importantNotUrgentTasks,
                             ),
                           );
@@ -115,8 +113,7 @@ class HomeView extends StatelessWidget {
                           listOfSections.add(
                             HomeTaskSection(
                               title: t.notImportant,
-                              color: TaskPriority.NOT_IMPORTANT.color
-                                  .withOpacity(0.3),
+                              color: TaskPriority.NOT_IMPORTANT.color.withValues(alpha: 0.3),
                               tasks: homeController.notImportantTasks,
                             ),
                           );
@@ -164,12 +161,8 @@ class MenuDrawer extends StatelessWidget {
         children: <Widget>[
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: AppColors.GREEN),
-            accountName: user != null && !user!.isAnonymous
-                ? Text(user?.displayName ?? t.noName)
-                : Text(t.guestUser),
-            accountEmail: user != null && !user!.isAnonymous
-                ? Text(user?.email ?? '')
-                : Text(t.anonymousSession),
+            accountName: user != null && !user!.isAnonymous ? Text(user?.displayName ?? t.noName) : Text(t.guestUser),
+            accountEmail: user != null && !user!.isAnonymous ? Text(user?.email ?? '') : Text(t.anonymousSession),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: user != null && !user!.isAnonymous

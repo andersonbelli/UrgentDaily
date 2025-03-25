@@ -33,7 +33,7 @@ class DashedDivider extends StatelessWidget {
         border: DashedBorder.fromBorderSide(
           dashLength: dashLength,
           side: BorderSide(
-            color: borderColor.withOpacity(0.3),
+            color: borderColor.withValues(alpha: 0.3),
             width: borderWidth,
           ),
         ),
