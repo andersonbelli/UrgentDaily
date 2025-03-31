@@ -12,7 +12,8 @@ enum SignUpErrorFieldsEnum implements ErrorFields {
   PASSWORD_REQUIRES_UPPERCASE,
   PASSWORD_REQUIRES_LOWERCASE,
   PASSWORD_REQUIRES_NUMBER,
-  PASSWORD_REQUIRES_SPECIAL_CHARACTER;
+  PASSWORD_REQUIRES_SPECIAL_CHARACTER,
+  INTERNAL_SERVER_ERROR;
 
   @override
   String get message {
@@ -35,8 +36,8 @@ enum SignUpErrorFieldsEnum implements ErrorFields {
         return t.passwordRequiresNumber;
       case PASSWORD_REQUIRES_SPECIAL_CHARACTER:
         return t.passwordRequiresSpecialCharacter;
-      default:
-        return '';
+      case INTERNAL_SERVER_ERROR:
+        return t.internalServerError;
     }
   }
 }

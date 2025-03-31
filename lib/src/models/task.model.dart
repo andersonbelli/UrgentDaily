@@ -41,7 +41,8 @@ class Task {
     this.isRecursive = false,
     this.recursiveDays = const {},
   }) {
-    id ??= '${DateTime.now().toString().trim().replaceAll(' ', '')}-${const Uuid().v4()}';
+    id ??=
+        '${DateTime.now().toString().trim().replaceAll(' ', '')}-${const Uuid().v4()}';
   }
 
   Map<String, dynamic> toJson() => {

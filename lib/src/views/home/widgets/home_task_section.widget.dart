@@ -30,7 +30,7 @@ class HomeTaskSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: AppColors.GRAY.withOpacity(0.2),
+            color: AppColors.GRAY.withValues(alpha: 0.2),
             spreadRadius: 1,
             blurRadius: 2,
             offset: const Offset(0, 2),
@@ -53,7 +53,7 @@ class HomeTaskSection extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.DARK.withOpacity(0.2),
+                  color: AppColors.DARK.withValues(alpha: 0.2),
                   spreadRadius: 2,
                   blurRadius: 8,
                   offset: const Offset(0, 3),

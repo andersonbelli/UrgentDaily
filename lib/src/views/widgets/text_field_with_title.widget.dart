@@ -39,9 +39,7 @@ class TextFieldWithTitle extends StatelessWidget {
         ),
         errorBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: hasError
-                ? Theme.of(context).colorScheme.error
-                : AppColors.DARK_LIGHT.withOpacity(0.6),
+            color: hasError ? Theme.of(context).colorScheme.error : AppColors.DARK_LIGHT.withValues(alpha: 0.6),
             width: 1.5,
           ),
         ),

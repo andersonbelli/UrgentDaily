@@ -48,24 +48,9 @@ class _TaskViewState extends State<TaskView> {
                     children: [
                       ListTile(
                         dense: true,
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.close,
-                            color: Theme.of(context).colorScheme.inverseSurface,
-                            shadows: [
-                              BoxShadow(
-                                color: AppColors.DARK.withOpacity(0.3),
-                                blurRadius: 0.4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
+                        trailing: const CloseButton(),
                         title: TextShadow(
-                          text: controller.taskId == null
-                              ? t.newTask
-                              : controller.originalTitle,
+                          text: controller.taskId == null ? t.newTask : controller.originalTitle,
                           shadowOpacity: 0.5,
                         ),
                       ),
@@ -73,20 +58,15 @@ class _TaskViewState extends State<TaskView> {
                         title: t.title,
                         child: TextFieldWithTitle(
                           hintText: t.whatAreYouPlanning,
-                          hasError: controller.validationErrorMessages
-                              .containsKey(TaskErrorFieldsEnum.TITLE),
-                          errorText: controller.validationErrorMessages
-                                  .containsKey(TaskErrorFieldsEnum.TITLE)
-                              ? controller.validationErrorMessages[
-                                      TaskErrorFieldsEnum.TITLE] ??
-                                  ''
+                          hasError: controller.validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE),
+                          errorText: controller.validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)
+                              ? controller.validationErrorMessages[TaskErrorFieldsEnum.TITLE] ?? ''
                               : '',
                           controller: controller.title,
                           onChanged: (value) {
                             controller.title.clearComposing();
                             if (value.trim().isNotEmpty &&
-                                controller.validationErrorMessages
-                                    .containsKey(TaskErrorFieldsEnum.TITLE)) {
+                                controller.validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)) {
                               controller.removeValidationError(
                                 TaskErrorFieldsEnum.TITLE,
                               );
@@ -109,8 +89,7 @@ class _TaskViewState extends State<TaskView> {
                         children: [
                           Checkbox(
                             value: controller.isRecursive,
-                            onChanged: (value) =>
-                                controller.toggleRecursive(recursive: value),
+                            onChanged: (value) => controller.toggleRecursive(recursive: value),
                             checkColor: AppColors.DARK,
                             activeColor: AppColors.GREEN,
                           ),
@@ -120,9 +99,7 @@ class _TaskViewState extends State<TaskView> {
                               t.recursiveTask,
                               style: TextStyle(
                                 fontSize: AppTextSize.MEDIUM,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .inverseSurface,
+                                color: Theme.of(context).colorScheme.inverseSurface,
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.italic,
                               ),
@@ -146,8 +123,7 @@ class _TaskViewState extends State<TaskView> {
                             t.priority,
                             style: TextStyle(
                               fontSize: AppTextSize.MEDIUM,
-                              color:
-                                  Theme.of(context).colorScheme.inverseSurface,
+                              color: Theme.of(context).colorScheme.inverseSurface,
                               fontWeight: FontWeight.w300,
                               fontStyle: FontStyle.italic,
                             ),
@@ -193,8 +169,7 @@ class _TaskViewState extends State<TaskView> {
       },
       child: Expanded(
         child: GreenButton(
-          text:
-              widget.taskController.taskId == null ? t.createTask : t.editTask,
+          text: widget.taskController.taskId == null ? t.createTask : t.editTask,
           isDisabled: controller.validationErrorMessages.isNotEmpty,
           onTap: () {
             widget.taskController.validateFields();
@@ -298,7 +273,7 @@ class RadioPriority extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(2),
-                    color: priority.color.withOpacity(0.3),
+                    color: priority.color.withValues(alpha: 0.3),
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppPadding.size16,
@@ -394,23 +369,18 @@ class DaysOfWeekItem extends StatelessWidget {
       child: FilterChip(
         shape: CircleBorder(
           side: BorderSide(
-            color:
-                selected ? AppColors.GREEN : Theme.of(context).highlightColor,
+            color: selected ? AppColors.GREEN : Theme.of(context).highlightColor,
           ),
         ),
         labelPadding: const EdgeInsets.all(4.0),
         showCheckmark: false,
-        color: selected
-            ? WidgetStateProperty.all(AppColors.DARK)
-            : WidgetStateProperty.all(Colors.transparent),
+        color: selected ? WidgetStateProperty.all(AppColors.DARK) : WidgetStateProperty.all(Colors.transparent),
         label: FittedBox(
           fit: BoxFit.fitWidth,
           child: Text(
             dayOfWeek,
             style: TextStyle(
-              color: selected
-                  ? AppColors.GREEN
-                  : Theme.of(context).colorScheme.inverseSurface,
+              color: selected ? AppColors.GREEN : Theme.of(context).colorScheme.inverseSurface,
             ),
           ),
         ),

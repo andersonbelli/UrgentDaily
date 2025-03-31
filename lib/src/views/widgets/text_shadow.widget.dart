@@ -32,10 +32,7 @@ class TextShadow extends StatelessWidget {
         shadows: [
           Shadow(
             offset: const Offset(0.3, 0.5),
-            color: Theme.of(context)
-                .colorScheme
-                .inverseSurface
-                .withOpacity(shadowOpacity),
+            color: Theme.of(context).colorScheme.inverseSurface.withValues(alpha: shadowOpacity),
           ),
         ],
       ),

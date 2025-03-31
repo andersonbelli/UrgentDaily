@@ -45,7 +45,7 @@ class CalendarTaskItem extends StatelessWidget {
         ),
         style: ListTileStyle.drawer,
         textColor: AppColors.DARK,
-        tileColor: priority.color.withOpacity(0.5),
+        tileColor: priority.color.withValues(alpha: 0.5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: const BorderSide(

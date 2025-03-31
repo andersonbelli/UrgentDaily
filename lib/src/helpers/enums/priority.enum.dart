@@ -22,8 +22,6 @@ enum TaskPriority {
         return AppColors.BLUE_LIGHT;
       case NOT_IMPORTANT:
         return AppColors.GRAY_LIGHT;
-      default:
-        return AppColors.GRAY_LIGHT;
     }
   }
 }

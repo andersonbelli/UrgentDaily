@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../../flavors.dart';
 import '../../helpers/constants/env_flavors.constants.dart';
 
 class EnvFlavorController {
   static String get envFlavor {
-    String? flavor = 'dev';
+    String? flavor = F.appFlavor?.name;
+
     if (appFlavor != null && envFlavors.containsKey(appFlavor)) {
       flavor = appFlavor;
     } else {

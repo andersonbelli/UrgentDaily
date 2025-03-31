@@ -52,3 +52,7 @@ windows
 /android/app/*.json
 *.jks
 /ios/*.plist
+
+# FVM Version Cache
+.fvm/
+web/index.html
