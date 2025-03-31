@@ -1,17 +1,24 @@
 import 'dart:developer';
 
 import '../../helpers/enums/priority.enum.dart';
+import '../../localization/localization.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
+import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
 import '../task/task.controller.dart';
 
 class HomeController extends BaseController {
-  HomeController(this.taskController) {
+  HomeController({
+    required this.taskController,
+    required this.tasksService,
+  }) {
     loadUserTasks();
   }
 
-  final TaskController taskController;
+  final TasksService tasksService;
+
+  final TaskController taskController; // TODO: REMOVE THIS DEPENDCY
 
   /// Current Date state
   late DateTime _selectedDate = DateTime.now();
@@ -30,6 +37,12 @@ class HomeController extends BaseController {
   final List<Task> _tasks = [];
 
   List<Task> get tasks => _tasks;
+
+  String validateError(String errorMessage) {
+    errorMessage = errorMessage.toLowerCase();
+
+    return 't.failedToLoadTasks';
+  }
 
   void addTask(Task task) async {
     toggleLoading();
@@ -119,10 +132,7 @@ class HomeController extends BaseController {
   }
 
   /// Priority lists
-  final List<Task> urgentTasks = [],
-      importantTasks = [],
-      importantNotUrgentTasks = [],
-      notImportantTasks = [];
+  final List<Task> urgentTasks = [], importantTasks = [], importantNotUrgentTasks = [], notImportantTasks = [];
 
   List<Task> _listOfTaskDependingOnPriority(Task task) {
     switch (task.priority) {
@@ -133,25 +143,31 @@ class HomeController extends BaseController {
       case TaskPriority.IMPORTANT_NOT_URGENT:
         return importantNotUrgentTasks;
       case TaskPriority.NOT_IMPORTANT:
-      default:
         return notImportantTasks;
     }
   }
 
-  int _getTaskIndex(Task task, List<Task> listOfTasks) =>
-      listOfTasks.indexWhere((t) => t.id == task.id);
+  int _getTaskIndex(Task task, List<Task> listOfTasks) => listOfTasks.indexWhere((t) => t.id == task.id);
 
   Future<void> loadUserTasks() async {
     clearTasksLists();
-    toggleLoading();
 
-    final userTasks = await taskController.loadTasksForDate(selectedDate);
-    _tasks.addAll(userTasks.tasks);
+    await apiCall(
+      callHandler: () async {
+        final userTasks = await tasksService.loadTasks(selectedDate);
+        if (userTasks != null) {
+          _tasks.addAll(userTasks.tasks);
 
-    _separateTasksByPriority();
+          _separateTasksByPriority();
+        }
+      },
+      errorHandler: (error, stack) {
+        log('Load User Tasks Error - $runtimeType: $error\n$stack');
+        throw validateError(error);
+      },
+    );
 
     notifyListeners();
-    toggleLoading();
   }
 
   void _separateTasksByPriority() {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../helpers/enums/error_fields/task_error_fields.enum.dart';
@@ -24,14 +26,13 @@ class TaskController extends BaseController {
   String originalTitle = '';
 
   /// Filed validation
-  ErrorMessagesMap<TaskErrorFieldsEnum> validationErrorMessages = {};
+  ErrorMessagesMap<TaskErrorFieldsEnum> fieldsValidationErrorMessages = {};
 
   /// Task state
   final TasksService _tasksService;
   late Task classTask;
 
-  TaskController({required TasksService tasksService})
-      : _tasksService = tasksService;
+  TaskController({required TasksService tasksService}) : _tasksService = tasksService;
 
   void taskData({Task? task}) {
     if (task != null) {
@@ -83,8 +84,7 @@ class TaskController extends BaseController {
   }
 
   void selectRecursiveDay(RecursiveDay day, bool selected) {
-    final Map<RecursiveDay, bool> newSelectedDays =
-        Map.from(selectedDaysOfWeek);
+    final Map<RecursiveDay, bool> newSelectedDays = Map.from(selectedDaysOfWeek);
     newSelectedDays[day] = selected;
     selectedDaysOfWeek = newSelectedDays;
 
@@ -131,7 +131,7 @@ class TaskController extends BaseController {
     return hasTaskBeenRemoved;
   }
 
-  Future<UserTasks> loadTasksForDate(DateTime date) async {
+  Future<UserTasks?> loadTasksForDate(DateTime date) async {
     toggleLoading();
     final loadedTasks = await _tasksService.loadTasks(date);
     toggleLoading();
@@ -160,23 +160,20 @@ class TaskController extends BaseController {
     final Map<RecursiveDay, bool> newSelectedDays = Map.from({});
     selectedDaysOfWeek = newSelectedDays;
 
-    validationErrorMessages.clear();
+    fieldsValidationErrorMessages.clear();
 
     notifyListeners();
   }
 
   /// Field validation
   void validateFields() {
-    if (title.text.isEmpty &&
-        !validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)) {
-      validationErrorMessages[TaskErrorFieldsEnum.TITLE] =
-          TaskErrorFieldsEnum.TITLE.message;
+    if (title.text.isEmpty && !fieldsValidationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)) {
+      fieldsValidationErrorMessages[TaskErrorFieldsEnum.TITLE] = TaskErrorFieldsEnum.TITLE.message;
     }
 
     if (isRecursive == true) {
       if (isRecursiveDaysValid() == false) {
-        validationErrorMessages[TaskErrorFieldsEnum.DAYS_OF_WEEK] =
-            TaskErrorFieldsEnum.DAYS_OF_WEEK.message;
+        fieldsValidationErrorMessages[TaskErrorFieldsEnum.DAYS_OF_WEEK] = TaskErrorFieldsEnum.DAYS_OF_WEEK.message;
       }
     }
 
@@ -184,7 +181,7 @@ class TaskController extends BaseController {
   }
 
   void removeValidationError(TaskErrorFieldsEnum field) {
-    validationErrorMessages.remove(field);
+    fieldsValidationErrorMessages.remove(field);
     notifyListeners();
   }
 
