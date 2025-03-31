@@ -58,15 +58,15 @@ class _TaskViewState extends State<TaskView> {
                         title: t.title,
                         child: TextFieldWithTitle(
                           hintText: t.whatAreYouPlanning,
-                          hasError: controller.validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE),
-                          errorText: controller.validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)
-                              ? controller.validationErrorMessages[TaskErrorFieldsEnum.TITLE] ?? ''
+                          hasError: controller.fieldsValidationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE),
+                          errorText: controller.fieldsValidationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)
+                              ? controller.fieldsValidationErrorMessages[TaskErrorFieldsEnum.TITLE] ?? ''
                               : '',
                           controller: controller.title,
                           onChanged: (value) {
                             controller.title.clearComposing();
                             if (value.trim().isNotEmpty &&
-                                controller.validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)) {
+                                controller.fieldsValidationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)) {
                               controller.removeValidationError(
                                 TaskErrorFieldsEnum.TITLE,
                               );
@@ -160,8 +160,8 @@ class _TaskViewState extends State<TaskView> {
               ),
             ),
             ErrorMessagesContainer(
-              isVisible: controller.validationErrorMessages.isNotEmpty,
-              errorMessagesList: controller.validationErrorMessages,
+              isVisible: controller.fieldsValidationErrorMessages.isNotEmpty,
+              errorMessagesList: controller.fieldsValidationErrorMessages,
             ),
             child!,
           ],
@@ -170,11 +170,11 @@ class _TaskViewState extends State<TaskView> {
       child: Expanded(
         child: GreenButton(
           text: widget.taskController.taskId == null ? t.createTask : t.editTask,
-          isDisabled: controller.validationErrorMessages.isNotEmpty,
+          isDisabled: controller.fieldsValidationErrorMessages.isNotEmpty,
           onTap: () {
             widget.taskController.validateFields();
 
-            if (widget.taskController.validationErrorMessages.isEmpty) {
+            if (widget.taskController.fieldsValidationErrorMessages.isEmpty) {
               controller.taskData();
 
               if (controller.taskId != null) {

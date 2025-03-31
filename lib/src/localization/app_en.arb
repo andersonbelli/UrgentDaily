@@ -41,6 +41,8 @@
   "errorTitle": "Oops, something is not right",
   "errorOkButton": "Okay",
   "internalServerError": "A server error has occurred.\nPlease try again in a few minutes :)",
+  "failedToLoadTasks": "Failed to load your tasks :(",
+  "tryAgain": "Try again",
 
   "@_HOME": {},
   "home": "Home",
