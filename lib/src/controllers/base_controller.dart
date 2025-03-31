@@ -11,14 +11,14 @@ class BaseController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> apiCall<T>({
+  Future<T?> apiCall<T>({
     required Future<T> Function() callHandler,
     required void Function(String error, StackTrace stack) errorHandler,
   }) async {
     toggleLoading();
 
     try {
-      await callHandler();
+      return await callHandler();
     } catch (error, stack) {
       errorHandler(error.toString(), stack);
       rethrow;
