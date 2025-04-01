@@ -56,3 +56,4 @@ windows
 # FVM Version Cache
 .fvm/
 web/index.html
+/.tmp

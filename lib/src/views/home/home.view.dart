@@ -194,7 +194,7 @@ class MenuDrawer extends StatelessWidget {
               onTap: () async {
                 await getIt<SignInController>().logout();
                 if (context.mounted) {
-                  Navigator.pushReplacementNamed(
+                  Navigator.pushNamed(
                     context,
                     Routes.singIn,
                   );
