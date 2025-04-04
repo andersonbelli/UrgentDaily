@@ -9,10 +9,10 @@ class AuthService {
   final FirebaseAuth _auth;
 
   AuthService(this._auth) {
-    if (kDebugMode) {
+    if (bool.parse(dotenv.env['is_offline']!)) {
       _auth
           .useAuthEmulator(
-            dotenv.env['firebase_auth_ip']!,
+            dotenv.env['firebase_emulator_host']!,
             int.parse(dotenv.env['firebase_auth_port']!),
           )
           .timeout(
@@ -56,8 +56,7 @@ class AuthService {
           return;
         }
 
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
+        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
@@ -76,8 +75,7 @@ class AuthService {
     try {
       await _auth.sendPasswordResetEmail(email: email.trim());
     } on FirebaseAuthException catch (e) {
-      throw e.message ??
-          'An error occurred while sending password reset email.';
+      throw e.message ?? 'An error occurred while sending password reset email.';
     }
   }
 

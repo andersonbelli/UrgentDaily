@@ -1,4 +1,5 @@
 import 'package:auto_injector/auto_injector.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -20,6 +21,7 @@ void configureDependencies() async {
 
   // Register Firebase services
   getIt.addSingleton(() => FirebaseAuth.instance);
+  getIt.addSingleton(() => FirebaseFirestore.instance);
 
   // Services
   getIt.add(TasksService.new);

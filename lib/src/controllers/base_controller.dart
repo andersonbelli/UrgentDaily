@@ -21,9 +21,9 @@ class BaseController with ChangeNotifier {
       return await callHandler();
     } catch (error, stack) {
       errorHandler(error.toString(), stack);
-      rethrow;
     } finally {
       toggleLoading();
     }
+    return null;
   }
 }
