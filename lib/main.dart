@@ -29,8 +29,11 @@ void main() async {
 
   await getIt.get<SettingsController>().loadSettings();
 
-  // TODO: Move anonymous sign-in to SplashScreen loading
-  await getIt.get<AuthService>().signInAnonymously();
+  try {
+    await getIt.get<AuthService>().signInAnonymously().timeout(const Duration(seconds: 10));
+  } catch (e) {
+    debugPrint('❌ Anonymous sign-in failed or timed out: $e');
+  }
 
   runApp(MyApp());
 }
