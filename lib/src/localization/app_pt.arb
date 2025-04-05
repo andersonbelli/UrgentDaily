@@ -3,6 +3,9 @@
 
   "@_GENERAL": {},
   "createNew": "CRIAR NOVA TAREFA",
+  "okay": "Okay",
+  "cancel": "Cancelar",
+  "done": "Finalizar",
 
   "@_NO_TASKS": {},
   "noTasksYet": "Sem tarefas :(",
@@ -39,10 +42,17 @@
 
   "@_ERROR": {},
   "errorTitle": "Oops, algo não está certo",
-  "errorOkButton": "Okay",
-  "internalServerError": "Ocorreu um erro no servidor.\nPor favor tente novamente em alguns minutos :)",
+  "internalServerError": "Ocorreu um erro inesperado.\nPor favor tente novamente em alguns minutos :)",
   "failedToLoadTasks": "Ocorreu um erro ao carregar suas tarefas :(",
+  "failedToAddTask": "Erro ao criar tarefa, por favor tente novamente :(",
   "tryAgain": "Tentar novamente",
+
+  "@_TASK_ERROR": {},
+  "taskNotFound": "Tarefa não encontrada",
+  "titleCantBeEmpty": "O título não pode estar vazio.",
+  "failedToCreateTask": "Falha ao criar a tarefa.",
+  "failedToUpdateTask": "Falha ao atualizar a tarefa.",
+  "failedToDeleteTask": "Falha ao excluir a tarefa.",
 
   "@_HOME": {},
   "home": "Início",
@@ -59,6 +69,10 @@
   "signUp": "Registrar-se",
   "emailCantBeEmpty": "Por favor, digite seu email",
   "passwordCantBeEmpty": "Por favor, digite sua senha",
+
+  "actionCantBeUndone": "Esta ação não pode ser desfeita.",
+  "confirmDelete": "Você confirma a exclusão?",
+  "doneEditingTasks": "Você terminou de editar as tarefas?",
   
   "@_SIGN_IN": {},
   "signIn": "Login",

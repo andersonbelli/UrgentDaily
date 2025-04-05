@@ -3,6 +3,9 @@
 
   "@_GENERAL": {},
   "createNew": "CREATE NEW",
+  "okay": "Okay",
+  "cancel": "Cancel",
+  "done": "Done",
 
   "@_NO_TASKS": {},
   "noTasksYet": "No tasks yet :(",
@@ -39,10 +42,17 @@
 
   "@_ERROR": {},
   "errorTitle": "Oops, something is not right",
-  "errorOkButton": "Okay",
-  "internalServerError": "A server error has occurred.\nPlease try again in a few minutes :)",
+  "internalServerError": "An unexpected error occurred.\nPlease try again in a few minutes :)",
   "failedToLoadTasks": "Failed to load your tasks :(",
+  "failedToAddTask": "Failed to add task, please try again :(",
   "tryAgain": "Try again",
+
+  "@_TASK_ERROR": {},
+  "taskNotFound": "Task not found",
+  "titleCantBeEmpty": "The title cannot be empty.",
+  "failedToCreateTask": "Failed to create the task.",
+  "failedToUpdateTask": "Failed to update the task.",
+  "failedToDeleteTask": "Failed to delete the task.",
 
   "@_HOME": {},
   "home": "Home",
@@ -59,6 +69,10 @@
   "signUp": "Sign Up",
   "emailCantBeEmpty": "Please enter your email address.",
   "passwordCantBeEmpty": "Please enter your password",
+
+  "actionCantBeUndone": "This action can't be undone.",
+  "confirmDelete": "Do you confirm the deletion?",
+  "doneEditingTasks": "Are you done editing the tasks?",
 
   "@_SIGN_IN": {},
   "signIn": "Login",
