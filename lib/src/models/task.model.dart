@@ -43,13 +43,29 @@ class Task {
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
-        'taskPriority': priority,
-        'date': date,
-        'taskCompleted': isCompleted,
+        'priority': priority.index,
+        'date': date?.toIso8601String(),
+        'isCompleted': isCompleted,
         'description': description,
-        'recursive': isRecursive,
-        'recursiveDays': recursiveDays,
+        'isRecursive': isRecursive,
+        'recursiveDays': recursiveDays.map((key, value) => MapEntry(key.index.toString(), value)),
       };
+
+  factory Task.fromFirebaseMap(Map<String, dynamic> map) {
+    return Task(
+      id: map['id'],
+      title: map['title'],
+      priority: TaskPriority.values[map['priority']], // Convert index back to Enum
+      date: map['date'] != null ? DateTime.parse(map['date']) : null,
+      isCompleted: map['isCompleted'] ?? false,
+      description: map['description'],
+      isRecursive: map['isRecursive'] ?? false,
+      recursiveDays: (map['recursiveDays'] as Map<String, dynamic>?)?.map(
+            (key, value) => MapEntry(RecursiveDay.values[int.parse(key)], value as bool),
+          ) ??
+          {},
+    );
+  }
 
   factory Task.fromJson(Map<String, dynamic> map) => Task(
         id: map['id'] as String,
