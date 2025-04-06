@@ -29,7 +29,7 @@
   "urgent": "Urgent",
   "important": "Important",
   "importantNotUrgent": "Important, not urgent",
-  "notImportant": "Not important",
+  "notPriority": "Not priority",
   "createTask": "CREATE TASK",
   "editTask": "EDIT TASK",
 

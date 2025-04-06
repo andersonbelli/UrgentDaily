@@ -8,7 +8,7 @@ enum TaskPriority {
   URGENT,
   IMPORTANT,
   IMPORTANT_NOT_URGENT,
-  NOT_IMPORTANT;
+  NOT_PRIORITY;
 
   String get name => toString().split('_').join(' ');
 
@@ -20,7 +20,7 @@ enum TaskPriority {
         return AppColors.PURPLE;
       case IMPORTANT_NOT_URGENT:
         return AppColors.BLUE_LIGHT;
-      case NOT_IMPORTANT:
+      case NOT_PRIORITY:
         return AppColors.GRAY_LIGHT;
     }
   }
