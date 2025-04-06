@@ -9,8 +9,7 @@ import '../task/task.controller.dart';
 
 class CalendarController extends BaseController {
   /// Current Date state
-  late final ValueNotifier<DateTime> focusedDate =
-      ValueNotifier(DateTime.now());
+  late final ValueNotifier<DateTime> focusedDate = ValueNotifier(DateTime.now());
 
   DateTime get getFocusedDate => focusedDate.value;
 
@@ -31,7 +30,7 @@ class CalendarController extends BaseController {
   List<UserTasks> get twoWeeksTasks => _twoWeeksTasks;
   bool tasksAlreadyLoaded = false;
 
-  void loadTasksForTwoWeeks() async {
+  Future<void> loadTasksForTwoWeeks() async {
     final userTasks = await taskController.loadTasksForTwoWeeks(
       _visibleDates.first.convertStringToDateTime(),
       _visibleDates.last.convertStringToDateTime(),
@@ -81,7 +80,7 @@ class CalendarController extends BaseController {
   /// Visible dates state
   final List<String> _visibleDates = [];
 
-  updateVisibleDates(String date) {
+  Future<void> updateVisibleDates(String date) async {
     if (!tasksAlreadyLoaded && !_visibleDates.contains(date)) {
       _visibleDates.add(date);
 
@@ -97,7 +96,7 @@ class CalendarController extends BaseController {
           });
         }
         if (!tasksAlreadyLoaded) {
-          loadTasksForTwoWeeks();
+          await loadTasksForTwoWeeks();
         }
       }
     }
