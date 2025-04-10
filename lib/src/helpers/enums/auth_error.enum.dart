@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'error_fields/error_fields.dart';
 
 enum AuthErrorEnum implements ErrorFields {

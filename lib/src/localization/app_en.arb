@@ -89,5 +89,14 @@
   "passwordRequiresUppercase": "Password requires at least one uppercase letter",
   "passwordRequiresLowercase": "Password requires at least one lowercase letter",
   "passwordRequiresNumber": "Password requires at least one number",
-  "passwordRequiresSpecialCharacter": "Password requires at least one special character. (e.g. @#$&!)"
+  "passwordRequiresSpecialCharacter": "Password requires at least one special character. (e.g. @#$&!)",
+
+  "@_AUTH_ERROR": {},
+  "unexpectedErrorSignIn": "An error occurred during login.",
+  "unexpectedErrorSignUp": "An error occurred during sign-up.",
+  "errorGoogleSignIn": "An error occurred during Google sign-in.",
+  "unexpectedErrorGoogleSignIn": "Unexpected error during Google sign-in.",
+  "googleAccountAlreadyLinked": "This Google account is already linked with another user.",
+  "errorResetPasswordEmail": "An error occurred while sending password reset email.",
+  "errorAnonymousSignIn": "An error occurred during anonymous sign-in."
 }

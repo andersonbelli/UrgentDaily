@@ -89,5 +89,14 @@
   "passwordRequiresUppercase": "Senhar requer ao menos uma letra MAIÚSCULA",
   "passwordRequiresLowercase": "Senhar requer ao menos uma letra MINÚSCULA",
   "passwordRequiresNumber": "Senha requer ao menos um NÚMERO",
-  "passwordRequiresSpecialCharacter": "Senha requer ao menos um caracter especial. (e.g. @#$&!)"
+  "passwordRequiresSpecialCharacter": "Senha requer ao menos um caracter especial. (e.g. @#$&!)",
+
+  "@_AUTH_ERROR": {},
+  "unexpectedErrorSignIn": "Ocorreu um erro durante o login.",
+  "unexpectedErrorSignUp": "Ocorreu um erro durante o registro.",
+  "errorGoogleSignIn": "Ocorreu um erro durante o login do Google.",
+  "unexpectedErrorGoogleSignIn": "Erro inesperado durante o login do Google.",
+  "googleAccountAlreadyLinked": "Esta conta do Google já está vinculada a outro usuário.",
+  "errorResetPasswordEmail": "Ocorreu um erro ao enviar um e-mail de redefinição de senha.",
+  "errorAnonymousSignIn": "Ocorreu um erro durante o login anônimo."
 }
