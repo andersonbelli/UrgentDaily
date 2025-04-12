@@ -74,6 +74,9 @@
   "confirmDelete": "Do you confirm the deletion?",
   "doneEditingTasks": "Are you done editing the tasks?",
 
+  "confirmLogout": "Do you want to log out?",
+  "loginToSaveYourTasks": "Login to save your tasks :)",
+
   "@_SIGN_IN": {},
   "signIn": "Login",
   "incorrectEmailOrPassword": "Incorrect Email or Password",
@@ -92,6 +95,7 @@
   "passwordRequiresSpecialCharacter": "Password requires at least one special character. (e.g. @#$&!)",
 
   "@_AUTH_ERROR": {},
+  "pleaseLoginFirst": "Please, login first",
   "unexpectedErrorSignIn": "An error occurred during login.",
   "unexpectedErrorSignUp": "An error occurred during sign-up.",
   "errorGoogleSignIn": "An error occurred during Google sign-in.",

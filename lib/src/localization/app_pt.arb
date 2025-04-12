@@ -57,7 +57,7 @@
   "@_HOME": {},
   "home": "Início",
   "noName": "Sem nome",
-  "guestUser": "Convidado",
+  "guestUser": "Usuário convidado",
   "registerNow": "Registre-se agora!",
   "anonymousSession": "Sessão anônima",
 
@@ -73,6 +73,9 @@
   "actionCantBeUndone": "Esta ação não pode ser desfeita.",
   "confirmDelete": "Você confirma a exclusão?",
   "doneEditingTasks": "Você terminou de editar as tarefas?",
+
+  "confirmLogout": "Deseja sair da sua conta?",
+  "makeLoginToSaveYourTasks": "faça Login para salvar suas tarefas :)",
   
   "@_SIGN_IN": {},
   "signIn": "Login",
@@ -92,6 +95,7 @@
   "passwordRequiresSpecialCharacter": "Senha requer ao menos um caracter especial. (e.g. @#$&!)",
 
   "@_AUTH_ERROR": {},
+  "pleaseLoginFirst": "Please, login first",
   "unexpectedErrorSignIn": "Ocorreu um erro durante o login.",
   "unexpectedErrorSignUp": "Ocorreu um erro durante o registro.",
   "errorGoogleSignIn": "Ocorreu um erro durante o login do Google.",
