@@ -19,7 +19,9 @@ import '../widgets/text_shadow.widget.dart';
 import 'widgets/calendar_picker.widget.dart';
 
 class TaskView extends StatefulWidget {
-  TaskView({super.key});
+  TaskView({super.key, this.date});
+
+  final DateTime? date;
 
   final TaskController taskController = getIt<TaskController>();
 
@@ -28,6 +30,13 @@ class TaskView extends StatefulWidget {
 }
 
 class _TaskViewState extends State<TaskView> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.date != null) widget.taskController.selectDate(widget.date!);
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = widget.taskController;
