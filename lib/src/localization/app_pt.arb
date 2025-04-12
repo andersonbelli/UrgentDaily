@@ -75,7 +75,7 @@
   "doneEditingTasks": "Você terminou de editar as tarefas?",
 
   "confirmLogout": "Deseja sair da sua conta?",
-  "makeLoginToSaveYourTasks": "faça Login para salvar suas tarefas :)",
+  "loginToSaveYourTasks": "faça Login para salvar suas tarefas :)",
   
   "@_SIGN_IN": {},
   "signIn": "Login",
