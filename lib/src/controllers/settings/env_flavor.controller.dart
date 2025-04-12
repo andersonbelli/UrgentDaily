@@ -8,7 +8,7 @@ import '../../helpers/constants/env_flavors.constants.dart';
 
 class EnvFlavorController {
   static String get envFlavor {
-    String? flavor = F.appFlavor?.name;
+    String? flavor = F.appFlavor.name;
 
     if (appFlavor != null && envFlavors.containsKey(appFlavor)) {
       flavor = appFlavor;

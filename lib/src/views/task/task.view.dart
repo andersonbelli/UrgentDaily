@@ -14,7 +14,6 @@ import '../widgets/base_controller_ui.widget.dart';
 import '../widgets/dashed_border.widget.dart';
 import '../widgets/error_messages_container.widget.dart';
 import '../widgets/green_button.widget.dart';
-import '../widgets/snackbar.widget.dart';
 import '../widgets/text_field_with_title.widget.dart';
 import '../widgets/text_shadow.widget.dart';
 import 'widgets/calendar_picker.widget.dart';

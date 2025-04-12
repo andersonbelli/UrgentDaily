@@ -127,7 +127,7 @@ class AuthService {
     if (currentUser != null) {
       _user = currentUser;
     } else {
-      throw 'User not logged!';
+      throw t.pleaseLoginFirst;
     }
   }
 }

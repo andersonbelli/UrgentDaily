@@ -95,7 +95,7 @@
   "passwordRequiresSpecialCharacter": "Senha requer ao menos um caracter especial. (e.g. @#$&!)",
 
   "@_AUTH_ERROR": {},
-  "pleaseLoginFirst": "Please, login first",
+  "pleaseLoginFirst": "Por favor, faça login primeiro",
   "unexpectedErrorSignIn": "Ocorreu um erro durante o login.",
   "unexpectedErrorSignUp": "Ocorreu um erro durante o registro.",
   "errorGoogleSignIn": "Ocorreu um erro durante o login do Google.",
