@@ -10,9 +10,11 @@ import '../../helpers/enums/error_fields/task_error_fields.enum.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/recursive_days.enum.dart';
 import '../../localization/localization.dart';
+import '../widgets/base_controller_ui.widget.dart';
 import '../widgets/dashed_border.widget.dart';
 import '../widgets/error_messages_container.widget.dart';
 import '../widgets/green_button.widget.dart';
+import '../widgets/snackbar.widget.dart';
 import '../widgets/text_field_with_title.widget.dart';
 import '../widgets/text_shadow.widget.dart';
 import 'widgets/calendar_picker.widget.dart';
@@ -34,6 +36,8 @@ class _TaskViewState extends State<TaskView> {
     return ListenableBuilder(
       listenable: widget.taskController,
       builder: (context, child) {
+        baseControllerUI(context, widget.taskController);
+
         return Column(
           children: [
             Expanded(
@@ -147,9 +151,9 @@ class _TaskViewState extends State<TaskView> {
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: t.notImportant.toLowerCase(),
+                            title: t.notPriority.toLowerCase(),
                             groupPriority: controller.taskPriority,
-                            priority: TaskPriority.NOT_IMPORTANT,
+                            priority: TaskPriority.NOT_PRIORITY,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                         ],
@@ -171,18 +175,20 @@ class _TaskViewState extends State<TaskView> {
         child: GreenButton(
           text: widget.taskController.taskId == null ? t.createTask : t.editTask,
           isDisabled: controller.fieldsValidationErrorMessages.isNotEmpty,
-          onTap: () {
+          onTap: () async {
             widget.taskController.validateFields();
 
             if (widget.taskController.fieldsValidationErrorMessages.isEmpty) {
               controller.taskData();
 
               if (controller.taskId != null) {
-                controller.editTask();
+                await controller.editTask();
               } else {
-                controller.createTask();
+                await controller.createTask();
               }
-              Navigator.pop(context, widget.taskController.classTask);
+              if (context.mounted) {
+                Navigator.pop(context, widget.taskController.classTask);
+              }
             }
           },
         ),
