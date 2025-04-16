@@ -4,16 +4,14 @@ import '../helpers/enums/priority.enum.dart';
 import '../helpers/enums/recursive_days.enum.dart';
 
 class Task {
-  static final mockTasksList1 = MockTasks.tasks1;
-  static final mockTasksList2 = MockTasks.tasks2;
-  static final mockTasksList3 = MockTasks.tasks3;
-
   late String? id;
 
   /// Mandatory fields
+  final String userId;
   final String title;
   final TaskPriority priority;
-  final DateTime? date; // Not mandatory - default value = day of creation
+  final String? date; // Not mandatory - default value = day of creation
+  final DateTime? fullDate;
 
   /// Optional fields
   final bool isCompleted;
@@ -27,9 +25,11 @@ class Task {
     this.id,
 
     /// Mandatory fields
+    required this.userId,
     required this.title,
     required this.priority,
     required this.date,
+    this.fullDate,
 
     /// Not mandatory - default value = day of creation
 
@@ -41,26 +41,45 @@ class Task {
     this.isRecursive = false,
     this.recursiveDays = const {},
   }) {
-    id ??=
-        '${DateTime.now().toString().trim().replaceAll(' ', '')}-${const Uuid().v4()}';
+    id ??= '${DateTime.now().toString().trim().replaceAll(' ', '')}-${const Uuid().v4()}';
   }
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'userId': userId,
         'title': title,
-        'taskPriority': priority,
+        'priority': priority.index,
         'date': date,
-        'taskCompleted': isCompleted,
+        'fullDate': fullDate?.toIso8601String(),
+        'isCompleted': isCompleted,
         'description': description,
-        'recursive': isRecursive,
-        'recursiveDays': recursiveDays,
+        'isRecursive': isRecursive,
+        'recursiveDays': recursiveDays.map((key, value) => MapEntry(key.index.toString(), value)),
       };
+
+  factory Task.fromFirebaseMap(Map<String, dynamic> map) => Task(
+        id: map['id'],
+        userId: map['userId'],
+        title: map['title'],
+        priority: TaskPriority.values[map['priority']], // Convert index back to Enum
+        date: map['date'],
+        fullDate: map['fullDate'] != null ? DateTime.parse(map['fullDate']) : null,
+        isCompleted: map['isCompleted'] ?? false,
+        description: map['description'],
+        isRecursive: map['isRecursive'] ?? false,
+        recursiveDays: (map['recursiveDays'] as Map<String, dynamic>?)?.map(
+              (key, value) => MapEntry(RecursiveDay.values[int.parse(key)], value as bool),
+            ) ??
+            {},
+      );
 
   factory Task.fromJson(Map<String, dynamic> map) => Task(
         id: map['id'] as String,
+        userId: map['userId'] as String,
         title: map['title'] as String,
         priority: map['taskPriority'] as TaskPriority,
-        date: map['date'] as DateTime,
+        date: map['date'] as String,
+        fullDate: map['fullDate'] as DateTime,
         isCompleted: map['taskCompleted'] as bool,
         description: map['description'] as String,
         isRecursive: map['recursive'] as bool,
@@ -69,9 +88,11 @@ class Task {
 
   Task copyWith({
     String? id,
+    String? userId,
     String? title,
     TaskPriority? priority,
-    DateTime? date,
+    String? date,
+    DateTime? fullDate,
     bool? isCompleted,
     String? description,
     bool? isRecursive,
@@ -79,54 +100,14 @@ class Task {
   }) =>
       Task(
         id: id ?? this.id,
+        userId: userId ?? this.userId,
         title: title ?? this.title,
         priority: priority ?? this.priority,
         date: date ?? this.date,
+        fullDate: fullDate ?? this.fullDate,
         isCompleted: isCompleted ?? this.isCompleted,
         description: description ?? this.description,
         isRecursive: isRecursive ?? this.isRecursive,
         recursiveDays: recursiveDays ?? this.recursiveDays,
       );
-}
-
-/// Mock Tasks data
-class MockTasks {
-  static final Task _task1 = Task(
-    title: 'Exercise 15 minutes',
-    description: 'Description of Task 1',
-    priority: TaskPriority.IMPORTANT,
-    isRecursive: true,
-    recursiveDays: {RecursiveDay.MON: true, RecursiveDay.WED: true},
-    date: DateTime(2024, 09, 03),
-    isCompleted: true,
-  );
-  static final Task _task2 = Task(
-    title: 'Pay bills',
-    description: 'Description of Task 2',
-    priority: TaskPriority.URGENT,
-    date: DateTime(2024, 09, 20),
-  );
-  static final Task _task3 = Task(
-    title: 'Clean desk',
-    description: 'Clean desk',
-    priority: TaskPriority.NOT_IMPORTANT,
-    date: DateTime(2024, 09, 03),
-    isCompleted: true,
-  );
-  static final Task _task4 = Task(
-    title: 'Play guitar',
-    description: 'description of Task 4',
-    priority: TaskPriority.NOT_IMPORTANT,
-    date: DateTime(2024, 09, 03),
-  );
-  static final Task _task5 = Task(
-    title: 'Study for exams',
-    description: 'description of Task 5',
-    priority: TaskPriority.IMPORTANT,
-    date: DateTime(2024, 09, 03),
-  );
-
-  static final List<Task> tasks1 = [_task1, _task2, _task3];
-  static final List<Task> tasks2 = [_task2, _task4, _task5];
-  static final List<Task> tasks3 = [_task4, _task3, _task5];
 }

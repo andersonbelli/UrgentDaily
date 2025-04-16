@@ -10,6 +10,7 @@ import '../../helpers/enums/error_fields/task_error_fields.enum.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/recursive_days.enum.dart';
 import '../../localization/localization.dart';
+import '../widgets/base_controller_ui.widget.dart';
 import '../widgets/dashed_border.widget.dart';
 import '../widgets/error_messages_container.widget.dart';
 import '../widgets/green_button.widget.dart';
@@ -18,7 +19,9 @@ import '../widgets/text_shadow.widget.dart';
 import 'widgets/calendar_picker.widget.dart';
 
 class TaskView extends StatefulWidget {
-  TaskView({super.key});
+  TaskView({super.key, this.date});
+
+  final DateTime? date;
 
   final TaskController taskController = getIt<TaskController>();
 
@@ -28,12 +31,21 @@ class TaskView extends StatefulWidget {
 
 class _TaskViewState extends State<TaskView> {
   @override
+  void initState() {
+    super.initState();
+
+    if (widget.date != null) widget.taskController.selectDate(widget.date!);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final controller = widget.taskController;
 
     return ListenableBuilder(
       listenable: widget.taskController,
       builder: (context, child) {
+        baseControllerUI(context, widget.taskController);
+
         return Column(
           children: [
             Expanded(
@@ -58,15 +70,15 @@ class _TaskViewState extends State<TaskView> {
                         title: t.title,
                         child: TextFieldWithTitle(
                           hintText: t.whatAreYouPlanning,
-                          hasError: controller.validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE),
-                          errorText: controller.validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)
-                              ? controller.validationErrorMessages[TaskErrorFieldsEnum.TITLE] ?? ''
+                          hasError: controller.fieldsValidationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE),
+                          errorText: controller.fieldsValidationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)
+                              ? controller.fieldsValidationErrorMessages[TaskErrorFieldsEnum.TITLE] ?? ''
                               : '',
                           controller: controller.title,
                           onChanged: (value) {
                             controller.title.clearComposing();
                             if (value.trim().isNotEmpty &&
-                                controller.validationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)) {
+                                controller.fieldsValidationErrorMessages.containsKey(TaskErrorFieldsEnum.TITLE)) {
                               controller.removeValidationError(
                                 TaskErrorFieldsEnum.TITLE,
                               );
@@ -105,6 +117,17 @@ class _TaskViewState extends State<TaskView> {
                               ),
                             ),
                           ),
+                          if (controller.fieldsValidationErrorMessages.containsKey(TaskErrorFieldsEnum.DAYS_OF_WEEK))
+                            Padding(
+                              padding: const EdgeInsets.only(left: AppPadding.size8),
+                              child: Text(
+                                t.selectADay,
+                                overflow: TextOverflow.fade,
+                                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                      color: Theme.of(context).colorScheme.error,
+                                    ),
+                              ),
+                            ),
                         ],
                       ),
                       const SizedBox(height: 5),
@@ -147,9 +170,9 @@ class _TaskViewState extends State<TaskView> {
                             selectedPriority: controller.selectTaskPriority,
                           ),
                           RadioPriority(
-                            title: t.notImportant.toLowerCase(),
+                            title: t.notPriority.toLowerCase(),
                             groupPriority: controller.taskPriority,
-                            priority: TaskPriority.NOT_IMPORTANT,
+                            priority: TaskPriority.NOT_PRIORITY,
                             selectedPriority: controller.selectTaskPriority,
                           ),
                         ],
@@ -160,8 +183,8 @@ class _TaskViewState extends State<TaskView> {
               ),
             ),
             ErrorMessagesContainer(
-              isVisible: controller.validationErrorMessages.isNotEmpty,
-              errorMessagesList: controller.validationErrorMessages,
+              isVisible: controller.fieldsValidationErrorMessages.isNotEmpty,
+              errorMessagesList: controller.fieldsValidationErrorMessages,
             ),
             child!,
           ],
@@ -170,19 +193,21 @@ class _TaskViewState extends State<TaskView> {
       child: Expanded(
         child: GreenButton(
           text: widget.taskController.taskId == null ? t.createTask : t.editTask,
-          isDisabled: controller.validationErrorMessages.isNotEmpty,
-          onTap: () {
+          isDisabled: controller.fieldsValidationErrorMessages.isNotEmpty,
+          onTap: () async {
             widget.taskController.validateFields();
 
-            if (widget.taskController.validationErrorMessages.isEmpty) {
+            if (widget.taskController.fieldsValidationErrorMessages.isEmpty) {
               controller.taskData();
 
               if (controller.taskId != null) {
-                controller.editTask();
+                await controller.editTask();
               } else {
-                controller.createTask();
+                await controller.createTask();
               }
-              Navigator.pop(context, widget.taskController.classTask);
+              if (context.mounted) {
+                Navigator.pop(context, widget.taskController.classTask);
+              }
             }
           },
         ),

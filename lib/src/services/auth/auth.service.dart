@@ -5,14 +5,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../localization/localization.dart';
+
 class AuthService {
   final FirebaseAuth _auth;
 
+  late User _user;
+
+  User get user => _user;
+
   AuthService(this._auth) {
-    if (kDebugMode) {
+    if (bool.parse(dotenv.env['is_offline']!)) {
       _auth
           .useAuthEmulator(
-            dotenv.env['firebase_auth_ip']!,
+            dotenv.env['firebase_emulator_host']!,
             int.parse(dotenv.env['firebase_auth_port']!),
           )
           .timeout(
@@ -24,12 +30,14 @@ class AuthService {
 
   Future<void> loginWithEmail(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
+
+      setUserUid(userCredential.user);
     } on FirebaseAuthException catch (e) {
-      throw e.message ?? 'An error occurred during login.';
+      throw e.message ?? t.unexpectedErrorSignIn;
     }
   }
 
@@ -39,8 +47,12 @@ class AuthService {
         email: email.trim(),
         password: password.trim(),
       );
+
+      final credential = EmailAuthProvider.credential(email: email.trim(), password: password.trim());
+
+      await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
     } on FirebaseAuthException catch (e) {
-      throw e.message ?? 'An error occurred during sign-up.';
+      throw e.message ?? t.unexpectedErrorSignUp;
     }
   }
 
@@ -52,23 +64,33 @@ class AuthService {
         await _auth.signInWithPopup(googleProvider);
       } else {
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-        if (googleUser == null) {
-          return;
-        }
+        if (googleUser == null) return;
 
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
+        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
 
-        await _auth.signInWithCredential(credential);
+        final User? currentUser = _auth.currentUser;
+
+        if (currentUser != null && currentUser.isAnonymous) {
+          // 🔗 Link anonymous user with Google credential
+          final userCredential = await currentUser.linkWithCredential(credential);
+          setUserUid(userCredential.user);
+        } else {
+          final userCredential = await _auth.signInWithCredential(credential);
+          setUserUid(userCredential.user);
+        }
       }
     } on FirebaseAuthException catch (e) {
-      throw e.message ?? 'An error occurred during Google sign-in.';
+      if (e.code == 'credential-already-in-use') {
+        throw t.googleAccountAlreadyLinked;
+      }
+      throw e.message ?? t.errorGoogleSignIn;
     } catch (e) {
-      log('===> Error signing in: $e');
+      log('$runtimeType ===> Error signing in with Google: $e');
+      throw t.unexpectedErrorGoogleSignIn;
     }
   }
 
@@ -76,27 +98,36 @@ class AuthService {
     try {
       await _auth.sendPasswordResetEmail(email: email.trim());
     } on FirebaseAuthException catch (e) {
-      throw e.message ??
-          'An error occurred while sending password reset email.';
+      throw e.message ?? t.errorResetPasswordEmail;
     }
   }
 
   Future<void> logout() async => _auth.signOut();
 
   Future<User?> signInAnonymously() async {
-    User? user = _auth.currentUser;
+    final User? user = _auth.currentUser;
 
-    if (user == null) {
+    if (user?.email == null) {
       try {
         final UserCredential userCredential = await _auth.signInAnonymously();
-        user = userCredential.user;
+        setUserUid(userCredential.user);
       } on FirebaseAuthException catch (e) {
-        throw e.message ?? 'An error occurred during anonymous sign-in.';
+        throw e.message ?? t.errorAnonymousSignIn;
       } catch (e) {
         log('Error signing in anonymously: $e');
       }
+    } else {
+      setUserUid(user);
     }
 
     return user;
+  }
+
+  setUserUid(User? currentUser) {
+    if (currentUser != null) {
+      _user = currentUser;
+    } else {
+      throw t.pleaseLoginFirst;
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:auto_injector/auto_injector.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -18,12 +19,17 @@ final getIt = AutoInjector();
 void configureDependencies() async {
   getIt.addSingleton(() => AppLocalizations.delegate);
 
+  // Settings
+  getIt.addSingleton(SettingsService.new);
+  getIt.addSingleton(SettingsController.new);
+
   // Register Firebase services
   getIt.addSingleton(() => FirebaseAuth.instance);
+  getIt.addSingleton(() => FirebaseFirestore.instance);
 
   // Services
-  getIt.add(TasksService.new);
   getIt.addSingleton(AuthService.new);
+  getIt.add(TasksService.new);
 
   // Controllers
   getIt.addSingleton(BaseController.new);
@@ -32,10 +38,6 @@ void configureDependencies() async {
   getIt.addSingleton(CalendarController.new);
   getIt.addSingleton(SignInController.new);
   getIt.addSingleton(SignUpController.new);
-
-  // Settings
-  getIt.addSingleton(SettingsService.new);
-  getIt.addSingleton(SettingsController.new);
 
   // Inform that you have finished adding instances
   getIt.commit();

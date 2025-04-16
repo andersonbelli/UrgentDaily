@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../helpers/constants/colors.constants.dart';
 import '../../localization/localization.dart';
 
 void showMessageDialog(
@@ -8,6 +9,7 @@ void showMessageDialog(
   String? title,
   String? buttonText,
   VoidCallback? buttonAction,
+  bool showCancelButton = false,
 }) =>
     showDialog(
       context: context,
@@ -17,8 +19,16 @@ void showMessageDialog(
         actions: <Widget>[
           TextButton(
             onPressed: buttonAction ?? () => Navigator.of(ctx).pop(),
-            child: Text(buttonText ?? t.errorOkButton),
+            child: Text(buttonText ?? t.okay),
           ),
+          if (showCancelButton)
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: Text(
+                t.cancel,
+                style: const TextStyle(color: AppColors.RED),
+              ),
+            ),
         ],
       ),
     );

@@ -27,7 +27,6 @@ class SignInView extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       appBarText: t.signIn,
-      controller: auth,
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(AppPadding.size16),
@@ -42,8 +41,7 @@ class SignInView extends StatelessWidget {
                   auth.emailController.clearComposing();
 
                   final isNotEmpty = value.trim().isNotEmpty;
-                  final hasEmptyEmailError =
-                      auth.validationErrorMessages.containsKey(
+                  final hasEmptyEmailError = auth.validationErrorMessages.containsKey(
                     SignInErrorFieldsEnum.EMAIL_CANT_BE_EMPTY,
                   );
 
@@ -64,8 +62,7 @@ class SignInView extends StatelessWidget {
                   auth.passwordController.clearComposing();
 
                   final isNotEmpty = value.trim().isNotEmpty;
-                  final hasEmptyPasswordError =
-                      auth.validationErrorMessages.containsKey(
+                  final hasEmptyPasswordError = auth.validationErrorMessages.containsKey(
                     SignInErrorFieldsEnum.PASSWORD_CANT_BE_EMPTY,
                   );
 
@@ -114,8 +111,7 @@ class SignInView extends StatelessWidget {
               GreenButton(
                 text: t.signIn,
                 margin: EdgeInsets.zero,
-                isDisabled: auth.emailController.text.isEmpty &&
-                    auth.passwordController.text.isEmpty,
+                isDisabled: auth.emailController.text.isEmpty && auth.passwordController.text.isEmpty,
                 onTap: () async {
                   try {
                     await auth.loginWithEmail(
@@ -136,7 +132,7 @@ class SignInView extends StatelessWidget {
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(
-                    AppColors.RED.withOpacity(0.8),
+                    AppColors.RED.withValues(alpha: 0.8),
                   ),
                 ),
                 onPressed: () async {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../controllers/home/home.controller.dart';
+import '../../helpers/di/di.dart';
 import '../task/task.view.dart';
 
 showTaskModal(
@@ -15,7 +17,7 @@ showTaskModal(
 
         return FractionallySizedBox(
           heightFactor: 0.9,
-          child: TaskView(),
+          child: TaskView(date: getIt.get<HomeController>().selectedDate),
         );
       },
     ).whenComplete(() => onCompleteFunction?.call());

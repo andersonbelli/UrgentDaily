@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../../routes.dart';
 import '../../controllers/auth/sign_in.controller.dart';
-import '../../controllers/calendar/calendar.controller.dart';
 import '../../controllers/home/home.controller.dart';
 import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/di/di.dart';
@@ -11,8 +10,10 @@ import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../../localization/localization.dart';
 import '../calendar/calendar.view.dart';
+import '../widgets/base_controller_ui.widget.dart';
 import '../widgets/default_appbar_child.widget.dart';
 import '../widgets/loading.widget.dart';
+import '../widgets/message_dialog.widget.dart';
 import '../widgets/show_task_modal.dart';
 import '../widgets/text_underline.widget.dart';
 import 'widgets/create_new_task.widget.dart';
@@ -31,116 +32,137 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: homeController,
-      builder: (context, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: GestureDetector(
-              onTap: () {
-                getIt.get<CalendarController>().updateTasksOfSelectedDay(
-                      tasks: homeController.tasks,
-                    );
+    return FutureBuilder(
+      future: homeController.loadUserTasks(),
+      builder: (context, _) {
+        baseControllerUI(context, homeController);
 
-                Navigator.restorablePushNamed(
+        return ListenableBuilder(
+          listenable: homeController,
+          builder: (context, child) {
+            return Scaffold(
+              appBar: AppBar(
+                title: GestureDetector(
+                  onTap: () => Navigator.restorablePushNamed(
+                    context,
+                    CalendarView.routeName,
+                  ),
+                  child: DefaultAppBarChild(
+                    TextUnderline(homeController.selectedDate.formatDate()),
+                  ),
+                ),
+                actions: homeController.tasks.isEmpty
+                    ? []
+                    : [
+                        homeController.isEditMode
+                            ? TextButton(
+                                onPressed: () => homeController.toggleEditMode(),
+                                child: Text(
+                                  t.done,
+                                  style: const TextStyle(color: AppColors.BLUE),
+                                ),
+                              )
+                            : IconButton(
+                                onPressed: () => homeController.toggleEditMode(),
+                                icon: const Icon(Icons.edit),
+                              ),
+                      ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () async => await showTaskModal(
                   context,
-                  CalendarView.routeName,
-                );
-              },
-              child: DefaultAppBarChild(
-                TextUnderline(homeController.selectedDate.formatDate()),
+                  onCompleteFunction: homeController.loadUserTasks,
+                ),
+                backgroundColor: AppColors.GREEN,
+                tooltip: t.newTask,
+                shape: const CircleBorder(
+                  side: BorderSide(
+                    color: AppColors.DARK,
+                    width: 2,
+                  ),
+                ),
+                child: const Icon(
+                  Icons.add,
+                  color: AppColors.DARK,
+                ),
               ),
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async => await showTaskModal(
-              context,
-              onCompleteFunction: homeController.loadUserTasks,
-            ),
-            backgroundColor: AppColors.GREEN,
-            tooltip: t.newTask,
-            shape: const CircleBorder(
-              side: BorderSide(
-                color: AppColors.DARK,
-                width: 2,
+              drawer: MenuDrawer(user: user),
+              body: Stack(
+                children: [
+                  homeController.tasks.isEmpty
+                      ? homeController.isLoading
+                          ? const SizedBox.shrink()
+                          : NoTasksYet(homeController)
+                      : Builder(
+                          builder: (context) {
+                            final List<Widget> listOfSections = [];
+
+                            if (homeController.urgentTasks.isNotEmpty) {
+                              listOfSections.add(
+                                HomeTaskSection(
+                                  title: t.urgent,
+                                  color: TaskPriority.URGENT.color.withValues(alpha: 0.5),
+                                  tasks: homeController.urgentTasks,
+                                ),
+                              );
+                            }
+
+                            if (homeController.importantTasks.isNotEmpty) {
+                              listOfSections.add(
+                                HomeTaskSection(
+                                  title: t.important,
+                                  color: TaskPriority.IMPORTANT.color.withValues(alpha: 0.5),
+                                  tasks: homeController.importantTasks,
+                                ),
+                              );
+                            }
+
+                            if (homeController.importantNotUrgentTasks.isNotEmpty) {
+                              listOfSections.add(
+                                HomeTaskSection(
+                                  title: t.importantNotUrgent,
+                                  color: TaskPriority.IMPORTANT_NOT_URGENT.color.withValues(alpha: 0.5),
+                                  tasks: homeController.importantNotUrgentTasks,
+                                ),
+                              );
+                            }
+
+                            if (homeController.notPriorityTasks.isNotEmpty) {
+                              listOfSections.add(
+                                HomeTaskSection(
+                                  title: t.notPriority,
+                                  color: TaskPriority.NOT_PRIORITY.color.withValues(alpha: 0.3),
+                                  tasks: homeController.notPriorityTasks,
+                                ),
+                              );
+                            }
+
+                            listOfSections.add(
+                              const CreateNewTask(),
+                            );
+
+                            final outerListChildren = <SliverList>[
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) => listOfSections[index],
+                                  childCount: listOfSections.length,
+                                ),
+                              ),
+                            ];
+
+                            return CustomScrollView(
+                              slivers: outerListChildren,
+                            );
+                          },
+                        ),
+                  loadingWidget(homeController.isLoading),
+                ],
               ),
-            ),
-            child: const Icon(
-              Icons.add,
-              color: AppColors.DARK,
-            ),
-          ),
-          drawer: MenuDrawer(user: user),
-          body: Stack(
-            children: [
-              homeController.tasks.isEmpty
-                  ? child!
-                  : Builder(
-                      builder: (context) {
-                        final List<Widget> listOfSections = [];
-
-                        if (homeController.urgentTasks.isNotEmpty) {
-                          listOfSections.add(
-                            HomeTaskSection(
-                              title: t.urgent,
-                              color: TaskPriority.URGENT.color.withValues(alpha: 0.5),
-                              tasks: homeController.urgentTasks,
-                            ),
-                          );
-                        }
-
-                        if (homeController.importantTasks.isNotEmpty) {
-                          listOfSections.add(
-                            HomeTaskSection(
-                              title: t.important,
-                              color: TaskPriority.IMPORTANT.color.withValues(alpha: 0.5),
-                              tasks: homeController.importantTasks,
-                            ),
-                          );
-                        }
-
-                        if (homeController.importantNotUrgentTasks.isNotEmpty) {
-                          listOfSections.add(
-                            HomeTaskSection(
-                              title: t.importantNotUrgent,
-                              color: TaskPriority.IMPORTANT_NOT_URGENT.color.withValues(alpha: 0.5),
-                              tasks: homeController.importantNotUrgentTasks,
-                            ),
-                          );
-                        }
-
-                        if (homeController.notImportantTasks.isNotEmpty) {
-                          listOfSections.add(
-                            HomeTaskSection(
-                              title: t.notImportant,
-                              color: TaskPriority.NOT_IMPORTANT.color.withValues(alpha: 0.3),
-                              tasks: homeController.notImportantTasks,
-                            ),
-                          );
-                        }
-
-                        listOfSections.add(const CreateNewTask());
-
-                        final outerListChildren = <SliverList>[
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) => listOfSections[index],
-                              childCount: listOfSections.length,
-                            ),
-                          ),
-                        ];
-
-                        return CustomScrollView(
-                          slivers: outerListChildren,
-                        );
-                      },
-                    ),
-              loadingWidget(homeController.isLoading),
-            ],
-          ),
+            );
+          },
+          // child: baseControllerUI(context, homeController),
         );
       },
-      child: const NoTasksYet(),
     );
   }
 }
@@ -162,7 +184,7 @@ class MenuDrawer extends StatelessWidget {
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: AppColors.GREEN),
             accountName: user != null && !user!.isAnonymous ? Text(user?.displayName ?? t.noName) : Text(t.guestUser),
-            accountEmail: user != null && !user!.isAnonymous ? Text(user?.email ?? '') : Text(t.anonymousSession),
+            accountEmail: user != null && !user!.isAnonymous ? Text(user?.email ?? '') : Text(t.loginToSaveYourTasks),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: user != null && !user!.isAnonymous
@@ -191,15 +213,18 @@ class MenuDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.logout),
               title: Text(t.logout),
-              onTap: () async {
-                await getIt<SignInController>().logout();
-                if (context.mounted) {
-                  Navigator.pushReplacementNamed(
-                    context,
-                    Routes.singIn,
-                  );
-                }
-              },
+              onTap: () => showMessageDialog(
+                context,
+                t.confirmLogout,
+                buttonText: t.confirm,
+                buttonAction: () async {
+                  await getIt<SignInController>().logout();
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+                showCancelButton: true,
+              ),
             ),
         ],
       ),

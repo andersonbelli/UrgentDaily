@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../routes.dart';
 import '../../controllers/calendar/calendar.controller.dart';
 import '../../controllers/home/home.controller.dart';
 import '../../helpers/constants/colors.constants.dart';
@@ -17,7 +18,7 @@ class CalendarView extends StatelessWidget {
   final CalendarController calendarController = getIt.get<CalendarController>();
   final HomeController homeController = getIt.get<HomeController>();
 
-  static const routeName = '/calendar';
+  static const routeName = Routes.calendar;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +35,7 @@ class CalendarView extends StatelessWidget {
             builder: (_, selectedDate, widget) {
               Widget action = widget!;
 
-              if (homeController.selectedDate.formatDate() !=
-                  selectedDate.formatDate()) {
+              if (homeController.selectedDate.formatDate() != selectedDate.formatDate()) {
                 action = TextButton(
                   onPressed: () => homeController
                       .updateSelectedDate(selectedDate)
@@ -71,19 +71,16 @@ class CalendarView extends StatelessWidget {
                     currentDay: calendarController.getFocusedDate,
                     focusedDay: calendarController.getFocusedDate,
                     onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
-                      calendarController
-                          .updateFocusedDate(selectedDay)
-                          .whenComplete(
+                      calendarController.updateFocusedDate(selectedDay).whenComplete(
                             () => calendarController.updateTasksOfSelectedDay(),
                           );
                     },
                     calendarFormat: CalendarFormat.twoWeeks,
                     headerStyle: const HeaderStyle(formatButtonVisible: false),
-                    onPageChanged: (_) =>
-                        calendarController.tasksAlreadyLoaded = false,
+                    onPageChanged: (_) => calendarController.tasksAlreadyLoaded = false,
                     calendarStyle: const CalendarStyle(
                       markerDecoration: BoxDecoration(
-                        color: AppColors.GREEN,
+                        color: AppColors.PURPLE,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -92,14 +89,13 @@ class CalendarView extends StatelessWidget {
                         color: Theme.of(context).indicatorColor,
                       ),
                       weekendStyle: TextStyle(
-                        color:
-                            Theme.of(context).indicatorColor.withOpacity(0.8),
+                        color: Theme.of(context).indicatorColor.withValues(alpha: 0.8),
                       ),
                     ),
                     eventLoader: (DateTime date) {
-                      calendarController.updateVisibleDates(date.formatDate());
-
                       final events = [];
+
+                      calendarController.updateVisibleDates(date.formatDate());
 
                       for (final task in calendarController.twoWeeksTasks) {
                         if (task.date.formatDate() == date.formatDate()) {
@@ -119,8 +115,7 @@ class CalendarView extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: calendarController.tasksOfSelectedDay.length,
                       itemBuilder: (context, index) {
-                        final task =
-                            calendarController.tasksOfSelectedDay[index];
+                        final task = calendarController.tasksOfSelectedDay[index];
 
                         return CalendarTaskItem(
                           task: task,

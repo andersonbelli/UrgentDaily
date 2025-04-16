@@ -74,9 +74,10 @@ class HomeTaskSection extends StatelessWidget {
               vertical: AppPadding.size16,
             ),
             child: ListView.builder(
-              shrinkWrap: true,
+              shrinkWrap: true, // TODO: Refarctor
               itemCount: tasks.length,
               itemBuilder: (context, index) => HomeTaskItem(
+                index: index + 1,
                 task: tasks[index],
               ),
             ),

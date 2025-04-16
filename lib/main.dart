@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -18,13 +19,21 @@ void main() async {
     name: F.title,
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseAppCheck.instance.activate(
+    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    androidProvider: AndroidProvider.debug,
+    appleProvider: AppleProvider.appAttest,
+  );
 
   configureDependencies();
 
   await getIt.get<SettingsController>().loadSettings();
 
-  // TODO: Move anonymous sign-in to SplashScreen loading
-  await getIt.get<AuthService>().signInAnonymously();
+  try {
+    await getIt.get<AuthService>().signInAnonymously().timeout(const Duration(seconds: 10));
+  } catch (e) {
+    debugPrint('❌ Anonymous sign-in failed or timed out: $e');
+  }
 
   runApp(MyApp());
 }

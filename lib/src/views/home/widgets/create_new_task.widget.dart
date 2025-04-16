@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../controllers/home/home.controller.dart';
 import '../../../helpers/constants/padding.constants.dart';
+import '../../../helpers/di/di.dart';
 import '../../../localization/localization.dart';
 import '../../widgets/dashed_border.widget.dart';
 import '../../widgets/green_button.widget.dart';
@@ -22,7 +24,10 @@ class CreateNewTask extends StatelessWidget {
         ),
         GreenButton(
           text: t.createNew,
-          onTap: () async => await showTaskModal(context),
+          onTap: () async => await showTaskModal(
+            context,
+            onCompleteFunction: getIt.get<HomeController>().loadUserTasks,
+          ),
         ),
       ],
     );

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../../../controllers/home/home.controller.dart';
+import '../../../helpers/constants/padding.constants.dart';
 import '../../../helpers/constants/text_sizes.constants.dart';
 import '../../../localization/localization.dart';
+import '../../widgets/green_button.widget.dart';
+import '../../widgets/show_task_modal.dart';
 
 class NoTasksYet extends StatelessWidget {
-  const NoTasksYet({super.key});
+  const NoTasksYet(
+    this.homeController, {
+    super.key,
+  });
+
+  final HomeController homeController;
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +23,6 @@ class NoTasksYet extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 450,
-              child: Image.asset(
-                'images/no_tasks_yet.png',
-                fit: BoxFit.fitWidth,
-              ),
-            ),
             Text(
               t.noTasksYet,
               style: const TextStyle(
@@ -35,6 +37,14 @@ class NoTasksYet extends StatelessWidget {
                 fontSize: AppTextSize.MEDIUM,
                 fontWeight: FontWeight.w200,
                 fontStyle: FontStyle.italic,
+              ),
+            ),
+            GreenButton(
+              text: t.createTask,
+              margin: const EdgeInsets.symmetric(horizontal: AppPadding.size24),
+              onTap: () async => await showTaskModal(
+                context,
+                onCompleteFunction: homeController.loadUserTasks,
               ),
             ),
           ],

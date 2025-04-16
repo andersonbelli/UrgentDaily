@@ -3,6 +3,9 @@
 
   "@_GENERAL": {},
   "createNew": "CREATE NEW",
+  "okay": "Okay",
+  "cancel": "Cancel",
+  "done": "Done",
 
   "@_NO_TASKS": {},
   "noTasksYet": "No tasks yet :(",
@@ -26,7 +29,7 @@
   "urgent": "Urgent",
   "important": "Important",
   "importantNotUrgent": "Important, not urgent",
-  "notImportant": "Not important",
+  "notPriority": "Not priority",
   "createTask": "CREATE TASK",
   "editTask": "EDIT TASK",
 
@@ -39,8 +42,17 @@
 
   "@_ERROR": {},
   "errorTitle": "Oops, something is not right",
-  "errorOkButton": "Okay",
-  "internalServerError": "A server error has occurred.\nPlease try again in a few minutes :)",
+  "internalServerError": "An unexpected error occurred.\nPlease try again in a few minutes :)",
+  "failedToLoadTasks": "Failed to load your tasks :(",
+  "failedToAddTask": "Failed to add task, please try again :(",
+  "tryAgain": "Try again",
+
+  "@_TASK_ERROR": {},
+  "taskNotFound": "Task not found",
+  "titleCantBeEmpty": "The title cannot be empty.",
+  "failedToCreateTask": "Failed to create the task.",
+  "failedToUpdateTask": "Failed to update the task.",
+  "failedToDeleteTask": "Failed to delete the task.",
 
   "@_HOME": {},
   "home": "Home",
@@ -58,6 +70,13 @@
   "emailCantBeEmpty": "Please enter your email address.",
   "passwordCantBeEmpty": "Please enter your password",
 
+  "actionCantBeUndone": "This action can't be undone.",
+  "confirmDelete": "Do you confirm the deletion?",
+  "doneEditingTasks": "Are you done editing the tasks?",
+
+  "confirmLogout": "Do you want to log out?",
+  "loginToSaveYourTasks": "Login to save your tasks :)",
+
   "@_SIGN_IN": {},
   "signIn": "Login",
   "incorrectEmailOrPassword": "Incorrect Email or Password",
@@ -73,5 +92,15 @@
   "passwordRequiresUppercase": "Password requires at least one uppercase letter",
   "passwordRequiresLowercase": "Password requires at least one lowercase letter",
   "passwordRequiresNumber": "Password requires at least one number",
-  "passwordRequiresSpecialCharacter": "Password requires at least one special character. (e.g. @#$&!)"
+  "passwordRequiresSpecialCharacter": "Password requires at least one special character. (e.g. @#$&!)",
+
+  "@_AUTH_ERROR": {},
+  "pleaseLoginFirst": "Please, login first",
+  "unexpectedErrorSignIn": "An error occurred during login.",
+  "unexpectedErrorSignUp": "An error occurred during sign-up.",
+  "errorGoogleSignIn": "An error occurred during Google sign-in.",
+  "unexpectedErrorGoogleSignIn": "Unexpected error during Google sign-in.",
+  "googleAccountAlreadyLinked": "This Google account is already linked with another user.",
+  "errorResetPasswordEmail": "An error occurred while sending password reset email.",
+  "errorAnonymousSignIn": "An error occurred during anonymous sign-in."
 }
