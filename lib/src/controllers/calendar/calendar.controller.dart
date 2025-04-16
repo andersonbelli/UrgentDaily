@@ -1,13 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
-import '../../helpers/di/di.dart';
+import '../../helpers/enums/task_error_type.enum.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
+import '../../services/home/tasks.service.dart';
 import '../base_controller.dart';
-import '../task/task.controller.dart';
 
 class CalendarController extends BaseController {
+  CalendarController({required TasksService tasksService}) : _tasksService = tasksService;
+
+  final TasksService _tasksService;
+
   /// Current Date state
   late final ValueNotifier<DateTime> focusedDate = ValueNotifier(DateTime.now());
 
@@ -22,35 +28,45 @@ class CalendarController extends BaseController {
   }
 
   /// Tasks state
-
-  final TaskController taskController = getIt<TaskController>();
-
   final List<UserTasks> _twoWeeksTasks = [];
 
   List<UserTasks> get twoWeeksTasks => _twoWeeksTasks;
   bool tasksAlreadyLoaded = false;
 
   Future<void> loadTasksForTwoWeeks() async {
-    final userTasks = await taskController.loadTasksForTwoWeeks(
-      _visibleDates.first.convertStringToDateTime(),
-      _visibleDates.last.convertStringToDateTime(),
-    );
+    if (_visibleDates.isNotEmpty) {
+      await apiCall(
+        callHandler: () async {
+          final userTasks = await _tasksService.loadTasksForTwoWeeks(
+            _visibleDates.first.convertStringToDateTime(),
+            _visibleDates.last.convertStringToDateTime(),
+          );
 
-    _twoWeeksTasks.addAll(userTasks);
-    for (var i = 0; i < _twoWeeksTasks.length; i++) {
-      final sortedTasks = UserTasks.orderTasksByPriority(
-        tasks: _twoWeeksTasks[i].tasks,
-        date: _twoWeeksTasks[i].date,
-      ).tasks;
+          _twoWeeksTasks.addAll(userTasks);
 
-      _twoWeeksTasks[i] = UserTasks.fromListOfTasks(
-        tasks: sortedTasks,
-        date: _twoWeeksTasks[i].date,
+          for (var i = 0; i < _twoWeeksTasks.length; i++) {
+            final sortedTasks = UserTasks.orderTasksByPriority(
+              tasks: _twoWeeksTasks[i].tasks,
+              date: _twoWeeksTasks[i].date,
+            ).tasks;
+
+            _twoWeeksTasks[i] = UserTasks.fromListOfTasks(
+              tasks: sortedTasks,
+              date: _twoWeeksTasks[i].date,
+            );
+          }
+
+          if (!tasksAlreadyLoaded) {
+            tasksAlreadyLoaded = true;
+          }
+
+          notifyListeners();
+        },
+        errorHandler: (error, stack) {
+          log('Load Tasks For Two Weeks Error - $runtimeType: $error\n$stack');
+          showToastMessage(TaskErrorType.INTERNAL_SERVER_ERROR.message);
+        },
       );
-    }
-
-    if (!tasksAlreadyLoaded) {
-      tasksAlreadyLoaded = true;
     }
   }
 
@@ -59,7 +75,7 @@ class CalendarController extends BaseController {
 
   List<Task> get tasksOfSelectedDay => _tasksOfSelectedDay;
 
-  updateTasksOfSelectedDay({List<Task>? tasks}) async {
+  void updateTasksOfSelectedDay({List<Task>? tasks}) {
     _tasksOfSelectedDay = [];
 
     if (tasks != null) {
@@ -91,12 +107,11 @@ class CalendarController extends BaseController {
         _visibleDates.add(lastDate);
       } else if (_visibleDates.length == 14) {
         if (_visibleDates.contains(focusedDate.value.formatDate())) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            await loadTasksForTwoWeeks();
+            updateTasksOfSelectedDay();
             notifyListeners();
           });
-        }
-        if (!tasksAlreadyLoaded) {
-          await loadTasksForTwoWeeks();
         }
       }
     }
