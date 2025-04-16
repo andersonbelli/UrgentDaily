@@ -117,6 +117,17 @@ class _TaskViewState extends State<TaskView> {
                               ),
                             ),
                           ),
+                          if (controller.fieldsValidationErrorMessages.containsKey(TaskErrorFieldsEnum.DAYS_OF_WEEK))
+                            Padding(
+                              padding: const EdgeInsets.only(left: AppPadding.size8),
+                              child: Text(
+                                t.selectADay,
+                                overflow: TextOverflow.fade,
+                                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                      color: Theme.of(context).colorScheme.error,
+                                    ),
+                              ),
+                            ),
                         ],
                       ),
                       const SizedBox(height: 5),
