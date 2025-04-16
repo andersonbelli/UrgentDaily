@@ -18,13 +18,17 @@ class SettingsController with ChangeNotifier {
 
   String get language => _language;
 
+  static late Locale _locale;
+
+  static Locale get locale => _locale;
+
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
     _language = await _settingsService.preferredLanguage();
 
-    currentLocaleTranslation = await getIt
-        .get<LocalizationsDelegate<AppLocalizations>>()
-        .load(Locale(_language));
+    _locale = Locale(_language);
+
+    currentLocaleTranslation = await getIt.get<LocalizationsDelegate<AppLocalizations>>().load(Locale(_language));
 
     notifyListeners();
   }
