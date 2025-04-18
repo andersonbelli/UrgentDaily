@@ -30,6 +30,7 @@ dependencies:
 
   mobkit_dashed_border: any
   firebase_app_check: ^0.3.2+5
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.3
