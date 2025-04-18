@@ -1,3 +1,4 @@
+import 'package:abelliz_essentials/constants/padding.constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -193,9 +194,17 @@ class MenuDrawer extends StatelessWidget {
                   : const Icon(Icons.person_outline, size: 40),
             ),
           ),
-          if (user == null || user!.isAnonymous)
+          if (user == null || user!.isAnonymous) ...[
             ListTile(
-              leading: const Icon(Icons.login),
+              leading: const Icon(
+                Icons.person_add_alt_1,
+                size: 30,
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.GRAY,
+                size: 20,
+              ),
               title: Text(t.signIn),
               onTap: () {
                 Navigator.pop(context);
@@ -205,15 +214,22 @@ class MenuDrawer extends StatelessWidget {
                 );
               },
             ),
-          const DashedDivider(),
+            const DashedDivider(),
+          ],
           ListTile(
-            leading: const Icon(Icons.home),
+            leading: const Icon(
+              Icons.home,
+              size: 30,
+            ),
             title: Text(t.home),
             onTap: () => Navigator.pop(context),
           ),
           if (user != null && !user!.isAnonymous)
             ListTile(
-              leading: const Icon(Icons.logout),
+              leading: const Icon(
+                Icons.logout,
+                size: 30,
+              ),
               title: Text(t.logout),
               onTap: () => showMessageDialog(
                 context,
@@ -229,7 +245,10 @@ class MenuDrawer extends StatelessWidget {
               ),
             ),
           ListTile(
-            leading: const Icon(Icons.edit_document),
+            leading: const Icon(
+              Icons.edit_document,
+              size: 30,
+            ),
             title: const Text('Reports'),
             onTap: () => Navigator.pop(context),
           ),
