@@ -20,18 +20,18 @@ class SignUpController extends BaseController {
 
   bool get isButtonDisabled =>
       validationErrorMessages.isNotEmpty ||
-      (emailController.text.isEmpty &&
-          passwordController.text.isEmpty &&
-          confirmPasswordController.text.isEmpty);
+      (emailController.text.isEmpty && passwordController.text.isEmpty && confirmPasswordController.text.isEmpty);
 
   Future<void> signUpWithEmail(String email, String password) async {
-    toggleLoading();
-    await _auth
-        .signUpWithEmail(
-          email.trim(),
-          password.trim(),
-        )
-        .whenComplete(() => toggleLoading());
+    await apiCall<void>(
+      callHandler: () => _auth.signUpWithEmail(
+        email.trim(),
+        password.trim(),
+      ),
+      errorHandler: (error, stack) {
+        // Handle the error (e.g., show a snackbar, log it, etc.)
+      },
+    );
   }
 
   void validateFields() {
@@ -48,19 +48,15 @@ class SignUpController extends BaseController {
   }
 
   void validateEmail(String value) {
-    if (value.isEmpty &&
-        validationErrorMessages[SignUpErrorFieldsEnum.EMAIL_CANT_BE_EMPTY] ==
-            null) {
+    if (value.isEmpty && validationErrorMessages[SignUpErrorFieldsEnum.EMAIL_CANT_BE_EMPTY] == null) {
       validationErrorMessages[SignUpErrorFieldsEnum.EMAIL_CANT_BE_EMPTY] =
           SignUpErrorFieldsEnum.EMAIL_CANT_BE_EMPTY.message;
       return;
     }
 
     final RegExp emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value) &&
-        validationErrorMessages[SignUpErrorFieldsEnum.INVALID_EMAIL] == null) {
-      validationErrorMessages[SignUpErrorFieldsEnum.INVALID_EMAIL] =
-          SignUpErrorFieldsEnum.INVALID_EMAIL.message;
+    if (!emailRegex.hasMatch(value) && validationErrorMessages[SignUpErrorFieldsEnum.INVALID_EMAIL] == null) {
+      validationErrorMessages[SignUpErrorFieldsEnum.INVALID_EMAIL] = SignUpErrorFieldsEnum.INVALID_EMAIL.message;
     }
   }
 
@@ -73,29 +69,24 @@ class SignUpController extends BaseController {
     final passwordsMatch = password == confirmPassword;
 
     if (!hasMinLength) {
-      validationErrorMessages[SignUpErrorFieldsEnum.PASSWORD_TOO_SHORT] =
-          t.passwordTooShort;
+      validationErrorMessages[SignUpErrorFieldsEnum.PASSWORD_TOO_SHORT] = t.passwordTooShort;
     }
 
     if (!hasUppercase) {
-      validationErrorMessages[SignUpErrorFieldsEnum
-          .PASSWORD_REQUIRES_UPPERCASE] = t.passwordRequiresUppercase;
+      validationErrorMessages[SignUpErrorFieldsEnum.PASSWORD_REQUIRES_UPPERCASE] = t.passwordRequiresUppercase;
     }
 
     if (!hasLowercase) {
-      validationErrorMessages[SignUpErrorFieldsEnum
-          .PASSWORD_REQUIRES_LOWERCASE] = t.passwordRequiresLowercase;
+      validationErrorMessages[SignUpErrorFieldsEnum.PASSWORD_REQUIRES_LOWERCASE] = t.passwordRequiresLowercase;
     }
 
     if (!hasSpecialChar) {
-      validationErrorMessages[
-              SignUpErrorFieldsEnum.PASSWORD_REQUIRES_SPECIAL_CHARACTER] =
+      validationErrorMessages[SignUpErrorFieldsEnum.PASSWORD_REQUIRES_SPECIAL_CHARACTER] =
           t.passwordRequiresSpecialCharacter;
     }
 
     if (!hasNumber) {
-      validationErrorMessages[SignUpErrorFieldsEnum.PASSWORD_REQUIRES_NUMBER] =
-          t.passwordRequiresNumber;
+      validationErrorMessages[SignUpErrorFieldsEnum.PASSWORD_REQUIRES_NUMBER] = t.passwordRequiresNumber;
     }
 
     if (!passwordsMatch) {
