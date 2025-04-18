@@ -11,6 +11,7 @@ import '../../helpers/extensions/datetime_formatter.dart';
 import '../../localization/localization.dart';
 import '../calendar/calendar.view.dart';
 import '../widgets/base_controller_ui.widget.dart';
+import '../widgets/dashed_border.widget.dart';
 import '../widgets/default_appbar_child.widget.dart';
 import '../widgets/loading.widget.dart';
 import '../widgets/message_dialog.widget.dart';
@@ -192,11 +193,6 @@ class MenuDrawer extends StatelessWidget {
                   : const Icon(Icons.person_outline, size: 40),
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.home),
-            title: Text(t.home),
-            onTap: () => Navigator.pop(context),
-          ),
           if (user == null || user!.isAnonymous)
             ListTile(
               leading: const Icon(Icons.login),
@@ -209,6 +205,12 @@ class MenuDrawer extends StatelessWidget {
                 );
               },
             ),
+          const DashedDivider(),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: Text(t.home),
+            onTap: () => Navigator.pop(context),
+          ),
           if (user != null && !user!.isAnonymous)
             ListTile(
               leading: const Icon(Icons.logout),
@@ -226,6 +228,11 @@ class MenuDrawer extends StatelessWidget {
                 showCancelButton: true,
               ),
             ),
+          ListTile(
+            leading: const Icon(Icons.edit_document),
+            title: const Text('Reports'),
+            onTap: () => Navigator.pop(context),
+          ),
         ],
       ),
     );

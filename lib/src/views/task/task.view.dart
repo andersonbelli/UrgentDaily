@@ -206,7 +206,7 @@ class _TaskViewState extends State<TaskView> {
                 await controller.createTask();
               }
               if (context.mounted) {
-                Navigator.pop(context, widget.taskController.classTask);
+                Navigator.pop(context);
               }
             }
           },
