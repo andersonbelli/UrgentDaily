@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../localization/localization.dart';
+import '../../../localization/localization.dart';
 
 class AuthService {
   final FirebaseAuth _auth;
@@ -52,7 +52,7 @@ class AuthService {
 
       await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
     } on FirebaseAuthException catch (e) {
-      throw e.message ?? t.unexpectedErrorSignUp;
+      throw 'e.message ?? t.unexpectedErrorSignUp';
     }
   }
 
@@ -102,7 +102,10 @@ class AuthService {
     }
   }
 
-  Future<void> logout() async => _auth.signOut();
+  Future<void> logout() async {
+    await _auth.signOut();
+    setUserUid(null);
+  }
 
   Future<User?> signInAnonymously() async {
     final User? user = _auth.currentUser;

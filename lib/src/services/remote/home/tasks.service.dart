@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../helpers/di/di.dart';
-import '../../helpers/extensions/datetime_formatter.dart';
-import '../../models/task.model.dart';
-import '../../models/user_tasks.model.dart';
+import '../../../helpers/di/di.dart';
+import '../../../helpers/extensions/datetime_formatter.dart';
+import '../../../models/task.model.dart';
+import '../../../models/user_tasks.model.dart';
 import '../auth/auth.service.dart';
 
 class TasksService {
