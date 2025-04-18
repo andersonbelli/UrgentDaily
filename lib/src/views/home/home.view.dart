@@ -1,3 +1,4 @@
+import 'package:abelliz_essentials/constants/padding.constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,7 @@ import '../widgets/show_task_modal.dart';
 import '../widgets/text_underline.widget.dart';
 import 'widgets/create_new_task.widget.dart';
 import 'widgets/home_task_section.widget.dart';
+import 'widgets/menu.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
 
 class HomeView extends StatelessWidget {
@@ -164,95 +166,6 @@ class HomeView extends StatelessWidget {
           // child: baseControllerUI(context, homeController),
         );
       },
-    );
-  }
-}
-
-class MenuDrawer extends StatelessWidget {
-  const MenuDrawer({
-    super.key,
-    required this.user,
-  });
-
-  final User? user;
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(color: AppColors.GREEN),
-            accountName: user != null && !user!.isAnonymous ? Text(user?.displayName ?? t.noName) : Text(t.guestUser),
-            accountEmail: user != null && !user!.isAnonymous ? Text(user?.email ?? '') : Text(t.loginToSaveYourTasks),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: user != null && !user!.isAnonymous
-                  ? const Icon(Icons.person, size: 40)
-                  : const Icon(Icons.person_outline, size: 40),
-            ),
-          ),
-          if (user == null || user!.isAnonymous) ...[
-            ListTile(
-              leading: const Icon(
-                Icons.person_add_alt_1,
-                size: 30,
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios,
-                color: AppColors.GRAY,
-                size: 20,
-              ),
-              title: Text(t.signIn),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(
-                  context,
-                  Routes.singIn,
-                );
-              },
-            ),
-            const DashedDivider(),
-          ],
-          ListTile(
-            leading: const Icon(
-              Icons.home,
-              size: 30,
-            ),
-            title: Text(t.home),
-            onTap: () => Navigator.pop(context),
-          ),
-          if (user != null && !user!.isAnonymous)
-            ListTile(
-              leading: const Icon(
-                Icons.logout,
-                size: 30,
-              ),
-              title: Text(t.logout),
-              onTap: () => showMessageDialog(
-                context,
-                t.confirmLogout,
-                buttonText: t.confirm,
-                buttonAction: () async {
-                  await getIt<SignInController>().logout();
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                showCancelButton: true,
-              ),
-            ),
-          ListTile(
-            leading: const Icon(
-              Icons.edit_document,
-              size: 30,
-            ),
-            title: const Text('Reports'),
-            onTap: () => Navigator.pop(context),
-          ),
-        ],
-      ),
     );
   }
 }
