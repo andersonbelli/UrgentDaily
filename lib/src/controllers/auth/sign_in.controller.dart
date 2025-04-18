@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../helpers/enums/error_fields/sign_in_error_fields.enum.dart';
 import '../../helpers/typedefs/error_messages.typedef.dart';
-import '../../services/auth/auth.service.dart';
+import '../../services/remote/auth/auth.service.dart';
 import '../base_controller.dart';
 
 class SignInController extends BaseController {
@@ -57,14 +57,12 @@ class SignInController extends BaseController {
 
   void validateFields() {
     if (emailController.text.isEmpty &&
-        !validationErrorMessages
-            .containsKey(SignInErrorFieldsEnum.EMAIL_CANT_BE_EMPTY)) {
+        !validationErrorMessages.containsKey(SignInErrorFieldsEnum.EMAIL_CANT_BE_EMPTY)) {
       validationErrorMessages[SignInErrorFieldsEnum.EMAIL_CANT_BE_EMPTY] =
           SignInErrorFieldsEnum.EMAIL_CANT_BE_EMPTY.message;
     }
     if (passwordController.text.isEmpty &&
-        !validationErrorMessages
-            .containsKey(SignInErrorFieldsEnum.PASSWORD_CANT_BE_EMPTY)) {
+        !validationErrorMessages.containsKey(SignInErrorFieldsEnum.PASSWORD_CANT_BE_EMPTY)) {
       validationErrorMessages[SignInErrorFieldsEnum.PASSWORD_CANT_BE_EMPTY] =
           SignInErrorFieldsEnum.PASSWORD_CANT_BE_EMPTY.message;
     }
@@ -86,8 +84,7 @@ class SignInController extends BaseController {
           SignInErrorFieldsEnum.INTERNAL_SERVER_ERROR.message;
     } else if (errorMessage.contains('password')) {
       validationErrorMessages.clear();
-      validationErrorMessages[
-              SignInErrorFieldsEnum.INCORRECT_EMAIL_OR_PASSWORD] =
+      validationErrorMessages[SignInErrorFieldsEnum.INCORRECT_EMAIL_OR_PASSWORD] =
           SignInErrorFieldsEnum.INCORRECT_EMAIL_OR_PASSWORD.message;
     }
     return validationErrorMessages.values.first;

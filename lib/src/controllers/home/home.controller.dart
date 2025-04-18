@@ -3,7 +3,7 @@ import 'dart:developer';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/task_error_type.enum.dart';
 import '../../models/task.model.dart';
-import '../../services/home/tasks.service.dart';
+import '../../services/remote/home/tasks.service.dart';
 import '../base_controller.dart';
 
 class HomeController extends BaseController {
@@ -151,12 +151,15 @@ class HomeController extends BaseController {
   }
 
   void _handleTaskError(Object error) {
+    String logMessage = 'Unknown error: $error';
+    String toastMessage = TaskErrorType.INTERNAL_SERVER_ERROR.message;
+
     if (error is TaskErrorType) {
-      log('Task error: ${error.message}');
-      showToastMessage(error.message);
-    } else {
-      log('Unknown error: $error');
-      showToastMessage(TaskErrorType.INTERNAL_SERVER_ERROR.message);
+      logMessage = 'Task error: ${error.message}';
+      toastMessage = error.message;
     }
+
+    log(logMessage);
+    showToastMessage(toastMessage);
   }
 }

@@ -20,7 +20,7 @@ import '../widgets/show_task_modal.dart';
 import '../widgets/text_underline.widget.dart';
 import 'widgets/create_new_task.widget.dart';
 import 'widgets/home_task_section.widget.dart';
-import 'widgets/menu.widget.dart';
+import 'widgets/menu/menu.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
 
 class HomeView extends StatelessWidget {

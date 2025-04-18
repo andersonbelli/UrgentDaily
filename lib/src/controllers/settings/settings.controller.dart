@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../helpers/di/di.dart';
 import '../../localization/localization.dart';
-import '../../services/settings/settings.service.dart';
+import '../../services/local/settings/settings.service.dart';
 
 class SettingsController with ChangeNotifier {
   SettingsController(this._settingsService);
@@ -24,7 +24,7 @@ class SettingsController with ChangeNotifier {
 
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
-    _language = await _settingsService.preferredLanguage();
+    _language = await _settingsService.getPreferredLanguage();
 
     _locale = Locale(_language);
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../helpers/enums/error_fields/sign_up_error_fields.enum.dart';
 import '../../helpers/typedefs/error_messages.typedef.dart';
 import '../../localization/localization.dart';
-import '../../services/auth/auth.service.dart';
+import '../../services/remote/auth/auth.service.dart';
 import '../base_controller.dart';
 
 class SignUpController extends BaseController {

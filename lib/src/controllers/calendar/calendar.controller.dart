@@ -6,7 +6,7 @@ import '../../helpers/enums/task_error_type.enum.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
-import '../../services/home/tasks.service.dart';
+import '../../services/remote/home/tasks.service.dart';
 import '../base_controller.dart';
 
 class CalendarController extends BaseController {

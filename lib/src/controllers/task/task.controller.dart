@@ -12,8 +12,8 @@ import '../../helpers/typedefs/error_messages.typedef.dart';
 import '../../localization/localization.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
-import '../../services/auth/auth.service.dart';
-import '../../services/home/tasks.service.dart';
+import '../../services/remote/auth/auth.service.dart';
+import '../../services/remote/home/tasks.service.dart';
 import '../base_controller.dart';
 
 class TaskController extends BaseController {

@@ -8,7 +8,7 @@ import 'src/app.dart';
 import 'src/controllers/settings/env_flavor.controller.dart';
 import 'src/controllers/settings/settings.controller.dart';
 import 'src/helpers/di/di.dart';
-import 'src/services/auth/auth.service.dart';
+import 'src/services/remote/auth/auth.service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
