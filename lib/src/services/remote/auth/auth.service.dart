@@ -52,7 +52,7 @@ class AuthService {
 
       await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
     } on FirebaseAuthException catch (e) {
-      throw 'e.message ?? t.unexpectedErrorSignUp';
+      throw e.message ?? t.unexpectedErrorSignUp;
     }
   }
 
