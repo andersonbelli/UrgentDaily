@@ -64,7 +64,9 @@ class _HomeViewState extends State<HomeView> {
                     CalendarView.routeName,
                   ),
                   child: DefaultAppBarChild(
-                    TextUnderline(homeController.selectedDate.formatDate()),
+                    TextUnderline(
+                      homeController.selectedDate.formatDate(),
+                    ),
                   ),
                 ),
                 actions: homeController.tasks.isEmpty

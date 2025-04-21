@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute<void>(
               settings: routeSettings,
               builder: (BuildContext context) {
-                Widget route = HomeView();
+                Widget route = const HomeView();
 
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
@@ -77,13 +77,13 @@ class MyApp extends StatelessWidget {
                   case CalendarView.routeName:
                     route = CalendarView();
                   case HomeView.routeName:
-                    route = HomeView();
+                    route = const HomeView();
                   case SignInView.routeName:
                     route = SignInView();
                   case SignUpView.routeName:
                     route = SignUpView();
                   default:
-                    route = HomeView();
+                    route = const HomeView();
                 }
 
                 return _flavorBanner(child: route);
