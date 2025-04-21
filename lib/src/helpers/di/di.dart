@@ -11,13 +11,14 @@ import '../../controllers/calendar/calendar.controller.dart';
 import '../../controllers/home/home.controller.dart';
 import '../../controllers/settings/settings.controller.dart';
 import '../../controllers/task/task.controller.dart';
-import '../../services/remote/auth/auth.service.dart';
-import '../../services/remote/home/tasks.service.dart';
-import '../../services/local/settings/settings.service.dart';
+import '../../services/auth/auth.local.service.dart';
+import '../../services/auth/auth.remote.service.dart';
+import '../../services/settings.local.service.dart';
+import '../../services/tasks/tasks.service.dart';
 
 final getIt = AutoInjector();
 
-void configureDependencies() async {
+Future<void> configureDependencies() async {
   getIt.addSingleton(() => AppLocalizations.delegate);
 
   // Local Storage
@@ -32,7 +33,8 @@ void configureDependencies() async {
   getIt.addSingleton(() => FirebaseFirestore.instance);
 
   // Services
-  getIt.addSingleton(AuthService.new);
+  getIt.addSingleton(AuthLocalService.new);
+  getIt.addSingleton(AuthRemoteService.new);
   getIt.add(TasksService.new);
 
   // Controllers

@@ -5,18 +5,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../../localization/localization.dart';
+import '../../localization/localization.dart';
+import 'auth.local.service.dart';
 
-class AuthService {
-  final FirebaseAuth _auth;
+class AuthRemoteService {
+  final FirebaseAuth _firebaseAuth;
+  final AuthLocalService _localAuth;
 
-  late User _user;
-
-  User get user => _user;
-
-  AuthService(this._auth) {
+  AuthRemoteService({
+    required FirebaseAuth firebaseAuth,
+    required AuthLocalService localAuth,
+  })  : _firebaseAuth = firebaseAuth,
+        _localAuth = localAuth {
     if (bool.parse(dotenv.env['is_offline']!)) {
-      _auth
+      _firebaseAuth
           .useAuthEmulator(
             dotenv.env['firebase_emulator_host']!,
             int.parse(dotenv.env['firebase_auth_port']!),
@@ -30,12 +32,12 @@ class AuthService {
 
   Future<void> loginWithEmail(String email, String password) async {
     try {
-      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      final UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
 
-      setUserUid(userCredential.user);
+      _localAuth.saveUser(userCredential.user);
     } on FirebaseAuthException catch (e) {
       throw e.message ?? t.unexpectedErrorSignIn;
     }
@@ -43,7 +45,7 @@ class AuthService {
 
   Future<void> signUpWithEmail(String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
@@ -61,7 +63,7 @@ class AuthService {
       if (kIsWeb) {
         final GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
-        await _auth.signInWithPopup(googleProvider);
+        await _firebaseAuth.signInWithPopup(googleProvider);
       } else {
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
         if (googleUser == null) return;
@@ -72,15 +74,15 @@ class AuthService {
           idToken: googleAuth.idToken,
         );
 
-        final User? currentUser = _auth.currentUser;
+        final User? currentUser = _firebaseAuth.currentUser;
 
         if (currentUser != null && currentUser.isAnonymous) {
           // 🔗 Link anonymous user with Google credential
           final userCredential = await currentUser.linkWithCredential(credential);
-          setUserUid(userCredential.user);
+          _localAuth.saveUser(userCredential.user);
         } else {
-          final userCredential = await _auth.signInWithCredential(credential);
-          setUserUid(userCredential.user);
+          final userCredential = await _firebaseAuth.signInWithCredential(credential);
+          _localAuth.saveUser(userCredential.user);
         }
       }
     } on FirebaseAuthException catch (e) {
@@ -96,41 +98,31 @@ class AuthService {
 
   Future<void> resetPassword(String email) async {
     try {
-      await _auth.sendPasswordResetEmail(email: email.trim());
+      await _firebaseAuth.sendPasswordResetEmail(email: email.trim());
     } on FirebaseAuthException catch (e) {
       throw e.message ?? t.errorResetPasswordEmail;
     }
   }
 
   Future<void> logout() async {
-    await _auth.signOut();
-    setUserUid(null);
+    await _firebaseAuth.signOut();
+    _localAuth.saveUser(null);
   }
 
-  Future<User?> signInAnonymously() async {
-    final User? user = _auth.currentUser;
+  Future<void> signInAnonymously() async {
+    final User? user = _firebaseAuth.currentUser;
 
     if (user?.email == null) {
       try {
-        final UserCredential userCredential = await _auth.signInAnonymously();
-        setUserUid(userCredential.user);
+        final UserCredential userCredential = await _firebaseAuth.signInAnonymously();
+        _localAuth.saveUser(userCredential.user);
       } on FirebaseAuthException catch (e) {
         throw e.message ?? t.errorAnonymousSignIn;
       } catch (e) {
         log('Error signing in anonymously: $e');
       }
     } else {
-      setUserUid(user);
-    }
-
-    return user;
-  }
-
-  setUserUid(User? currentUser) {
-    if (currentUser != null) {
-      _user = currentUser;
-    } else {
-      throw t.pleaseLoginFirst;
+      _localAuth.saveUser(user);
     }
   }
 }

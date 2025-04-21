@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../helpers/di/di.dart';
 import '../../localization/localization.dart';
-import '../../services/local/settings/settings.service.dart';
+import '../../services/settings.local.service.dart';
 
 class SettingsController with ChangeNotifier {
   SettingsController(this._settingsService);

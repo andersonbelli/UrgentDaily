@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../helpers/di/di.dart';
-import '../local_storage_keys.dart';
+import '../helpers/di/di.dart';
+import 'local_storage_keys.dart';
 
 class SettingsService {
   final storage = getIt.get<FlutterSecureStorage>();

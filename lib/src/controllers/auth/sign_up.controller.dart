@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../../helpers/enums/error_fields/sign_up_error_fields.enum.dart';
 import '../../helpers/typedefs/error_messages.typedef.dart';
 import '../../localization/localization.dart';
-import '../../services/remote/auth/auth.service.dart';
+import '../../services/auth/auth.remote.service.dart';
 import '../base_controller.dart';
 
 class SignUpController extends BaseController {
-  final AuthService _auth;
+  final AuthRemoteService _auth;
 
   ErrorMessagesMap<SignUpErrorFieldsEnum> validationErrorMessages = {};
 
@@ -16,7 +16,7 @@ class SignUpController extends BaseController {
   final confirmPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  SignUpController({required AuthService auth}) : _auth = auth;
+  SignUpController({required AuthRemoteService auth}) : _auth = auth;
 
   bool get isButtonDisabled =>
       validationErrorMessages.isNotEmpty ||

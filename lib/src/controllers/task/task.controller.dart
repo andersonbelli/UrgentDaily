@@ -12,8 +12,9 @@ import '../../helpers/typedefs/error_messages.typedef.dart';
 import '../../localization/localization.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
-import '../../services/remote/auth/auth.service.dart';
-import '../../services/remote/home/tasks.service.dart';
+import '../../services/auth/auth.local.service.dart';
+import '../../services/auth/auth.remote.service.dart';
+import '../../services/tasks/tasks.service.dart';
 import '../base_controller.dart';
 
 class TaskController extends BaseController {
@@ -43,7 +44,7 @@ class TaskController extends BaseController {
   final TasksService _tasksService;
   late Task classTask;
 
-  late final String _userId = getIt.get<AuthService>().user.uid;
+  late final String _userId = getIt.get<AuthLocalService>().user.uid;
 
   TaskController({required TasksService tasksService}) : _tasksService = tasksService;
 

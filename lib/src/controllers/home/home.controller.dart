@@ -3,7 +3,7 @@ import 'dart:developer';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/task_error_type.enum.dart';
 import '../../models/task.model.dart';
-import '../../services/remote/home/tasks.service.dart';
+import '../../services/tasks/tasks.service.dart';
 import '../base_controller.dart';
 
 class HomeController extends BaseController {

@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 import '../helpers/di/di.dart';
-import '../services/remote/auth/auth.service.dart';
+import '../services/auth/auth.local.service.dart';
+import '../services/auth/auth.remote.service.dart';
 
 class BaseController with ChangeNotifier {
   String? _message;
@@ -26,7 +27,7 @@ class BaseController with ChangeNotifier {
   }
 
   bool get isUserLoggedIn {
-    final user = getIt.get<AuthService>().user;
+    final user = getIt.get<AuthLocalService>().user;
 
     if (user.isAnonymous || (user.email?.isEmpty ?? true)) {
       return false;

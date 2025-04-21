@@ -4,22 +4,40 @@ import 'package:flutter/material.dart';
 
 import '../../helpers/enums/error_fields/sign_in_error_fields.enum.dart';
 import '../../helpers/typedefs/error_messages.typedef.dart';
-import '../../services/remote/auth/auth.service.dart';
+import '../../services/auth/auth.local.service.dart';
+import '../../services/auth/auth.remote.service.dart';
 import '../base_controller.dart';
 
 class SignInController extends BaseController {
-  final AuthService _auth;
+  final AuthRemoteService _remoteAuth;
+  final AuthLocalService _localAuth;
+
+  SignInController({
+    required AuthRemoteService remoteAuth,
+    required AuthLocalService localAuth,
+  })  : _remoteAuth = remoteAuth,
+        _localAuth = localAuth;
 
   ErrorMessagesMap<SignInErrorFieldsEnum> validationErrorMessages = {};
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  SignInController({required AuthService auth}) : _auth = auth;
+  Future<void> verifyLocalUser() async {
+    try {
+      if (await _localAuth.getLocalUser() == null) {
+        await _remoteAuth.signInAnonymously().timeout(
+              const Duration(seconds: 10),
+            );
+      }
+    } catch (e) {
+      debugPrint('❌ Anonymous sign-in failed or timed out: $e');
+    }
+  }
 
   Future<void> loginWithEmail(String email, String password) async {
     await apiCall(
-      callHandler: () => _auth.loginWithEmail(
+      callHandler: () => _remoteAuth.loginWithEmail(
         email.trim(),
         password.trim(),
       ),
@@ -32,7 +50,7 @@ class SignInController extends BaseController {
 
   Future<void> loginWithGoogle() async {
     await apiCall(
-      callHandler: () => _auth.loginWithGoogle(),
+      callHandler: () => _remoteAuth.loginWithGoogle(),
       errorHandler: (error, stack) {
         log('Login with Google Error: $error\n$stack');
         throw validateError(error);
@@ -42,7 +60,7 @@ class SignInController extends BaseController {
 
   Future<void> resetPassword(String email) async {
     await apiCall(
-      callHandler: () => _auth.resetPassword(email.trim()),
+      callHandler: () => _remoteAuth.resetPassword(email.trim()),
       errorHandler: (error, stack) {
         log('Reset password Error: $error\n$stack');
         throw validateError(error);
@@ -51,7 +69,7 @@ class SignInController extends BaseController {
   }
 
   Future<void> logout() async {
-    await _auth.logout();
+    await _remoteAuth.logout();
     notifyListeners();
   }
 
@@ -78,7 +96,7 @@ class SignInController extends BaseController {
   String validateError(String errorMessage) {
     errorMessage = errorMessage.toLowerCase();
 
-    if (errorMessage.contains('internal error')) {
+    if (errorMessage.contains('internal error') || validationErrorMessages.values.isEmpty) {
       validationErrorMessages.clear();
       validationErrorMessages[SignInErrorFieldsEnum.INTERNAL_SERVER_ERROR] =
           SignInErrorFieldsEnum.INTERNAL_SERVER_ERROR.message;
