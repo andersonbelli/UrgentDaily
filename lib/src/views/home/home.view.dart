@@ -1,9 +1,7 @@
-import 'package:abelliz_essentials/constants/padding.constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../routes.dart';
-import '../../controllers/auth/sign_in.controller.dart';
 import '../../controllers/home/home.controller.dart';
 import '../../helpers/constants/colors.constants.dart';
 import '../../helpers/di/di.dart';
@@ -12,10 +10,8 @@ import '../../helpers/extensions/datetime_formatter.dart';
 import '../../localization/localization.dart';
 import '../calendar/calendar.view.dart';
 import '../widgets/base_controller_ui.widget.dart';
-import '../widgets/dashed_border.widget.dart';
 import '../widgets/default_appbar_child.widget.dart';
 import '../widgets/loading.widget.dart';
-import '../widgets/message_dialog.widget.dart';
 import '../widgets/show_task_modal.dart';
 import '../widgets/text_underline.widget.dart';
 import 'widgets/create_new_task.widget.dart';
@@ -23,18 +19,35 @@ import 'widgets/home_task_section.widget.dart';
 import 'widgets/menu/menu.widget.dart';
 import 'widgets/no_tasks_yet.widget.dart';
 
-class HomeView extends StatelessWidget {
-  HomeView({
+class HomeView extends StatefulWidget {
+  const HomeView({
     super.key,
   });
-
-  final HomeController homeController = getIt.get<HomeController>();
-  final user = getIt<FirebaseAuth>().currentUser;
 
   static const String routeName = Routes.home;
 
   @override
-  Widget build(BuildContext context) {
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final HomeController homeController = getIt.get<HomeController>();
+
+  final user = getIt<FirebaseAuth>().currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (context.mounted && !homeController.isUserLoggedIn) {
+        Navigator.pushNamed(context, Routes.singIn);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext _) {
     return FutureBuilder(
       future: homeController.loadUserTasks(),
       builder: (context, _) {

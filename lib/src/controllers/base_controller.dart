@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../helpers/di/di.dart';
-import '../services/auth/auth.service.dart';
+import '../services/remote/auth/auth.service.dart';
 
 class BaseController with ChangeNotifier {
   String? _message;
@@ -22,15 +22,6 @@ class BaseController with ChangeNotifier {
   void toggleLoading() {
     _isLoading = !_isLoading;
 
-    notifyListeners();
-  }
-
-  // TODO: save this data on local database -> check only once per session
-  bool? _checkedIfUserIsLoggedIn;
-
-  bool? get checkedIfUserIsLoggedIn => _checkedIfUserIsLoggedIn;
-  set checkedIfUserIsLoggedIn(bool? value) {
-    _checkedIfUserIsLoggedIn = value;
     notifyListeners();
   }
 
