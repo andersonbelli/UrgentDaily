@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'flavors.dart';
 import 'src/app.dart';
+import 'src/controllers/auth/sign_in.controller.dart';
 import 'src/controllers/settings/env_flavor.controller.dart';
 import 'src/controllers/settings/settings.controller.dart';
 import 'src/helpers/di/di.dart';
-import 'src/services/remote/auth/auth.service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,15 +25,11 @@ void main() async {
     appleProvider: AppleProvider.appAttest,
   );
 
-  configureDependencies();
-
-  await getIt.get<SettingsController>().loadSettings();
-
-  try {
-    await getIt.get<AuthService>().signInAnonymously().timeout(const Duration(seconds: 10));
-  } catch (e) {
-    debugPrint('❌ Anonymous sign-in failed or timed out: $e');
-  }
+  await Future.wait([
+    configureDependencies(),
+    getIt.get<SettingsController>().loadSettings(),
+    getIt.get<SignInController>().verifyLocalUser(),
+  ]);
 
   runApp(MyApp());
 }
