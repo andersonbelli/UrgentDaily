@@ -102,5 +102,23 @@
   "unexpectedErrorGoogleSignIn": "Unexpected error during Google sign-in.",
   "googleAccountAlreadyLinked": "This Google account is already linked with another user.",
   "errorResetPasswordEmail": "An error occurred while sending password reset email.",
-  "errorAnonymousSignIn": "An error occurred during anonymous sign-in."
+  "errorAnonymousSignIn": "An error occurred during anonymous sign-in.",
+
+  "@_FIREBASE_ERROR": {},
+  "invalidEmail": "The email address is not valid.",
+  "userDisabled": "This user has been disabled.",
+  "userNotFound": "No user found for that email.",
+  "wrongPassword": "Wrong password. Please try again.",
+  "emailAlreadyInUse": "The email address is already in use by another account.",
+  "operationNotAllowed": "This operation is not allowed.",
+  "weakPassword": "The password is too weak.",
+  "invalidCredential": "The credential is not valid.",
+  "accountExistsWithDifferentCredential": "An account already exists with the same email address but different sign-in credentials. Sign in using the provider associated with this email address.",
+  "invalidVerificationCode": "The verification code you entered is invalid.",
+  "invalidVerificationId": "The verification ID is invalid.",
+  "sessionExpired": "The session has expired. Please try again.",
+  "tooManyRequests": "Too many requests. Please try again later.",
+  "requiresRecentLogin": "This operation requires a recent sign-in. Please log in again.",
+  "networkRequestFailed": "A network error occurred. Please check your internet connection.",
+  "unknownError": "An unknown error occurred."
 }

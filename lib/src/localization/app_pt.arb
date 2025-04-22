@@ -102,5 +102,23 @@
   "unexpectedErrorGoogleSignIn": "Erro inesperado durante o login do Google.",
   "googleAccountAlreadyLinked": "Esta conta do Google já está vinculada a outro usuário.",
   "errorResetPasswordEmail": "Ocorreu um erro ao enviar um e-mail de redefinição de senha.",
-  "errorAnonymousSignIn": "Ocorreu um erro durante o login anônimo."
+  "errorAnonymousSignIn": "Ocorreu um erro durante o login anônimo.",
+
+  "@_FIREBASE_ERROR": {},
+  "invalidEmail": "O endereço de e-mail não é válido.",
+  "userDisabled": "Este usuário foi desativado.",
+  "userNotFound": "Nenhum usuário encontrado para este e-mail.",
+  "wrongPassword": "Senha incorreta. Tente novamente.",
+  "emailAlreadyInUse": "O endereço de e-mail já está em uso por outra conta.",
+  "operationNotAllowed": "Esta operação não é permitida.",
+  "weakPassword": "A senha é muito fraca.",
+  "invalidCredential": "A credencial não é válida.",
+  "accountExistsWithDifferentCredential": "Uma conta já existe com o mesmo endereço de e-mail, mas com credenciais de login diferentes. Faça login usando o provedor associado a este endereço de e-mail.",
+  "invalidVerificationCode": "O código de verificação inserido é inválido.",
+  "invalidVerificationId": "O ID de verificação é inválido.",
+  "sessionExpired": "A sessão expirou. Tente novamente.",
+  "tooManyRequests": "Muitas solicitações. Tente novamente mais tarde.",
+  "requiresRecentLogin": "Esta operação requer um login recente. Faça login novamente.",
+  "networkRequestFailed": "Ocorreu um erro de rede. Verifique sua conexão com a internet.",
+  "unknownError": "Ocorreu um erro desconhecido."
 }
