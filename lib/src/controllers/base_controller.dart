@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 
 import '../helpers/di/di.dart';
 import '../services/auth/auth.local.service.dart';
-import '../services/auth/auth.remote.service.dart';
 
 class BaseController with ChangeNotifier {
   String? _message;

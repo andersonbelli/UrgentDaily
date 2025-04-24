@@ -10,6 +10,7 @@ import '../../controllers/base_controller.dart';
 import '../../controllers/calendar/calendar.controller.dart';
 import '../../controllers/home/home.controller.dart';
 import '../../controllers/settings/settings.controller.dart';
+import '../../controllers/snackbar.controller.dart';
 import '../../controllers/task/task.controller.dart';
 import '../../services/auth/auth.local.service.dart';
 import '../../services/auth/auth.remote.service.dart';
@@ -20,6 +21,7 @@ final getIt = AutoInjector();
 
 Future<void> configureDependencies() async {
   getIt.addSingleton(() => AppLocalizations.delegate);
+  getIt.addSingleton(SnackbarController.new);
 
   // Local Storage
   getIt.addSingleton(FlutterSecureStorage.new);

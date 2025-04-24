@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../flavors.dart';
 import 'controllers/settings/settings.controller.dart';
+import 'controllers/snackbar.controller.dart';
 import 'helpers/constants/colors.constants.dart';
 import 'helpers/di/di.dart';
 import 'localization/localization.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       listenable: settingsController,
       builder: (BuildContext context, Widget? _) {
         return MaterialApp(
+          scaffoldMessengerKey: scaffoldMessengerKey,
           debugShowCheckedModeBanner: false,
           restorationScopeId: 'app',
           localizationsDelegates: const [
