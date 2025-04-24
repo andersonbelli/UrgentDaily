@@ -10,7 +10,6 @@ import '../../helpers/enums/error_fields/task_error_fields.enum.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/recursive_days.enum.dart';
 import '../../localization/localization.dart';
-import '../widgets/base_controller_ui.widget.dart';
 import '../widgets/dashed_border.widget.dart';
 import '../widgets/error_messages_container.widget.dart';
 import '../widgets/green_button.widget.dart';
@@ -44,8 +43,6 @@ class _TaskViewState extends State<TaskView> {
     return ListenableBuilder(
       listenable: widget.taskController,
       builder: (context, child) {
-        baseControllerUI(context, widget.taskController);
-
         return Column(
           children: [
             Expanded(

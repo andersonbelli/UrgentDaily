@@ -9,7 +9,6 @@ import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../../localization/localization.dart';
 import '../calendar/calendar.view.dart';
-import '../widgets/base_controller_ui.widget.dart';
 import '../widgets/default_appbar_child.widget.dart';
 import '../widgets/loading.widget.dart';
 import '../widgets/show_task_modal.dart';
@@ -51,8 +50,6 @@ class _HomeViewState extends State<HomeView> {
     return FutureBuilder(
       future: homeController.loadUserTasks(),
       builder: (context, _) {
-        baseControllerUI(context, homeController);
-
         return ListenableBuilder(
           listenable: homeController,
           builder: (context, child) {
