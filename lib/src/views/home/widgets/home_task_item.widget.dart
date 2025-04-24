@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../controllers/home/home.controller.dart';
+import '../../../controllers/snackbar.controller.dart';
 import '../../../controllers/task/task.controller.dart';
 import '../../../helpers/constants/colors.constants.dart';
 import '../../../helpers/di/di.dart';
@@ -8,7 +9,6 @@ import '../../../localization/localization.dart';
 import '../../../models/task.model.dart';
 import '../../widgets/message_dialog.widget.dart';
 import '../../widgets/show_task_modal.dart';
-import '../../widgets/snackbar.widget.dart';
 
 class HomeTaskItem extends StatelessWidget {
   HomeTaskItem({
@@ -36,19 +36,14 @@ class HomeTaskItem extends StatelessWidget {
           ),
           onTap: isEditMode
               ? context.mounted
-                  ? () => showSnackBar(
-                        context,
-                        appSnackBar(
+                  ? () => getIt.get<SnackbarController>().showSnackbar(
+                        snackBar: AppSnackbar.defaultSnackBar(
                           message: t.doneEditingTasks,
-                          action: SnackBarAction(
-                            textColor: AppColors.GREEN,
-                            label: t.done,
-                            onPressed: () {
-                              if (homeController.isEditMode) {
-                                homeController.toggleEditMode();
-                              }
-                            },
-                          ),
+                          onPressed: () {
+                            if (homeController.isEditMode) {
+                              homeController.toggleEditMode();
+                            }
+                          },
                         ),
                       )
                   : null
