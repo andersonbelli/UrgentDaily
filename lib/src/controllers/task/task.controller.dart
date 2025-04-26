@@ -13,7 +13,6 @@ import '../../localization/localization.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
 import '../../services/auth/auth.local.service.dart';
-import '../../services/auth/auth.remote.service.dart';
 import '../../services/tasks/tasks.service.dart';
 import '../base_controller.dart';
 
