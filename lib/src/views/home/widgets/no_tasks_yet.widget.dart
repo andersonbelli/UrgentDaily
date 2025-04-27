@@ -19,12 +19,17 @@ class NoTasksYet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 50),
+        padding: const EdgeInsets.only(
+          bottom: 50,
+          right: AppPadding.size16,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               t.noTasksYet,
+              textAlign: TextAlign.center,
+              maxLines: 1,
               style: const TextStyle(
                 fontSize: AppTextSize.EXTRA_LARGE,
                 fontWeight: FontWeight.bold,
@@ -33,6 +38,7 @@ class NoTasksYet extends StatelessWidget {
             ),
             Text(
               t.startAddingTasksNow,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: AppTextSize.MEDIUM,
                 fontWeight: FontWeight.w200,
