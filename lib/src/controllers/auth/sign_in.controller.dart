@@ -1,12 +1,16 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
+import '../../helpers/di/di.dart';
 import '../../helpers/enums/error_fields/sign_in_error_fields.enum.dart';
+import '../../helpers/enums/firebase_auth_error.enum.dart';
 import '../../helpers/typedefs/error_messages.typedef.dart';
 import '../../services/auth/auth.local.service.dart';
 import '../../services/auth/auth.remote.service.dart';
 import '../base_controller.dart';
+import '../snackbar.controller.dart';
 
 class SignInController extends BaseController {
   final AuthRemoteService _remoteAuth;
@@ -41,9 +45,19 @@ class SignInController extends BaseController {
         email.trim(),
         password.trim(),
       ),
-      errorHandler: (error, stack) {
-        log('Login Error: $error\n$stack');
-        throw validateError(error);
+      errorHandler: (errorCode, stack) {
+        log(
+          'Login Error:',
+          name: '$runtimeType',
+          error: errorCode,
+          stackTrace: stack,
+        );
+        final errorMessage = FirebaseAuthError.fromCode(errorCode).message;
+
+        log(errorMessage);
+        getIt.get<SnackbarController>().showSnackbar(
+              message: errorMessage,
+            );
       },
     );
   }

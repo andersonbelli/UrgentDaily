@@ -1,4 +1,3 @@
-
 import '../../localization/localization.dart';
 
 /// Enum to represent FirebaseAuth error codes.
@@ -53,12 +52,17 @@ enum FirebaseAuthError {
       case FirebaseAuthError.networkRequestFailed:
         return t.networkRequestFailed;
       case FirebaseAuthError.unknown:
-        return t.unknownError;
+        return t.internalServerError;
     }
   }
 
   static FirebaseAuthError fromCode(String code) {
-    switch (code) {
+    final regex = RegExp(r'\[firebase_auth\/(.*?)\]');
+    final match = regex.firstMatch(code);
+
+    final errorCode = match?.group(1);
+
+    switch (errorCode) {
       case 'invalid-email':
         return FirebaseAuthError.invalidEmail;
       case 'user-disabled':

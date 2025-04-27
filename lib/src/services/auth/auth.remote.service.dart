@@ -31,16 +31,12 @@ class AuthRemoteService {
   }
 
   Future<void> loginWithEmail(String email, String password) async {
-    try {
-      final UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
+    final UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+      email: email.trim(),
+      password: password.trim(),
+    );
 
-      _localAuth.saveUser(userCredential.user);
-    } on FirebaseAuthException catch (e) {
-      throw e.message ?? t.unexpectedErrorSignIn;
-    }
+    await _localAuth.saveUser(userCredential.user);
   }
 
   Future<void> signUpWithEmail(String email, String password) async {
