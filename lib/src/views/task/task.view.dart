@@ -271,6 +271,8 @@ class RadioPriority extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRadioSelected = groupPriority == priority;
+
     return GestureDetector(
       onTap: () => selectedPriority(priority),
       child: Row(
@@ -291,7 +293,9 @@ class RadioPriority extends StatelessWidget {
                 horizontal: AppPadding.size16,
               ),
               child: DashedDivider(
-                dashLength: 6,
+                dashLength: isRadioSelected ? 1 : 6,
+                borderColor: isRadioSelected ? AppColors.GREEN : AppColors.DARK_LIGHT,
+                borderWidth: isRadioSelected ? 5 : 1,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(2),
@@ -303,8 +307,8 @@ class RadioPriority extends StatelessWidget {
                   ),
                   child: Text(
                     title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
+                    style: TextStyle(
+                      fontWeight: isRadioSelected ? FontWeight.w600 : FontWeight.w400,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
