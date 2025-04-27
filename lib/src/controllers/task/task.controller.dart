@@ -15,6 +15,7 @@ import '../../models/user_tasks.model.dart';
 import '../../services/auth/auth.local.service.dart';
 import '../../services/tasks/tasks.service.dart';
 import '../base_controller.dart';
+import '../snackbar.controller.dart';
 
 class TaskController extends BaseController {
   /// Task properties
@@ -107,7 +108,9 @@ class TaskController extends BaseController {
       },
       errorHandler: (error, stack) {
         log('Create Task Error - $runtimeType: $error\n$stack');
-        showToastMessage(TaskErrorType.FAILED_TO_CREATE.message);
+        getIt.get<SnackbarController>().showSnackbar(
+              message: TaskErrorType.FAILED_TO_CREATE.message,
+            );
       },
     );
   }
@@ -133,11 +136,15 @@ class TaskController extends BaseController {
       },
       errorHandler: (error, stack) {
         log('Edit Task Error - $runtimeType: $error\n$stack');
-        showToastMessage(TaskErrorType.FAILED_TO_UPDATE.message);
+        getIt.get<SnackbarController>().showSnackbar(
+              message: TaskErrorType.FAILED_TO_UPDATE.message,
+            );
       },
     );
     if (!isUserLoggedIn) {
-      showToastMessage(t.loginToSaveYourTasks);
+      getIt.get<SnackbarController>().showSnackbar(
+            message: t.loginToSaveYourTasks,
+          );
     }
   }
 
@@ -146,7 +153,9 @@ class TaskController extends BaseController {
         callHandler: () async => _tasksService.removeTask(classTask),
         errorHandler: (error, stack) {
           log('Remove Task Error - $runtimeType: $error\n$stack');
-          showToastMessage(TaskErrorType.FAILED_TO_DELETE.message);
+          getIt.get<SnackbarController>().showSnackbar(
+                message: TaskErrorType.FAILED_TO_DELETE.message,
+              );
         },
       ) ??
       false;
@@ -156,7 +165,9 @@ class TaskController extends BaseController {
       callHandler: () => _tasksService.loadTasks(date),
       errorHandler: (error, stack) {
         log('Load Tasks For Date Error - $runtimeType: $error\n$stack');
-        showToastMessage(TaskErrorType.INTERNAL_SERVER_ERROR.message);
+        getIt.get<SnackbarController>().showSnackbar(
+              message: TaskErrorType.INTERNAL_SERVER_ERROR.message,
+            );
       },
     );
   }
@@ -169,7 +180,9 @@ class TaskController extends BaseController {
       errorHandler: (error, stack) {
         log('Load Tasks For Two Weeks Error - $runtimeType: $error\n$stack');
 
-        showToastMessage(TaskErrorType.INTERNAL_SERVER_ERROR.message);
+        getIt.get<SnackbarController>().showSnackbar(
+              message: TaskErrorType.INTERNAL_SERVER_ERROR.message,
+            );
       },
     );
     if (userTwoWeeksTasks != null) {

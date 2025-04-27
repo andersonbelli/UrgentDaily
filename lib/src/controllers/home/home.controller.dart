@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import '../../helpers/di/di.dart';
 import '../../helpers/enums/priority.enum.dart';
 import '../../helpers/enums/task_error_type.enum.dart';
 import '../../models/task.model.dart';
 import '../../services/tasks/tasks.service.dart';
 import '../base_controller.dart';
+import '../snackbar.controller.dart';
 
 class HomeController extends BaseController {
   HomeController({required this.tasksService});
@@ -160,6 +162,8 @@ class HomeController extends BaseController {
     }
 
     log(logMessage);
-    showToastMessage(toastMessage);
+    getIt.get<SnackbarController>().showSnackbar(
+          message: toastMessage,
+        );
   }
 }

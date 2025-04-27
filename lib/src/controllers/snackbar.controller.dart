@@ -6,11 +6,17 @@ import '../localization/localization.dart';
 final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 class SnackbarController {
-  void showSnackbar({String? message, SnackBar? snackBar}) => AppSnackbar(
-        scaffoldMessengerKey,
-        message: message,
-        appSnackBar: snackBar,
-      );
+  void showSnackbar({String? message, SnackBar? snackBar}) {
+    if (message == null && snackBar == null) {
+      throw 'No message set';
+    }
+
+    AppSnackbar(
+      scaffoldMessengerKey,
+      message: message,
+      appSnackBar: snackBar,
+    );
+  }
 }
 
 class AppSnackbar {
@@ -18,14 +24,7 @@ class AppSnackbar {
     GlobalKey<ScaffoldMessengerState> key, {
     String? message,
     SnackBar? appSnackBar,
-  })  : assert(
-          message == null && appSnackBar == null,
-          'Either message or appSnackBar must be provided.',
-        ),
-        assert(
-          message != null && appSnackBar != null,
-          'Either message or appSnackBar must be provided, not both',
-        ) {
+  }) {
     if (message != null) {
       key.currentState?.showSnackBar(
         SnackBar(content: Text(message)),
@@ -40,8 +39,13 @@ class AppSnackbar {
     required VoidCallback onPressed,
   }) {
     return SnackBar(
-      content: Text(message),
-      backgroundColor: AppColors.GREEN,
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: AppColors.GREEN,
+        ),
+      ),
+      // backgroundColor: AppColors.GREEN,
       action: SnackBarAction(
         label: t.done,
         textColor: AppColors.GREEN,

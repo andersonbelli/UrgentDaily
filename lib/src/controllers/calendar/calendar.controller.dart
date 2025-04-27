@@ -2,12 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
+import '../../helpers/di/di.dart';
 import '../../helpers/enums/task_error_type.enum.dart';
 import '../../helpers/extensions/datetime_formatter.dart';
 import '../../models/task.model.dart';
 import '../../models/user_tasks.model.dart';
 import '../../services/tasks/tasks.service.dart';
 import '../base_controller.dart';
+import '../snackbar.controller.dart';
 
 class CalendarController extends BaseController {
   CalendarController({required TasksService tasksService}) : _tasksService = tasksService;
@@ -64,7 +66,10 @@ class CalendarController extends BaseController {
         },
         errorHandler: (error, stack) {
           log('Load Tasks For Two Weeks Error - $runtimeType: $error\n$stack');
-          showToastMessage(TaskErrorType.INTERNAL_SERVER_ERROR.message);
+
+          getIt.get<SnackbarController>().showSnackbar(
+                message: TaskErrorType.INTERNAL_SERVER_ERROR.message,
+              );
         },
       );
     }

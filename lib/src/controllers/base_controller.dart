@@ -4,17 +4,6 @@ import '../helpers/di/di.dart';
 import '../services/auth/auth.local.service.dart';
 
 class BaseController with ChangeNotifier {
-  String? _message;
-
-  String? get message => _message;
-
-  void showToastMessage(String newMessage) async {
-    _message = newMessage;
-    notifyListeners();
-    await Future.delayed(const Duration(seconds: 1));
-    _message = null; // Reset after notifying
-  }
-
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
